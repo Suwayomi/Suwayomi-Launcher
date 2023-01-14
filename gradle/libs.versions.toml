@@ -30,6 +30,7 @@ settings-core = { module = "com.russhwolf:multiplatform-settings-jvm", version.r
 
 # UI
 darklaf = "com.github.weisj:darklaf-core:3.0.2"
+miglayout = "com.miglayout:miglayout-swing:5.3"
 
 # Testing
 mockk = "io.mockk:mockk:1.13.2"

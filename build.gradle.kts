@@ -27,6 +27,7 @@ dependencies {
 
     // UI
     implementation(libs.darklaf)
+    implementation(libs.miglayout)
 
     // Test
     testImplementation(libs.kotlin.test.junit5)
