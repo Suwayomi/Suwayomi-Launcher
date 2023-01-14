@@ -20,7 +20,7 @@ import javax.swing.JFrame
 @OptIn(DelicateCoroutinesApi::class) // FIXME: @Syer10 can this be written better?
 fun main() {
     GlobalScope.launch(Dispatchers.Swing.immediate) {
-        LafManager.install()
+        LafManager.installTheme(LafManager.getPreferredThemeStyle())
 
         jframe("Tachidesk-Server Launcher") {
             size = Dimension(800, 600)
