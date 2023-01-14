@@ -7,19 +7,16 @@
 package suwayomi.tachidesk.launcher
 
 import com.github.weisj.darklaf.LafManager
-import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.swing.Swing
+import kotlinx.coroutines.withContext
 import net.miginfocom.layout.LC
 import net.miginfocom.swing.MigLayout
 import java.awt.Dimension
 import javax.swing.JFrame
 
-@OptIn(DelicateCoroutinesApi::class) // FIXME: @Syer10 can this be written better?
-fun main() {
-    GlobalScope.launch(Dispatchers.Swing.immediate) {
+suspend fun main() {
+    withContext(Dispatchers.Swing.immediate) {
         LafManager.installTheme(LafManager.getPreferredThemeStyle())
 
         jframe("Tachidesk-Server Launcher") {
