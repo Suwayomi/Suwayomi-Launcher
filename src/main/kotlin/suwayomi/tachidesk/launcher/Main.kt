@@ -24,8 +24,7 @@ suspend fun main() {
             isResizable = false
             setLocationRelativeTo(null)
             defaultCloseOperation = JFrame.EXIT_ON_CLOSE
-            contentPane = jpanel {
-                layout = MigLayout(LC().fill())
+            contentPane = jpanel(MigLayout(LC().fill())) {
                 jpanel {
                     jbutton("Launch") {
                         addActionListener {
