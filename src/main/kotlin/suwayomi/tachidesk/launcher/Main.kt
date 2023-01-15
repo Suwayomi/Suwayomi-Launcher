@@ -22,6 +22,8 @@ import java.awt.Dimension
 import javax.swing.JFrame
 
 suspend fun main() {
+    var x = 2
+    println(x)
     val scope = MainScope()
 
     withContext(Dispatchers.Swing.immediate) {

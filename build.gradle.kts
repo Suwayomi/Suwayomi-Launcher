@@ -11,6 +11,18 @@ plugins {
     alias(libs.plugins.shadowjar)
 }
 
+buildscript {
+    repositories {
+        mavenCentral()
+        maven("https://jitpack.io")
+    }
+
+    dependencies {
+        // ktlint rules
+        classpath("com.github.Suwayomi:Tachidesk-ktlintRules:a8196206b4")
+    }
+}
+
 group = "suwayomi.tachidesk"
 version = "1.0-SNAPSHOT"
 
