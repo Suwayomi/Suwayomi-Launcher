@@ -1,3 +1,0 @@
-<component name="DependencyValidationManager">
-  <scope name="Tachidesk-Launcher" pattern="src[Tachidesk-Launcher*]:*..*" />
-</component>
