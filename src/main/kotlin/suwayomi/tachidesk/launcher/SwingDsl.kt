@@ -31,6 +31,7 @@ import javax.swing.JPanel
 @DslMarker
 annotation class SwingDsl
 
+/** Define a [JFrame] */
 @SwingDsl
 inline fun jframe(
     title: String? = null,
@@ -45,6 +46,7 @@ inline fun jframe(
     }
 }
 
+/** Define a [JPanel] */
 @SwingDsl
 inline fun jpanel(
     layoutManager: LayoutManager = FlowLayout(),
@@ -56,6 +58,7 @@ inline fun jpanel(
     }
 }
 
+/** Define a [JButton] */
 @SwingDsl
 inline fun jbutton(text: String? = null, icon: Icon? = null, builder: JButton.() -> Unit): JButton {
     return JButton(text, icon).apply {
@@ -68,12 +71,14 @@ fun Component.addTo(container: Container, constraints: Any? = null) {
     container.add(this, constraints)
 }
 
+/** Adds [Component] to parent [Container] */
 context(Container)
 @SwingDsl
 fun Component.bind(constraints: Any? = null) {
     add(this@bind, constraints)
 }
 
+/** Default [ActionEvent] for [AbstractButton] */
 @SwingDsl
 fun AbstractButton.actions(): Flow<ActionEvent> = callbackFlow {
     val actionListener = ActionListener {
