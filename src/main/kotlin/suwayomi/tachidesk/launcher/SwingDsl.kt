@@ -16,6 +16,10 @@ import javax.swing.JButton
 import javax.swing.JFrame
 import javax.swing.JPanel
 
+@DslMarker
+annotation class SwingDsl
+
+@SwingDsl
 inline fun jframe(
     title: String? = null,
     graphicsConfiguration: GraphicsConfiguration? = null,
@@ -29,6 +33,7 @@ inline fun jframe(
     }
 }
 
+@SwingDsl
 inline fun jpanel(
     layoutManager: LayoutManager = FlowLayout(),
     isDoubleBuffered: Boolean = true,
@@ -38,17 +43,21 @@ inline fun jpanel(
         builder()
     }
 }
+
+@SwingDsl
 inline fun jbutton(text: String? = null, icon: Icon? = null, builder: JButton.() -> Unit): JButton {
     return JButton(text, icon).apply {
         builder()
     }
 }
 
+@SwingDsl
 fun Component.addTo(container: Container, constraints: Any? = null) {
     container.add(this, constraints)
 }
 
 context(Container)
+@SwingDsl
 fun Component.bind(constraints: Any? = null) {
     add(this@bind, constraints)
 }
