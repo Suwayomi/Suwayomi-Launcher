@@ -6,6 +6,8 @@
 
 package suwayomi.tachidesk.launcher
 
+import java.awt.Component
+import java.awt.Container
 import java.awt.FlowLayout
 import java.awt.GraphicsConfiguration
 import java.awt.LayoutManager
@@ -41,3 +43,13 @@ inline fun jbutton(text: String? = null, icon: Icon? = null, builder: JButton.()
         builder()
     }
 }
+
+fun Component.addTo(container: Container, constraints: Any? = null) {
+    container.add(this, constraints)
+}
+
+context(Container)
+fun Component.bind(constraints: Any? = null) {
+    add(this@bind, constraints)
+}
+

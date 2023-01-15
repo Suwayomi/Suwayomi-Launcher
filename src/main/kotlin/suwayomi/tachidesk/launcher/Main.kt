@@ -31,9 +31,8 @@ suspend fun main() {
                         addActionListener {
                             println("Clicked")
                         }
-                    }.also { add(it) }
-                }.also { add(it, "south") }
-
+                    }.bind()
+                }.bind("south")
             }
         }
     }
