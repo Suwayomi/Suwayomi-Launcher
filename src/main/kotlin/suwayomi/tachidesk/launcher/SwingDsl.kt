@@ -6,11 +6,21 @@
 
 package suwayomi.tachidesk.launcher
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.swing.Swing
 import java.awt.Component
 import java.awt.Container
 import java.awt.FlowLayout
 import java.awt.GraphicsConfiguration
 import java.awt.LayoutManager
+import java.awt.event.ActionEvent
+import java.awt.event.ActionListener
+import javax.swing.AbstractButton
 import javax.swing.Icon
 import javax.swing.JButton
 import javax.swing.JFrame
@@ -62,3 +72,11 @@ fun Component.bind(constraints: Any? = null) {
     add(this@bind, constraints)
 }
 
+@SwingDsl
+fun AbstractButton.actions(): Flow<ActionEvent> = callbackFlow {
+    val actionListener = ActionListener {
+        trySend(it)
+    }
+    addActionListener(actionListener)
+    awaitClose { removeActionListener(actionListener) }
+}.flowOn(Dispatchers.Swing)

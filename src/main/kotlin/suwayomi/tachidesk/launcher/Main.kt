@@ -7,7 +7,12 @@
 package suwayomi.tachidesk.launcher
 
 import com.github.weisj.darklaf.LafManager
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.swing.Swing
 import kotlinx.coroutines.withContext
 import net.miginfocom.layout.LC
@@ -16,6 +21,8 @@ import java.awt.Dimension
 import javax.swing.JFrame
 
 suspend fun main() {
+    val scope = MainScope()
+
     withContext(Dispatchers.Swing.immediate) {
         LafManager.installTheme(LafManager.getPreferredThemeStyle())
 
@@ -27,9 +34,12 @@ suspend fun main() {
             contentPane = jpanel(MigLayout(LC().fill())) {
                 jpanel {
                     jbutton("Launch") {
-                        addActionListener {
-                            println("Clicked")
-                        }
+                        actions()
+                            .onEach {
+                                println("Clicked")
+                            }
+                            .flowOn(Dispatchers.Default)
+                            .launchIn(scope)
                     }.bind()
                 }.bind("south")
             }
