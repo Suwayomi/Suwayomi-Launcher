@@ -9,7 +9,6 @@ package suwayomi.tachidesk.launcher
  */
 
 import com.github.weisj.darklaf.LafManager
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.flowOn

@@ -1,4 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
+import org.jmailen.gradle.kotlinter.tasks.LintTask
+import org.jmailen.gradle.kotlinter.tasks.FormatTask
 
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
@@ -34,8 +37,25 @@ dependencies {
     testImplementation(libs.coroutines.test)
 }
 
-tasks.test {
-    useJUnitPlatform()
+tasks {
+    test {
+        useJUnitPlatform()
+    }
+
+    withType<KotlinJvmCompile> {
+        dependsOn("formatKotlin")
+        kotlinOptions {
+            jvmTarget = JavaVersion.VERSION_1_8.toString()
+        }
+    }
+
+    withType<LintTask> {
+        source(files("src/kotlin"))
+    }
+
+    withType<FormatTask> {
+        source(files("src/kotlin"))
+    }
 }
 
 tasks.withType<KotlinCompile> {
