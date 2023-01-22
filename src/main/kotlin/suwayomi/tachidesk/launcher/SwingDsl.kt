@@ -24,8 +24,10 @@ import java.awt.event.ActionListener
 import javax.swing.AbstractButton
 import javax.swing.Icon
 import javax.swing.JButton
+import javax.swing.JCheckBox
 import javax.swing.JFrame
 import javax.swing.JPanel
+import javax.swing.JToggleButton
 
 @DslMarker
 annotation class SwingDsl
@@ -61,6 +63,22 @@ inline fun jpanel(
 @SwingDsl
 inline fun jbutton(text: String? = null, icon: Icon? = null, builder: JButton.() -> Unit): JButton {
     return JButton(text, icon).apply {
+        builder()
+    }
+}
+
+/** Define a [JToggleButton] */
+@SwingDsl
+inline fun jToggleButton(text: String? = null, icon: Icon? = null, selected: Boolean = false, builder: JToggleButton.() -> Unit): JToggleButton {
+    return JToggleButton(text, icon, selected).apply {
+        builder()
+    }
+}
+
+/** Define a [JToggleButton] */
+@SwingDsl
+inline fun jCheckBox(text: String? = null, icon: Icon? = null, selected: Boolean = false, builder: JCheckBox.() -> Unit): JCheckBox {
+    return JCheckBox(text, icon, selected).apply {
         builder()
     }
 }

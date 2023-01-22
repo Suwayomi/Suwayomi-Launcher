@@ -20,11 +20,11 @@ import net.miginfocom.layout.LC
 import net.miginfocom.swing.MigLayout
 import java.awt.Dimension
 import javax.swing.JFrame
+import kotlin.system.exitProcess
 
 suspend fun main() {
-    var x = 2
-    println(x)
     val scope = MainScope()
+    val vm = LauncherViewModel()
 
     withContext(Dispatchers.Swing.immediate) {
         LafManager.installTheme(LafManager.getPreferredThemeStyle())
@@ -36,10 +36,21 @@ suspend fun main() {
             defaultCloseOperation = JFrame.EXIT_ON_CLOSE
             contentPane = jpanel(MigLayout(LC().fill())) {
                 jpanel {
+                    jCheckBox("Debug logging", selected = vm.debug.value) {
+                        actions()
+                            .onEach {
+                                vm.setDebug(isSelected)
+                            }
+                            .flowOn(Dispatchers.Default)
+                            .launchIn(scope)
+                    }.bind()
+                }.bind("north")
+                jpanel {
                     jbutton("Launch") {
                         actions()
                             .onEach {
                                 println("Clicked")
+                                exitProcess(0)
                             }
                             .flowOn(Dispatchers.Default)
                             .launchIn(scope)
