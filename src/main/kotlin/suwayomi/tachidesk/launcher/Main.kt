@@ -44,6 +44,7 @@ suspend fun main() {
                 jpanel(
                     GridLayout(0, 2)
                 ) {
+                    Directories(vm, scope).bind()
                     ServerIpAndPortBindings(vm, scope).bind()
                     Socks5(vm, scope).bind()
                     WebUI(vm, scope).bind()
@@ -399,6 +400,40 @@ fun Misc(vm: LauncherViewModel, scope: CoroutineScope): JPanel {
                     }
                     .flowOn(Dispatchers.Default)
                     .launchIn(scope)
+            }.bind()
+        }.bind()
+    }
+}
+
+fun Directories(vm: LauncherViewModel, scope: CoroutineScope): JPanel {
+    return jpanel(
+        FlowLayout().apply {
+            hgap = 0
+            vgap = 0
+        }
+    ) {
+        jpanel(GridLayout(0, 1)) {
+            jpanel(
+                FlowLayout().apply {
+                    alignment = FlowLayout.LEFT
+                    hgap = 0
+                    vgap = 0
+                }
+            ) {
+                jTextArea("Root path") {
+                    isEditable = false
+                }.bind()
+                jTextField(vm.rootDir.value.orEmpty()) {
+                    // todo toolTipText = "Where to expose the server, 0.0.0.0 is the default and suggested value"
+                    keyListener()
+                        .filterIsInstance<KeyListenerEvent.Released>()
+                        .onEach {
+                            vm.rootDir.value = text?.takeUnless { it.isBlank() }?.trim()
+                        }
+                        .flowOn(Dispatchers.Default)
+                        .launchIn(scope)
+                    columns = 10
+                }.bind()
             }.bind()
             jpanel(
                 FlowLayout().apply {

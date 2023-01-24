@@ -40,6 +40,8 @@ class LauncherViewModel {
     // Misc
     val debug = settings.debugLogs().asStateFlow(scope)
     val systemTray = settings.systemTray().asStateFlow(scope)
+
+    val rootDir = settings.rootDir().asStateFlow(scope)
     val downloadsPath = settings.downloadsPath().asStateFlow(scope)
 
     fun launch() {

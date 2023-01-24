@@ -158,6 +158,17 @@ class LauncherSettings {
             BooleanAdapter
         )
     }
+
+    // Directories
+    fun rootDir(): LauncherPreference<String?> {
+        return LauncherPreference(
+            "rootDir",
+            "root",
+            null,
+            settings,
+            StringOrNullAdapter
+        )
+    }
     fun downloadsPath(): LauncherPreference<String?> {
         return LauncherPreference(
             "downloadsPath",
@@ -183,6 +194,7 @@ class LauncherSettings {
         basicAuthPassword(),
         debugLogs(),
         systemTray(),
+        rootDir(),
         downloadsPath()
     ).mapNotNull { it.getProperty() }
 }
