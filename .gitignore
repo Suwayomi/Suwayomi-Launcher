@@ -7,6 +7,8 @@ gradle.properties
 !/.idea/runConfigurations/
 !/.idea/scopes
 !/.idea/copyright
+/bin
+/jre
 
 # Ignore Gradle build output directory
 build

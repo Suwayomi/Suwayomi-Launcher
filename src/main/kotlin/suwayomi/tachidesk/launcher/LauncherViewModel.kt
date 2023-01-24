@@ -11,6 +11,8 @@ package suwayomi.tachidesk.launcher
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.asStateFlow
 import suwayomi.tachidesk.launcher.settings.LauncherSettings
+import kotlin.io.path.Path
+import kotlin.io.path.absolutePathString
 import kotlin.system.exitProcess
 
 class LauncherViewModel {
@@ -45,7 +47,12 @@ class LauncherViewModel {
     val downloadsPath = settings.downloadsPath().asStateFlow(scope)
 
     fun launch() {
-        println(settings.getProperties().joinToString(separator = "\n"))
+        // todo validate
+        val javaPath = Path("jre/bin/javaw").absolutePathString()
+        val jarFile = Path("bin/Tachidesk-Server.jar").absolutePathString()
+        val properties = settings.getProperties().toTypedArray()
+
+        ProcessBuilder(javaPath, *properties, "-jar", jarFile).start()
         exitProcess(0)
     }
 }
