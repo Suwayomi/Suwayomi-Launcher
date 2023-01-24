@@ -25,9 +25,11 @@ import suwayomi.tachidesk.launcher.settings.LauncherSettings.WebUIInterface
 import java.awt.Dimension
 import java.awt.FlowLayout
 import java.awt.GridLayout
+import javax.swing.JFileChooser
 import javax.swing.JFrame
 import javax.swing.JPanel
 import javax.swing.SpinnerNumberModel
+import javax.swing.UIManager
 
 suspend fun main() {
     val scope = MainScope()
@@ -268,7 +270,7 @@ fun WebUI(vm: LauncherViewModel, scope: CoroutineScope): JPanel {
                 jTextArea("Electron path") {
                     isEditable = false
                 }.bind()
-                jTextField(vm.electronPath.value.orEmpty()) {
+                val textField = jTextField(vm.electronPath.value.orEmpty()) {
                     isEnabled = vm.webUIEnabled.value
                     vm.webUIEnabled
                         .onEach {
@@ -284,6 +286,25 @@ fun WebUI(vm: LauncherViewModel, scope: CoroutineScope): JPanel {
                         .flowOn(Dispatchers.Default)
                         .launchIn(scope)
                     columns = 10
+                }.bind()
+                jbutton(icon = UIManager.getIcon("FileView.directoryIcon")) {
+                    actions()
+                        .onEach {
+                            val chooser = JFileChooser().apply {
+                                val details = actionMap.get("viewTypeDetails")
+                                details?.actionPerformed(null)
+                                fileSelectionMode = JFileChooser.DIRECTORIES_ONLY
+                            }
+                            when (chooser.showOpenDialog(this)) {
+                                JFileChooser.APPROVE_OPTION -> {
+                                    val path = chooser.selectedFile.absolutePath
+                                    vm.rootDir.value = path
+                                    textField.text = path
+                                }
+                            }
+                        }
+                        .flowOn(Dispatchers.Default)
+                        .launchIn(scope)
                 }.bind()
             }.bind()
         }.bind()
@@ -415,7 +436,7 @@ fun Directories(vm: LauncherViewModel, scope: CoroutineScope): JPanel {
                 jTextArea("Root path") {
                     isEditable = false
                 }.bind()
-                jTextField(vm.rootDir.value.orEmpty()) {
+                val textField = jTextField(vm.rootDir.value.orEmpty()) {
                     // todo toolTipText = "Where to expose the server, 0.0.0.0 is the default and suggested value"
                     keyListener()
                         .filterIsInstance<KeyListenerEvent.Released>()
@@ -425,6 +446,25 @@ fun Directories(vm: LauncherViewModel, scope: CoroutineScope): JPanel {
                         .flowOn(Dispatchers.Default)
                         .launchIn(scope)
                     columns = 10
+                }.bind()
+                jbutton(icon = UIManager.getIcon("FileView.directoryIcon")) {
+                    actions()
+                        .onEach {
+                            val chooser = JFileChooser().apply {
+                                val details = actionMap.get("viewTypeDetails")
+                                details?.actionPerformed(null)
+                                fileSelectionMode = JFileChooser.DIRECTORIES_ONLY
+                            }
+                            when (chooser.showOpenDialog(this)) {
+                                JFileChooser.APPROVE_OPTION -> {
+                                    val path = chooser.selectedFile.absolutePath
+                                    vm.rootDir.value = path
+                                    textField.text = path
+                                }
+                            }
+                        }
+                        .flowOn(Dispatchers.Default)
+                        .launchIn(scope)
                 }.bind()
             }.bind()
             jpanel(
@@ -436,7 +476,7 @@ fun Directories(vm: LauncherViewModel, scope: CoroutineScope): JPanel {
                 jTextArea("Downloads path") {
                     isEditable = false
                 }.bind()
-                jTextField(vm.downloadsPath.value.orEmpty()) {
+                val textField = jTextField(vm.downloadsPath.value.orEmpty()) {
                     // todo toolTipText = "Where to expose the server, 0.0.0.0 is the default and suggested value"
                     keyListener()
                         .filterIsInstance<KeyListenerEvent.Released>()
@@ -446,6 +486,25 @@ fun Directories(vm: LauncherViewModel, scope: CoroutineScope): JPanel {
                         .flowOn(Dispatchers.Default)
                         .launchIn(scope)
                     columns = 10
+                }.bind()
+                jbutton(icon = UIManager.getIcon("FileView.directoryIcon")) {
+                    actions()
+                        .onEach {
+                            val chooser = JFileChooser().apply {
+                                val details = actionMap.get("viewTypeDetails")
+                                details?.actionPerformed(null)
+                                fileSelectionMode = JFileChooser.DIRECTORIES_ONLY
+                            }
+                            when (chooser.showOpenDialog(this)) {
+                                JFileChooser.APPROVE_OPTION -> {
+                                    val path = chooser.selectedFile.absolutePath
+                                    vm.rootDir.value = path
+                                    textField.text = path
+                                }
+                            }
+                        }
+                        .flowOn(Dispatchers.Default)
+                        .launchIn(scope)
                 }.bind()
             }.bind()
         }.bind()

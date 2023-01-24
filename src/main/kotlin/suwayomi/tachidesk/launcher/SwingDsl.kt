@@ -161,8 +161,9 @@ fun Component.addTo(container: Container, constraints: Any? = null) {
 /** Adds [Component] to parent [Container] */
 context(Container)
 @SwingDsl
-fun Component.bind(constraints: Any? = null) {
+fun <T : Component> T.bind(constraints: Any? = null): T {
     add(this@bind, constraints)
+    return this@bind
 }
 
 sealed class KeyListenerEvent {
