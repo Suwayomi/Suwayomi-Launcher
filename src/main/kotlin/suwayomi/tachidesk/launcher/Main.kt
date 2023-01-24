@@ -12,6 +12,7 @@ import com.github.weisj.darklaf.LafManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -26,7 +27,6 @@ import java.awt.GridLayout
 import javax.swing.JFrame
 import javax.swing.JPanel
 import javax.swing.SpinnerNumberModel
-import kotlin.system.exitProcess
 
 suspend fun main() {
     val scope = MainScope()
@@ -49,13 +49,12 @@ suspend fun main() {
                     WebUI(vm, scope).bind()
                     BasicAuth(vm, scope).bind()
                     Misc(vm, scope).bind()
-                }.bind("north")
+                }.bind("center")
                 jpanel {
                     jbutton("Launch") {
                         actions()
                             .onEach {
-                                println("Clicked")
-                                exitProcess(0)
+                                vm.launch()
                             }
                             .flowOn(Dispatchers.Default)
                             .launchIn(scope)
@@ -74,7 +73,8 @@ fun ServerIpAndPortBindings(vm: LauncherViewModel, scope: CoroutineScope): JPane
         }
     ) {
         jpanel(GridLayout(0, 1)) {
-            /* TODO
+            /*
+            TODO
              - Warning when changing this value
              - Format checking to display an error when its an invalid ip
              */
@@ -149,6 +149,10 @@ fun Socks5(vm: LauncherViewModel, scope: CoroutineScope): JPanel {
                     vgap = 0
                 }
             ) {
+                /*
+                TODO
+                 - Validate host maybe?
+                 */
                 jTextArea("Socks5 Host") {
                     isEditable = false
                 }.bind()
@@ -276,9 +280,10 @@ fun WebUI(vm: LauncherViewModel, scope: CoroutineScope): JPanel {
                         }
                         .launchIn(scope)
                     // todo toolTipText = "Where to expose the server, 0.0.0.0 is the default and suggested value"
-                    actions()
+                    keyListener()
+                        .filterIsInstance<KeyListenerEvent.Released>()
                         .onEach {
-                            vm.electronPath.value = text.takeUnless { it == null }
+                            vm.electronPath.value = text?.takeUnless { it.isBlank() }?.trim()
                         }
                         .flowOn(Dispatchers.Default)
                         .launchIn(scope)
@@ -325,9 +330,10 @@ fun BasicAuth(vm: LauncherViewModel, scope: CoroutineScope): JPanel {
                         }
                         .launchIn(scope)
                     // todo toolTipText = "Where to expose the server, 0.0.0.0 is the default and suggested value"
-                    actions()
+                    keyListener()
+                        .filterIsInstance<KeyListenerEvent.Released>()
                         .onEach {
-                            vm.basicAuthUsername.value = text
+                            vm.basicAuthUsername.value = text?.takeUnless { it.isBlank() }?.trim()
                         }
                         .flowOn(Dispatchers.Default)
                         .launchIn(scope)
@@ -353,9 +359,10 @@ fun BasicAuth(vm: LauncherViewModel, scope: CoroutineScope): JPanel {
                         }
                         .launchIn(scope)
                     // todo toolTipText = "Where to expose the server, 0.0.0.0 is the default and suggested value"
-                    actions()
+                    keyListener()
+                        .filterIsInstance<KeyListenerEvent.Released>()
                         .onEach {
-                            vm.basicAuthPassword.value = password.toString().takeUnless { it.isBlank() }
+                            vm.basicAuthPassword.value = password.toString().takeUnless { it.isBlank() }?.trim()
                         }
                         .flowOn(Dispatchers.Default)
                         .launchIn(scope)
@@ -392,6 +399,28 @@ fun Misc(vm: LauncherViewModel, scope: CoroutineScope): JPanel {
                     }
                     .flowOn(Dispatchers.Default)
                     .launchIn(scope)
+            }.bind()
+            jpanel(
+                FlowLayout().apply {
+                    alignment = FlowLayout.LEFT
+                    hgap = 0
+                    vgap = 0
+                }
+            ) {
+                jTextArea("Downloads path") {
+                    isEditable = false
+                }.bind()
+                jTextField(vm.downloadsPath.value.orEmpty()) {
+                    // todo toolTipText = "Where to expose the server, 0.0.0.0 is the default and suggested value"
+                    keyListener()
+                        .filterIsInstance<KeyListenerEvent.Released>()
+                        .onEach {
+                            vm.downloadsPath.value = text?.takeUnless { it.isBlank() }?.trim()
+                        }
+                        .flowOn(Dispatchers.Default)
+                        .launchIn(scope)
+                    columns = 10
+                }.bind()
             }.bind()
         }.bind()
     }

@@ -17,37 +17,80 @@ class LauncherSettings {
     )
 
     // Server ip and port bindings
-    fun ip(): Preference<String> {
-        return Preference("ip", "0.0.0.0", settings, StringAdapter)
+    fun ip(): LauncherPreference<String> {
+        return LauncherPreference(
+            "ip",
+            "ip",
+            "0.0.0.0",
+            settings,
+            StringAdapter
+        )
     }
-    fun port(): Preference<Int> {
-        return Preference("port", 4567, settings, IntAdapter)
+    fun port(): LauncherPreference<Int> {
+        return LauncherPreference(
+            "port",
+            "port",
+            4567,
+            settings,
+            IntAdapter
+        )
     }
 
     // Socks5 proxy
-    fun socksProxyEnabled(): Preference<Boolean> {
-        return Preference("socks_enabled", false, settings, BooleanAdapter)
+    fun socksProxyEnabled(): LauncherPreference<Boolean> {
+        return LauncherPreference(
+            "socksProxyEnabled",
+            "socks_enabled",
+            false,
+            settings,
+            BooleanAdapter
+        )
     }
-    fun socksProxyHost(): Preference<String> {
-        return Preference("socks_host", "", settings, StringAdapter)
+    fun socksProxyHost(): LauncherPreference<String> {
+        return LauncherPreference(
+            "socksProxyHost",
+            "socks_host",
+            "",
+            settings,
+            StringAdapter
+        )
     }
-    fun socksProxyPort(): Preference<Int?> {
-        return Preference("socks_port", null, settings, IntOrNullAdapter)
+    fun socksProxyPort(): LauncherPreference<Int?> {
+        return LauncherPreference(
+            "socksProxyPort",
+            "socks_port",
+            null,
+            settings,
+            IntOrNullAdapter
+        )
     }
 
     // WebUI
-    fun webUIEnabled(): Preference<Boolean> {
-        return Preference("webui_enabled", true, settings, BooleanAdapter)
+    fun webUIEnabled(): LauncherPreference<Boolean> {
+        return LauncherPreference(
+            "webUIEnabled",
+            "webui_enabled",
+            true,
+            settings,
+            BooleanAdapter
+        )
     }
-    fun initialOpenInBrowserEnabled(): Preference<Boolean> {
-        return Preference("open_in_browser", true, settings, BooleanAdapter)
+    fun initialOpenInBrowserEnabled(): LauncherPreference<Boolean> {
+        return LauncherPreference(
+            "initialOpenInBrowserEnabled",
+            "open_in_browser",
+            true,
+            settings,
+            BooleanAdapter
+        )
     }
     enum class WebUIInterface(val key: String) {
         Browser("browser"),
         Electron("electron")
     }
-    fun webUIInterface(): Preference<WebUIInterface> {
-        return Preference(
+    fun webUIInterface(): LauncherPreference<WebUIInterface> {
+        return LauncherPreference(
+            "webUIInterface",
             "webui_interface",
             WebUIInterface.Browser,
             settings,
@@ -57,26 +100,89 @@ class LauncherSettings {
             )
         )
     }
-    fun electronPath(): Preference<String?> {
-        return Preference("electron_path", null, settings, StringOrNullAdapter)
+    fun electronPath(): LauncherPreference<String?> {
+        return LauncherPreference(
+            "electronPath",
+            "electron_path",
+            null,
+            settings,
+            StringOrNullAdapter
+        )
     }
 
     // Authentication
-    fun basicAuthEnabled(): Preference<Boolean> {
-        return Preference("basic_auth_enabled", false, settings, BooleanAdapter)
+    fun basicAuthEnabled(): LauncherPreference<Boolean> {
+        return LauncherPreference(
+            "basicAuthEnabled",
+            "basic_auth_enabled",
+            false,
+            settings,
+            BooleanAdapter
+        )
     }
-    fun basicAuthUsername(): Preference<String?> {
-        return Preference("basic_auth_username", null, settings, StringOrNullAdapter)
+    fun basicAuthUsername(): LauncherPreference<String?> {
+        return LauncherPreference(
+            "basicAuthUsername",
+            "basic_auth_username",
+            null,
+            settings,
+            StringOrNullAdapter
+        )
     }
-    fun basicAuthPassword(): Preference<String?> {
-        return Preference("basic_auth_password", null, settings, StringOrNullAdapter)
+    fun basicAuthPassword(): LauncherPreference<String?> {
+        return LauncherPreference(
+            "basicAuthPassword",
+            "basic_auth_password",
+            null,
+            settings,
+            StringOrNullAdapter
+        )
     }
 
-    // misc
-    fun debugLogs(): Preference<Boolean> {
-        return Preference("debug", false, settings, BooleanAdapter)
+    // Misc
+    fun debugLogs(): LauncherPreference<Boolean> {
+        return LauncherPreference(
+            "debugLogsEnabled",
+            "debug",
+            false,
+            settings,
+            BooleanAdapter
+        )
     }
-    fun systemTray(): Preference<Boolean> {
-        return Preference("tray", true, settings, BooleanAdapter)
+    fun systemTray(): LauncherPreference<Boolean> {
+        return LauncherPreference(
+            "systemTrayEnabled",
+            "tray",
+            true,
+            settings,
+            BooleanAdapter
+        )
     }
+    fun downloadsPath(): LauncherPreference<String?> {
+        return LauncherPreference(
+            "downloadsPath",
+            "downloads",
+            null,
+            settings,
+            StringOrNullAdapter
+        )
+    }
+
+    fun getProperties() = listOf(
+        ip(),
+        port(),
+        socksProxyEnabled(),
+        socksProxyHost(),
+        socksProxyPort(),
+        webUIEnabled(),
+        initialOpenInBrowserEnabled(),
+        webUIInterface(),
+        electronPath(),
+        basicAuthEnabled(),
+        basicAuthUsername(),
+        basicAuthPassword(),
+        debugLogs(),
+        systemTray(),
+        downloadsPath()
+    ).mapNotNull { it.getProperty() }
 }

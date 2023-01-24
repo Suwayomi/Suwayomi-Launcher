@@ -21,6 +21,8 @@ import java.awt.GraphicsConfiguration
 import java.awt.LayoutManager
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
+import java.awt.event.KeyEvent
+import java.awt.event.KeyListener
 import java.text.Format
 import javax.swing.AbstractButton
 import javax.swing.ComboBoxModel
@@ -162,6 +164,31 @@ context(Container)
 fun Component.bind(constraints: Any? = null) {
     add(this@bind, constraints)
 }
+
+sealed class KeyListenerEvent {
+    abstract val event: KeyEvent?
+    data class Pressed(override val event: KeyEvent?) : KeyListenerEvent()
+    data class Typed(override val event: KeyEvent?) : KeyListenerEvent()
+    data class Released(override val event: KeyEvent?) : KeyListenerEvent()
+}
+
+/** Default [KeyListenerEvent] for [Component] */
+@SwingDsl
+fun Component.keyListener(): Flow<KeyListenerEvent> = callbackFlow {
+    val keyListener = object : KeyListener {
+        override fun keyPressed(e: KeyEvent?) {
+            trySend(KeyListenerEvent.Pressed(e))
+        }
+        override fun keyTyped(e: KeyEvent?) {
+            trySend(KeyListenerEvent.Typed(e))
+        }
+        override fun keyReleased(e: KeyEvent?) {
+            trySend(KeyListenerEvent.Released(e))
+        }
+    }
+    addKeyListener(keyListener)
+    awaitClose { removeKeyListener(keyListener) }
+}.flowOn(Dispatchers.Swing)
 
 /** Default [ActionEvent] for [AbstractButton] */
 @SwingDsl

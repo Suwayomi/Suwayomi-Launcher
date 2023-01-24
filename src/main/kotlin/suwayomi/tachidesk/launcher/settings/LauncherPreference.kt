@@ -16,7 +16,8 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.job
 
-class Preference<T>(
+class LauncherPreference<T>(
+    private val launcherKey: String,
     private val key: String,
     private val default: T,
     private val settings: ObservableSettings,
@@ -45,5 +46,14 @@ class Preference<T>(
             .onEach { set(it) }
             .launchIn(scope)
         return flow
+    }
+
+    fun getProperty() = get().takeIf { it != default }?.let { propertyPrefix + it }
+
+    private val propertyPrefix
+        get() = "$argPrefix$launcherKey="
+
+    companion object {
+        const val argPrefix = "-Dsuwayomi.tachidesk.config.server."
     }
 }

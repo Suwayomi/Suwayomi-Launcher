@@ -11,6 +11,7 @@ package suwayomi.tachidesk.launcher
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.asStateFlow
 import suwayomi.tachidesk.launcher.settings.LauncherSettings
+import kotlin.system.exitProcess
 
 class LauncherViewModel {
     private val scope = MainScope()
@@ -39,4 +40,10 @@ class LauncherViewModel {
     // Misc
     val debug = settings.debugLogs().asStateFlow(scope)
     val systemTray = settings.systemTray().asStateFlow(scope)
+    val downloadsPath = settings.downloadsPath().asStateFlow(scope)
+
+    fun launch() {
+        println(settings.getProperties().joinToString(separator = "\n"))
+        exitProcess(0)
+    }
 }
