@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.swing.Swing
 import kotlinx.coroutines.withContext
+import net.miginfocom.layout.AC
 import net.miginfocom.layout.LC
 import net.miginfocom.swing.MigLayout
 import suwayomi.tachidesk.launcher.settings.LauncherSettings.WebUIInterface
@@ -80,11 +81,10 @@ fun ServerIpAndPortBindings(vm: LauncherViewModel, scope: CoroutineScope): JPane
              - Format checking to display an error when its an invalid ip
              */
             jpanel(
-                FlowLayout().apply {
-                    alignment = FlowLayout.LEFT
-                    hgap = 0
-                    vgap = 0
-                }
+                MigLayout(
+                    LC().insetsAll("0"),
+                    AC().count(1)
+                )
             ) {
                 jTextArea("IP") {
                     isEditable = false
@@ -97,16 +97,15 @@ fun ServerIpAndPortBindings(vm: LauncherViewModel, scope: CoroutineScope): JPane
                         }
                         .flowOn(Dispatchers.Default)
                         .launchIn(scope)
-                    columns = 10
+                    columns = 15
                 }.bind()
             }.bind()
 
             jpanel(
-                FlowLayout().apply {
-                    alignment = FlowLayout.LEFT
-                    hgap = 0
-                    vgap = 0
-                }
+                MigLayout(
+                    LC().insetsAll("0"),
+                    AC().count(1)
+                )
             ) {
                 jTextArea("Port") {
                     isEditable = false
@@ -144,11 +143,10 @@ fun Socks5(vm: LauncherViewModel, scope: CoroutineScope): JPanel {
             }.bind()
 
             jpanel(
-                FlowLayout().apply {
-                    alignment = FlowLayout.LEFT
-                    hgap = 0
-                    vgap = 0
-                }
+                MigLayout(
+                    LC().insetsAll("0"),
+                    AC().count(1)
+                )
             ) {
                 /*
                 TODO
@@ -176,11 +174,10 @@ fun Socks5(vm: LauncherViewModel, scope: CoroutineScope): JPanel {
             }.bind()
 
             jpanel(
-                FlowLayout().apply {
-                    alignment = FlowLayout.LEFT
-                    hgap = 0
-                    vgap = 0
-                }
+                MigLayout(
+                    LC().insetsAll("0"),
+                    AC().count(1)
+                )
             ) {
                 jTextArea("Socks5 Port") {
                     isEditable = false
@@ -238,11 +235,10 @@ fun WebUI(vm: LauncherViewModel, scope: CoroutineScope): JPanel {
             }.bind()
 
             jpanel(
-                FlowLayout().apply {
-                    alignment = FlowLayout.LEFT
-                    hgap = 0
-                    vgap = 0
-                }
+                MigLayout(
+                    LC().insetsAll("0"),
+                    AC().count(1)
+                )
             ) {
                 jTextArea("WebUI Interface") {
                     isEditable = false
@@ -264,11 +260,10 @@ fun WebUI(vm: LauncherViewModel, scope: CoroutineScope): JPanel {
             }.bind()
 
             jpanel(
-                FlowLayout().apply {
-                    alignment = FlowLayout.LEFT
-                    hgap = 0
-                    vgap = 0
-                }
+                MigLayout(
+                    LC().insetsAll("0"),
+                    AC().count(1)
+                )
             ) {
                 jTextArea("Electron path") {
                     isEditable = false
@@ -314,11 +309,10 @@ fun BasicAuth(vm: LauncherViewModel, scope: CoroutineScope): JPanel {
             }.bind()
 
             jpanel(
-                FlowLayout().apply {
-                    alignment = FlowLayout.LEFT
-                    hgap = 0
-                    vgap = 0
-                }
+                MigLayout(
+                    LC().insetsAll("0"),
+                    AC().count(1)
+                )
             ) {
                 jTextArea("Username") {
                     isEditable = false
@@ -343,11 +337,10 @@ fun BasicAuth(vm: LauncherViewModel, scope: CoroutineScope): JPanel {
             }.bind()
 
             jpanel(
-                FlowLayout().apply {
-                    alignment = FlowLayout.LEFT
-                    hgap = 0
-                    vgap = 0
-                }
+                MigLayout(
+                    LC().insetsAll("0"),
+                    AC().count(1)
+                )
             ) {
                 jTextArea("Password") {
                     isEditable = false
@@ -414,11 +407,10 @@ fun Directories(vm: LauncherViewModel, scope: CoroutineScope): JPanel {
     ) {
         jpanel(GridLayout(0, 1)) {
             jpanel(
-                FlowLayout().apply {
-                    alignment = FlowLayout.LEFT
-                    hgap = 0
-                    vgap = 0
-                }
+                MigLayout(
+                    LC().insetsAll("0"),
+                    AC().count(1)
+                )
             ) {
                 jTextArea("Root path") {
                     isEditable = false
@@ -436,11 +428,10 @@ fun Directories(vm: LauncherViewModel, scope: CoroutineScope): JPanel {
                 }.bind()
             }.bind()
             jpanel(
-                FlowLayout().apply {
-                    alignment = FlowLayout.LEFT
-                    hgap = 0
-                    vgap = 0
-                }
+                MigLayout(
+                    LC().insetsAll("0"),
+                    AC().count(1)
+                )
             ) {
                 jTextArea("Downloads path") {
                     isEditable = false
