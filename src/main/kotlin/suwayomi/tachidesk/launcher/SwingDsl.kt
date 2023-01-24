@@ -21,13 +21,27 @@ import java.awt.GraphicsConfiguration
 import java.awt.LayoutManager
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
+import java.text.Format
 import javax.swing.AbstractButton
+import javax.swing.ComboBoxModel
+import javax.swing.DefaultComboBoxModel
 import javax.swing.Icon
 import javax.swing.JButton
 import javax.swing.JCheckBox
+import javax.swing.JComboBox
+import javax.swing.JFormattedTextField
 import javax.swing.JFrame
 import javax.swing.JPanel
+import javax.swing.JPasswordField
+import javax.swing.JSpinner
+import javax.swing.JTextArea
+import javax.swing.JTextField
 import javax.swing.JToggleButton
+import javax.swing.SpinnerModel
+import javax.swing.SpinnerNumberModel
+import javax.swing.event.ChangeEvent
+import javax.swing.event.ChangeListener
+import javax.swing.text.Document
 
 @DslMarker
 annotation class SwingDsl
@@ -75,10 +89,64 @@ inline fun jToggleButton(text: String? = null, icon: Icon? = null, selected: Boo
     }
 }
 
-/** Define a [JToggleButton] */
+/** Define a [JCheckBox] */
 @SwingDsl
 inline fun jCheckBox(text: String? = null, icon: Icon? = null, selected: Boolean = false, builder: JCheckBox.() -> Unit): JCheckBox {
     return JCheckBox(text, icon, selected).apply {
+        builder()
+    }
+}
+
+/** Define a [JTextArea] */
+@SwingDsl
+inline fun jTextArea(text: String? = null, rows: Int = 0, columns: Int = 0, document: Document? = null, builder: JTextArea.() -> Unit): JTextArea {
+    return JTextArea(document, text, rows, columns).apply {
+        builder()
+    }
+}
+
+/** Define a [JTextField] */
+@SwingDsl
+inline fun jTextField(text: String? = null, columns: Int = 0, document: Document? = null, builder: JTextField.() -> Unit): JTextField {
+    return JTextField(document, text, columns).apply {
+        builder()
+    }
+}
+
+/** Define a [JFormattedTextField] */
+@SwingDsl
+inline fun jFormattedTextField(format: Format, value: Any? = null, builder: JFormattedTextField.() -> Unit): JFormattedTextField {
+    return JFormattedTextField(format).apply {
+        setValue(value)
+        builder()
+    }
+}
+
+/** Define a [JPasswordField] */
+@SwingDsl
+inline fun jPasswordField(text: String? = null, columns: Int = 0, document: Document? = null, builder: JPasswordField.() -> Unit): JPasswordField {
+    return JPasswordField(document, text, columns).apply {
+        builder()
+    }
+}
+
+/** Define a [JComboBox] */
+@SwingDsl
+inline fun <E> jComboBox(
+    items: Array<E>? = null,
+    model: ComboBoxModel<E>? = null,
+    builder: JComboBox<E>.() -> Unit
+): JComboBox<E> {
+    require(items != null || model != null) { "Both items and model were null" }
+    return JComboBox(model ?: DefaultComboBoxModel(items)).apply {
+        builder()
+    }
+}
+
+/** Define a [JSpinner] */
+@SwingDsl
+inline fun jSpinner(model: SpinnerModel = SpinnerNumberModel(), builder: JSpinner.() -> Unit): JSpinner {
+    return JSpinner(model).apply {
         builder()
     }
 }
@@ -103,4 +171,34 @@ fun AbstractButton.actions(): Flow<ActionEvent> = callbackFlow {
     }
     addActionListener(actionListener)
     awaitClose { removeActionListener(actionListener) }
+}.flowOn(Dispatchers.Swing)
+
+/** Default [ActionEvent] for [JTextField] */
+@SwingDsl
+fun JTextField.actions(): Flow<ActionEvent> = callbackFlow {
+    val actionListener = ActionListener {
+        trySend(it)
+    }
+    addActionListener(actionListener)
+    awaitClose { removeActionListener(actionListener) }
+}.flowOn(Dispatchers.Swing)
+
+/** Default [ActionEvent] for [JComboBox] */
+@SwingDsl
+fun <E> JComboBox<E>.actions(): Flow<ActionEvent> = callbackFlow {
+    val actionListener = ActionListener {
+        trySend(it)
+    }
+    addActionListener(actionListener)
+    awaitClose { removeActionListener(actionListener) }
+}.flowOn(Dispatchers.Swing)
+
+/** Default [ActionEvent] for [JSpinner] */
+@SwingDsl
+fun JSpinner.changes(): Flow<ChangeEvent> = callbackFlow {
+    val actionListener = ChangeListener {
+        trySend(it)
+    }
+    addChangeListener(actionListener)
+    awaitClose { removeChangeListener(actionListener) }
 }.flowOn(Dispatchers.Swing)

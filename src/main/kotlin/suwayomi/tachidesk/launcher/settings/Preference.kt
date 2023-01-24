@@ -16,11 +16,11 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.job
 
-class LauncherPreference<T>(
+class Preference<T>(
     private val key: String,
     private val default: T,
     private val settings: ObservableSettings,
-    private val adapter: LauncherAdapter<T>
+    private val adapter: Adapter<T>
 ) {
 
     fun get(): T {
