@@ -87,7 +87,7 @@ fun ServerIpAndPortBindings(vm: LauncherViewModel, scope: CoroutineScope): JPane
             isEditable = false
         }.bind()
         jTextField(vm.ip.value) {
-            toolTipText = "Where to expose the server, 0.0.0.0 is the default and suggested value"
+            toolTipText = "Where to expose the server, 0.0.0.0 is the default and suggested value" // todo improve
             actions()
                 .onEach {
                     vm.ip.value = text
@@ -101,7 +101,7 @@ fun ServerIpAndPortBindings(vm: LauncherViewModel, scope: CoroutineScope): JPane
             isEditable = false
         }.bind()
         jSpinner(SpinnerNumberModel(vm.port.value, 0, Int.MAX_VALUE, 1)) {
-            toolTipText = "Which port to use the server, 4567 is the default"
+            toolTipText = "Which port to use the server, 4567 is the default" // todo improve
             changes()
                 .onEach {
                     vm.port.value = value as Int
@@ -142,7 +142,7 @@ fun Socks5(vm: LauncherViewModel, scope: CoroutineScope): JPanel {
                     isEnabled = it
                 }
                 .launchIn(scope)
-            // todo toolTipText = "Where to expose the server, 0.0.0.0 is the default and suggested value"
+            // todo toolTipText = ""
             actions()
                 .onEach {
                     vm.socksProxyHost.value = text
@@ -213,6 +213,7 @@ fun WebUI(vm: LauncherViewModel, scope: CoroutineScope): JPanel {
                     isEnabled = it
                 }
                 .launchIn(scope)
+            // todo toolTipText = ""
             actions()
                 .onEach {
                     vm.webUIInterface.value = selectedItem as WebUIInterface
@@ -231,7 +232,7 @@ fun WebUI(vm: LauncherViewModel, scope: CoroutineScope): JPanel {
                     isEnabled = it
                 }
                 .launchIn(scope)
-            // todo toolTipText = "Where to expose the server, 0.0.0.0 is the default and suggested value"
+            // todo toolTipText = ""
             keyListener()
                 .filterIsInstance<KeyListenerEvent.Released>()
                 .onEach {
@@ -242,6 +243,7 @@ fun WebUI(vm: LauncherViewModel, scope: CoroutineScope): JPanel {
             columns = 10
         }.bind()
         jbutton(icon = UIManager.getIcon("FileView.directoryIcon")) {
+            // todo toolTipText = ""
             actions()
                 .onEach {
                     val chooser = JFileChooser().apply {
@@ -289,7 +291,7 @@ fun BasicAuth(vm: LauncherViewModel, scope: CoroutineScope): JPanel {
                     isEnabled = it
                 }
                 .launchIn(scope)
-            // todo toolTipText = "Where to expose the server, 0.0.0.0 is the default and suggested value"
+            // todo toolTipText = ""
             keyListener()
                 .filterIsInstance<KeyListenerEvent.Released>()
                 .onEach {
@@ -310,7 +312,7 @@ fun BasicAuth(vm: LauncherViewModel, scope: CoroutineScope): JPanel {
                     isEnabled = it
                 }
                 .launchIn(scope)
-            // todo toolTipText = "Where to expose the server, 0.0.0.0 is the default and suggested value"
+            // todo toolTipText = ""
             keyListener()
                 .filterIsInstance<KeyListenerEvent.Released>()
                 .onEach {
@@ -330,7 +332,7 @@ fun Misc(vm: LauncherViewModel, scope: CoroutineScope): JPanel {
         )
     ) {
         jCheckBox("Debug logging", selected = vm.debug.value) {
-            toolTipText = "Use this to toggle extra logging to the console window to help debug issues."
+            toolTipText = "Use this to toggle extra logging to the console window to help debug issues." // todo improve
             actions()
                 .onEach {
                     vm.debug.value = isSelected
@@ -340,7 +342,7 @@ fun Misc(vm: LauncherViewModel, scope: CoroutineScope): JPanel {
         }.bind(CC().wrap())
 
         jCheckBox("System Tray", selected = vm.systemTray.value) {
-            toolTipText = "Use this to toggle Tachidesk showing in the system tray."
+            toolTipText = "Use this to toggle Tachidesk showing in the system tray." // todo improve
             actions()
                 .onEach {
                     vm.systemTray.value = isSelected
@@ -361,7 +363,7 @@ fun Directories(vm: LauncherViewModel, scope: CoroutineScope): JPanel {
             isEditable = false
         }.bind()
         val rootDirField = jTextField(vm.rootDir.value.orEmpty()) {
-            // todo toolTipText = "Where to expose the server, 0.0.0.0 is the default and suggested value"
+            // todo toolTipText = ""
             keyListener()
                 .filterIsInstance<KeyListenerEvent.Released>()
                 .onEach {
@@ -372,6 +374,7 @@ fun Directories(vm: LauncherViewModel, scope: CoroutineScope): JPanel {
             columns = 10
         }.bind()
         jbutton(icon = UIManager.getIcon("FileView.directoryIcon")) {
+            // todo toolTipText = ""
             actions()
                 .onEach {
                     val chooser = JFileChooser().apply {
@@ -394,7 +397,7 @@ fun Directories(vm: LauncherViewModel, scope: CoroutineScope): JPanel {
             isEditable = false
         }.bind()
         val downloadsPathField = jTextField(vm.downloadsPath.value.orEmpty()) {
-            // todo toolTipText = "Where to expose the server, 0.0.0.0 is the default and suggested value"
+            // todo toolTipText = ""
             keyListener()
                 .filterIsInstance<KeyListenerEvent.Released>()
                 .onEach {
@@ -405,6 +408,7 @@ fun Directories(vm: LauncherViewModel, scope: CoroutineScope): JPanel {
             columns = 10
         }.bind()
         jbutton(icon = UIManager.getIcon("FileView.directoryIcon")) {
+            // todo toolTipText = ""
             actions()
                 .onEach {
                     val chooser = JFileChooser().apply {
