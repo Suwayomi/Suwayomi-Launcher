@@ -70,7 +70,7 @@ suspend fun main() {
                 jpanel(
                     MigLayout(
                         LC().wrap().fill().insetsAll("16"),
-                        AC().count(1).align("left").gap("20"),
+                        AC().count(1).align("leading").gap("20"),
                         AC().align("center").gap("20")
                     )
                 ) {
