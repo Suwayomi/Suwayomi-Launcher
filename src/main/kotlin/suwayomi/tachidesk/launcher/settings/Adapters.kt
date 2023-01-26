@@ -20,8 +20,8 @@ interface Adapter<T> {
 
     fun addListener(settings: ObservableSettings, key: String, default: T, callback: (T) -> Unit): SettingsListener
 
-    fun getPropertyValue(settings: ObservableSettings, key: String, default: T): String =
-        get(settings, key, default)?.toString().orEmpty()
+    fun asPropertyValue(value: T): String =
+        value?.toString().orEmpty()
 }
 
 object BooleanAdapter : Adapter<Boolean> {
@@ -105,7 +105,7 @@ class SerializableAdapter<E>(
             callback(value)
         }
 
-    override fun getPropertyValue(settings: ObservableSettings, key: String, default: E): String {
-        return get(settings, key, default).let(serialize)
+    override fun asPropertyValue(value: E): String {
+        return serialize(value)
     }
 }

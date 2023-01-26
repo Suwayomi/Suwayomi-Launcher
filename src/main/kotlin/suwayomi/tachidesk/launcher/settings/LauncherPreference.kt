@@ -48,7 +48,7 @@ open class LauncherPreference<T>(
         return flow
     }
 
-    open fun getProperty() = get().takeIf { it != default }?.let { propertyPrefix + adapter.getPropertyValue(settings, key, default) }
+    open fun getProperty() = get().takeIf { it != default }?.let { propertyPrefix + adapter.asPropertyValue(it) }
 
     protected val propertyPrefix
         get() = "$argPrefix$launcherKey="
