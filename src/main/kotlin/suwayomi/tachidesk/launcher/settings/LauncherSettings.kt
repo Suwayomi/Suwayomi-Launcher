@@ -77,6 +77,22 @@ class LauncherSettings {
             BooleanAdapter
         )
     }
+    enum class WebUIFlavor {
+        WebUI,
+        Custom
+    }
+    fun webUIFlavor(): LauncherPreference<WebUIFlavor> {
+        return LauncherPreference(
+            "webUIFlavor",
+            "webui_flavor",
+            WebUIFlavor.valueOf(serverConfig.webUIFlavor),
+            settings,
+            SerializableAdapter(
+                serialize = { it.name },
+                deserialize = { value -> enumValueOf(value) }
+            )
+        )
+    }
     fun initialOpenInBrowserEnabled(): LauncherPreference<Boolean> {
         return LauncherPreference(
             "initialOpenInBrowserEnabled",

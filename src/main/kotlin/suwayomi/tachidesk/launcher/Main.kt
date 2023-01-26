@@ -22,6 +22,7 @@ import net.miginfocom.layout.AC
 import net.miginfocom.layout.CC
 import net.miginfocom.layout.LC
 import net.miginfocom.swing.MigLayout
+import suwayomi.tachidesk.launcher.settings.LauncherSettings.WebUIFlavor
 import suwayomi.tachidesk.launcher.settings.LauncherSettings.WebUIInterface
 import java.awt.Dimension
 import javax.swing.JFileChooser
@@ -188,6 +189,24 @@ fun WebUI(vm: LauncherViewModel, scope: CoroutineScope): JPanel {
                 .flowOn(Dispatchers.Default)
                 .launchIn(scope)
         }.bind(CC().spanX())
+        jTextArea("WebUI Flavor") {
+            isEditable = false
+        }.bind()
+        jComboBox(WebUIFlavor.values()) {
+            selectedItem = vm.webUIFlavor.value
+            vm.webUIEnabled
+                .onEach {
+                    isEnabled = it
+                }
+                .launchIn(scope)
+            // todo toolTipText = ""
+            actions()
+                .onEach {
+                    vm.webUIFlavor.value = selectedItem as WebUIFlavor
+                }
+                .flowOn(Dispatchers.Default)
+                .launchIn(scope)
+        }.bind(CC().grow().spanX().wrap())
         jCheckBox("Open in browser", selected = vm.initialOpenInBrowserEnabled.value) {
             // todo toolTipText = "Use this to toggle extra logging to the console window to help debug issues."
             vm.webUIEnabled

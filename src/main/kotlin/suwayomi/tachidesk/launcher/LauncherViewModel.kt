@@ -30,6 +30,7 @@ class LauncherViewModel {
 
     // WebUI
     val webUIEnabled = settings.webUIEnabled().asStateFlow(scope)
+    val webUIFlavor = settings.webUIFlavor().asStateFlow(scope)
     val initialOpenInBrowserEnabled = settings.initialOpenInBrowserEnabled().asStateFlow(scope)
     val webUIInterface = settings.webUIInterface().asStateFlow(scope)
     val electronPath = settings.electronPath().asStateFlow(scope)

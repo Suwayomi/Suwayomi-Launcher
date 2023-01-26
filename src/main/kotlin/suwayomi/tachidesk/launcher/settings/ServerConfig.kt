@@ -49,6 +49,7 @@ data class Server(
     val socksProxyPort: String = "",
     // webUI
     val webUIEnabled: Boolean = true,
+    val webUIFlavor: String = "WebUI",
     val initialOpenInBrowserEnabled: Boolean = true,
     val webUIInterface: String = "browser", // "browser" or "electron",
     val electronPath: String = "",
