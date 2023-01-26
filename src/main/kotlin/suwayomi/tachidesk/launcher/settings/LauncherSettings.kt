@@ -86,24 +86,25 @@ class LauncherSettings {
             BooleanAdapter
         )
     }
-    enum class WebUIInterface(val key: String) {
-        Browser("browser"),
-        Electron("electron")
+    enum class WebUIInterface {
+        Browser,
+        Electron
     }
     fun webUIInterface(): LauncherPreference<WebUIInterface> {
         return LauncherPreference(
             "webUIInterface",
             "webui_interface",
-            WebUIInterface.values().first { serverConfig.webUIInterface == it.key },
+            WebUIInterface.values().first { serverConfig.webUIInterface == it.name.lowercase() },
             settings,
             SerializableAdapter(
-                serialize = { it.name },
-                deserialize = { enumValueOf(it) }
+                serialize = { it.name.lowercase() },
+                deserialize = { value -> enumValueOf(value.replaceFirstChar { it.uppercase() }) }
             )
         )
     }
     fun electronPath(): LauncherPreference<String?> {
-        return LauncherPreference(
+        return ElectronPreference(
+            webUIInterface(),
             "electronPath",
             "electron_path",
             serverConfig.electronPath.takeUnless { it.isBlank() },

@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.job
 
-class LauncherPreference<T>(
+open class LauncherPreference<T>(
     private val launcherKey: String,
     private val key: String,
     private val default: T,
@@ -48,9 +48,9 @@ class LauncherPreference<T>(
         return flow
     }
 
-    fun getProperty() = get().takeIf { it != default }?.let { propertyPrefix + it }
+    open fun getProperty() = get().takeIf { it != default }?.let { propertyPrefix + adapter.getPropertyValue(settings, key, default) }
 
-    private val propertyPrefix
+    protected val propertyPrefix
         get() = "$argPrefix$launcherKey="
 
     companion object {

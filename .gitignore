@@ -9,6 +9,7 @@ gradle.properties
 !/.idea/copyright
 /bin
 /jre
+/electron
 
 # Ignore Gradle build output directory
 build
