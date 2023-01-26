@@ -198,6 +198,16 @@ class LauncherSettings {
         )
     }
 
+    fun theme(): LauncherPreference<String?> {
+        return LauncherPreference(
+            "theme",
+            "theme",
+            null,
+            settings,
+            StringOrNullAdapter
+        )
+    }
+
     fun getProperties() = listOf(
         ip(),
         port(),

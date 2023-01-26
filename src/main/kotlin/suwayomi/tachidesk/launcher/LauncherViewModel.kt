@@ -9,7 +9,6 @@ package suwayomi.tachidesk.launcher
  */
 
 import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.flow.asStateFlow
 import suwayomi.tachidesk.launcher.settings.LauncherSettings
 import kotlin.io.path.Path
 import kotlin.io.path.absolutePathString
@@ -46,6 +45,8 @@ class LauncherViewModel {
 
     val rootDir = settings.rootDir().asStateFlow(scope)
     val downloadsPath = settings.downloadsPath().asStateFlow(scope)
+
+    val theme = settings.theme().asStateFlow(scope)
 
     fun launch() {
         // todo validate
