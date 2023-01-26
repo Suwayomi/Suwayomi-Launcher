@@ -1,6 +1,7 @@
 [versions]
 kotlin = "1.7.20"
 coroutines = "1.6.4"
+serialization = "1.4.1"
 settings = "1.0.0-RC"
 
 [libraries]
@@ -12,6 +13,9 @@ coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", ve
 coroutines-jdk8 = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8", version.ref = "coroutines" }
 coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "coroutines" }
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
+
+# Serialization
+serialization-hocon = { module = "org.jetbrains.kotlinx:kotlinx-serialization-hocon", version.ref = "serialization" }
 
 # Logging
 # Stuck on old versions since
@@ -38,6 +42,7 @@ mockk = "io.mockk:mockk:1.13.2"
 [plugins]
 # Kotlin
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin"}
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin"}
 
 # Linter
 kotlinter = { id = "org.jmailen.kotlinter", version = "3.12.0"}

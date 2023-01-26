@@ -16,12 +16,14 @@ class LauncherSettings {
         Preferences.userRoot().node("suwayomi/launcher")
     )
 
+    private val serverConfig = ServerConfig.get(rootDir().get())
+
     // Server ip and port bindings
     fun ip(): LauncherPreference<String> {
         return LauncherPreference(
             "ip",
             "ip",
-            "0.0.0.0",
+            serverConfig.ip,
             settings,
             StringAdapter
         )
@@ -30,7 +32,7 @@ class LauncherSettings {
         return LauncherPreference(
             "port",
             "port",
-            4567,
+            serverConfig.port,
             settings,
             IntAdapter
         )
@@ -41,7 +43,7 @@ class LauncherSettings {
         return LauncherPreference(
             "socksProxyEnabled",
             "socks_enabled",
-            false,
+            serverConfig.socksProxyEnabled,
             settings,
             BooleanAdapter
         )
@@ -50,7 +52,7 @@ class LauncherSettings {
         return LauncherPreference(
             "socksProxyHost",
             "socks_host",
-            "",
+            serverConfig.socksProxyHost,
             settings,
             StringAdapter
         )
@@ -59,7 +61,7 @@ class LauncherSettings {
         return LauncherPreference(
             "socksProxyPort",
             "socks_port",
-            null,
+            serverConfig.socksProxyPort.trim().toIntOrNull(),
             settings,
             IntOrNullAdapter
         )
@@ -70,7 +72,7 @@ class LauncherSettings {
         return LauncherPreference(
             "webUIEnabled",
             "webui_enabled",
-            true,
+            serverConfig.webUIEnabled,
             settings,
             BooleanAdapter
         )
@@ -79,7 +81,7 @@ class LauncherSettings {
         return LauncherPreference(
             "initialOpenInBrowserEnabled",
             "open_in_browser",
-            true,
+            serverConfig.initialOpenInBrowserEnabled,
             settings,
             BooleanAdapter
         )
@@ -92,7 +94,7 @@ class LauncherSettings {
         return LauncherPreference(
             "webUIInterface",
             "webui_interface",
-            WebUIInterface.Browser,
+            WebUIInterface.values().first { serverConfig.webUIInterface == it.key },
             settings,
             SerializableAdapter(
                 serialize = { it.name },
@@ -104,7 +106,7 @@ class LauncherSettings {
         return LauncherPreference(
             "electronPath",
             "electron_path",
-            null,
+            serverConfig.electronPath.takeUnless { it.isBlank() },
             settings,
             StringOrNullAdapter
         )
@@ -115,7 +117,7 @@ class LauncherSettings {
         return LauncherPreference(
             "basicAuthEnabled",
             "basic_auth_enabled",
-            false,
+            serverConfig.basicAuthEnabled,
             settings,
             BooleanAdapter
         )
@@ -124,7 +126,7 @@ class LauncherSettings {
         return LauncherPreference(
             "basicAuthUsername",
             "basic_auth_username",
-            null,
+            serverConfig.basicAuthUsername.takeUnless { it.isBlank() },
             settings,
             StringOrNullAdapter
         )
@@ -133,7 +135,7 @@ class LauncherSettings {
         return LauncherPreference(
             "basicAuthPassword",
             "basic_auth_password",
-            null,
+            serverConfig.basicAuthPassword.takeUnless { it.isBlank() },
             settings,
             StringOrNullAdapter
         )
@@ -144,7 +146,7 @@ class LauncherSettings {
         return LauncherPreference(
             "debugLogsEnabled",
             "debug",
-            false,
+            serverConfig.debugLogsEnabled,
             settings,
             BooleanAdapter
         )
@@ -153,7 +155,7 @@ class LauncherSettings {
         return LauncherPreference(
             "systemTrayEnabled",
             "tray",
-            true,
+            serverConfig.systemTrayEnabled,
             settings,
             BooleanAdapter
         )
@@ -173,7 +175,7 @@ class LauncherSettings {
         return LauncherPreference(
             "downloadsPath",
             "downloads",
-            null,
+            serverConfig.downloadsPath.takeUnless { it.isBlank() },
             settings,
             StringOrNullAdapter
         )
