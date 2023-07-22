@@ -23,11 +23,14 @@ import kotlinx.coroutines.withContext
 import net.miginfocom.layout.AC
 import net.miginfocom.layout.LC
 import net.miginfocom.swing.MigLayout
+import suwayomi.tachidesk.launcher.ui.Backup
 import suwayomi.tachidesk.launcher.ui.BasicAuth
-import suwayomi.tachidesk.launcher.ui.Directories
+import suwayomi.tachidesk.launcher.ui.Downloader
 import suwayomi.tachidesk.launcher.ui.Misc
+import suwayomi.tachidesk.launcher.ui.RootDir
 import suwayomi.tachidesk.launcher.ui.ServerIpAndPortBindings
 import suwayomi.tachidesk.launcher.ui.Socks5
+import suwayomi.tachidesk.launcher.ui.Updater
 import suwayomi.tachidesk.launcher.ui.WebUI
 import java.awt.Dimension
 import java.awt.FlowLayout
@@ -45,7 +48,7 @@ suspend fun main() {
         setupTheme(vm)
 
         jframe("Tachidesk-Server Launcher") {
-            size = Dimension(800, 600)
+            size = Dimension(800, 900)
             isResizable = false
             setLocationRelativeTo(null)
             defaultCloseOperation = JFrame.EXIT_ON_CLOSE
@@ -64,6 +67,7 @@ suspend fun main() {
                             .launchIn(scope)
                     }.bind()
                 }.bind("north")
+                // todo consider tabs
                 jpanel(
                     MigLayout(
                         LC().wrap().fill().insetsAll("16"),
@@ -71,12 +75,15 @@ suspend fun main() {
                         AC().align("center").gap("20")
                     )
                 ) {
-                    Directories(vm, scope).bind()
+                    RootDir(vm, scope).bind()
                     ServerIpAndPortBindings(vm, scope).bind()
                     Socks5(vm, scope).bind()
-                    WebUI(vm, scope).bind()
                     BasicAuth(vm, scope).bind()
+                    WebUI(vm, scope).bind()
+                    Updater(vm, scope).bind()
+                    Downloader(vm, scope).bind()
                     Misc(vm, scope).bind()
+                    Backup(vm, scope).bind()
                 }.bind("center")
                 jpanel {
                     jbutton("Launch") {

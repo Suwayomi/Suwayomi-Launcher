@@ -61,7 +61,7 @@ fun Socks5(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
     jTextArea("Socks5 Port") {
         isEditable = false
     }.bind()
-    jSpinner(SpinnerNumberModel(vm.socksProxyPort.value.toIntOrNull() ?: 0, 0, Int.MAX_VALUE, 1)) {
+    jSpinner(SpinnerNumberModel(vm.socksProxyPort.value.toIntOrNull()?.coerceAtLeast(0) ?: 0, 0, Int.MAX_VALUE, 1)) {
         // todo toolTipText = ""
         isEnabled = vm.socksProxyEnabled.value
         vm.socksProxyEnabled

@@ -13,6 +13,7 @@ import suwayomi.tachidesk.launcher.KeyListenerEvent
 import suwayomi.tachidesk.launcher.LauncherViewModel
 import suwayomi.tachidesk.launcher.actions
 import suwayomi.tachidesk.launcher.bind
+import suwayomi.tachidesk.launcher.jCheckBox
 import suwayomi.tachidesk.launcher.jTextArea
 import suwayomi.tachidesk.launcher.jTextField
 import suwayomi.tachidesk.launcher.jbutton
@@ -21,45 +22,20 @@ import suwayomi.tachidesk.launcher.keyListener
 import javax.swing.JFileChooser
 import javax.swing.UIManager
 
-fun Directories(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
+fun Downloader(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
     MigLayout(
         LC().fill()
     )
 ) {
-    jTextArea("Root path") {
-        isEditable = false
-    }.bind()
-    val rootDirField = jTextField(vm.rootDir.value.orEmpty()) {
-        // todo toolTipText = ""
-        keyListener()
-            .filterIsInstance<KeyListenerEvent.Released>()
-            .onEach {
-                vm.rootDir.value = text?.takeUnless { it.isBlank() }?.trim()
-            }
-            .flowOn(Dispatchers.Default)
-            .launchIn(scope)
-        columns = 10
-    }.bind()
-    jbutton(icon = UIManager.getIcon("FileView.directoryIcon")) {
-        // todo toolTipText = ""
+    jCheckBox("Download as CBZ", selected = vm.downloadAsCbz.value) {
+        toolTipText = "Download chapters as CBZ files." // todo improve
         actions()
             .onEach {
-                val chooser = JFileChooser().apply {
-                    val details = actionMap.get("viewTypeDetails")
-                    details?.actionPerformed(null)
-                    fileSelectionMode = JFileChooser.DIRECTORIES_ONLY
-                }
-                when (chooser.showOpenDialog(this)) {
-                    JFileChooser.APPROVE_OPTION -> {
-                        val path = chooser.selectedFile.absolutePath
-                        vm.rootDir.value = path
-                        rootDirField.text = path
-                    }
-                }
+                vm.downloadAsCbz.value = isSelected
             }
             .flowOn(Dispatchers.Default)
             .launchIn(scope)
-    }.bind(CC().grow().spanX().wrap())
+    }.bind(CC().wrap())
     jTextArea("Downloads path") {
         isEditable = false
     }.bind()
@@ -86,7 +62,7 @@ fun Directories(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
                 when (chooser.showOpenDialog(this)) {
                     JFileChooser.APPROVE_OPTION -> {
                         val path = chooser.selectedFile.absolutePath
-                        vm.rootDir.value = path
+                        vm.downloadsPath.value = path
                         downloadsPathField.text = path
                     }
                 }
@@ -94,4 +70,14 @@ fun Directories(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
             .flowOn(Dispatchers.Default)
             .launchIn(scope)
     }.bind(CC().grow().spanX().wrap())
+
+    jCheckBox("Download new chapters", selected = vm.autoDownloadNewChapters.value) {
+        toolTipText = "If new chapters that have been found, should Tachidesk download them automatically." // todo improve
+        actions()
+            .onEach {
+                vm.autoDownloadNewChapters.value = isSelected
+            }
+            .flowOn(Dispatchers.Default)
+            .launchIn(scope)
+    }.bind(CC().wrap())
 }

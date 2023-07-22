@@ -47,6 +47,20 @@ class LauncherViewModel {
     val initialOpenInBrowserEnabled = config.asStateFlow { it.initialOpenInBrowserEnabled }
     val webUIInterface = config.asStateFlow { it.webUIInterface }
     val electronPath = config.asStateFlow { it.electronPath }
+    val webUIChannel = config.asStateFlow { it.webUIChannel }
+    val webUIUpdateCheckInterval = config.asStateFlow { it.webUIUpdateCheckInterval }
+
+    // Downloader
+    val downloadAsCbz = config.asStateFlow { it.downloadAsCbz }
+    val downloadsPath = config.asStateFlow { it.downloadsPath }
+    val autoDownloadNewChapters = config.asStateFlow { it.autoDownloadNewChapters }
+
+    // Updater
+    val maxParallelUpdateRequests = config.asStateFlow { it.maxParallelUpdateRequests }
+    val excludeUnreadChapters = config.asStateFlow { it.excludeUnreadChapters }
+    val excludeNotStarted = config.asStateFlow { it.excludeNotStarted }
+    val excludeCompleted = config.asStateFlow { it.excludeCompleted }
+    val globalUpdateInterval = config.asStateFlow { it.globalUpdateInterval }
 
     // Authentication
     val basicAuthEnabled = config.asStateFlow { it.basicAuthEnabled }
@@ -57,7 +71,11 @@ class LauncherViewModel {
     val debug = config.asStateFlow { it.debugLogsEnabled }
     val systemTray = config.asStateFlow { it.systemTrayEnabled }
 
-    val downloadsPath = config.asStateFlow { it.downloadsPath }
+    // Backup
+    val backupPath = config.asStateFlow { it.backupPath }
+    val backupTime = config.asStateFlow { it.backupTime }
+    val backupInterval = config.asStateFlow { it.backupInterval }
+    val backupTTL = config.asStateFlow { it.backupTTL }
 
     val theme = settings.theme().asStateFlow(scope)
 
@@ -78,7 +96,6 @@ class LauncherViewModel {
             }
             properties += "-Dsuwayomi.tachidesk.config.server.electronPath=$path"
         }
-
 
         ProcessBuilder(javaPath, *properties.toTypedArray(), "-jar", jarFile).start()
         exitProcess(0)

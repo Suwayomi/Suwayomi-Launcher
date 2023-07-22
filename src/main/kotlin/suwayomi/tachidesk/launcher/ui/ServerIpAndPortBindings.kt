@@ -2,6 +2,7 @@ package suwayomi.tachidesk.launcher.ui
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -34,6 +35,13 @@ fun ServerIpAndPortBindings(vm: LauncherViewModel, scope: CoroutineScope) = jpan
     jTextField(vm.ip.value) {
         toolTipText = "Where to expose the server, 0.0.0.0 is the default and suggested value" // todo improve
         actions()
+            .filter {
+                text.count { it == '.' } == 4 &&
+                    text.split('.').all {
+                        val int = it.toIntOrNull()
+                        int != null && int in 0..255
+                    }
+            }
             .onEach {
                 vm.ip.value = text
             }
@@ -45,7 +53,7 @@ fun ServerIpAndPortBindings(vm: LauncherViewModel, scope: CoroutineScope) = jpan
     jTextArea("Port") {
         isEditable = false
     }.bind()
-    jSpinner(SpinnerNumberModel(vm.port.value, 0, Int.MAX_VALUE, 1)) {
+    jSpinner(SpinnerNumberModel(vm.port.value.coerceAtLeast(0), 0, Int.MAX_VALUE, 1)) {
         toolTipText = "Which port to use the server, 4567 is the default" // todo improve
         changes()
             .onEach {
