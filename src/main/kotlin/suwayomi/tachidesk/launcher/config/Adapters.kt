@@ -1,5 +1,13 @@
 package suwayomi.tachidesk.launcher.config
 
+/*
+ * Copyright (C) Contributors to the Suwayomi project
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
 import com.typesafe.config.ConfigValue
 
 interface ConfigAdapter<T> {
@@ -14,7 +22,7 @@ object StringConfigAdapter : ConfigAdapter<String> {
 
 object IntConfigAdapter : ConfigAdapter<Int> {
     override fun toType(configValue: ConfigValue): Int {
-        return configValue.unwrapped() as Int
+        return (configValue.unwrapped() as Number).toInt()
     }
 }
 
@@ -26,6 +34,6 @@ object BooleanConfigAdapter : ConfigAdapter<Boolean> {
 
 object DoubleConfigAdapter : ConfigAdapter<Double> {
     override fun toType(configValue: ConfigValue): Double {
-        return configValue.unwrapped() as Double
+        return (configValue.unwrapped() as Number).toDouble()
     }
 }

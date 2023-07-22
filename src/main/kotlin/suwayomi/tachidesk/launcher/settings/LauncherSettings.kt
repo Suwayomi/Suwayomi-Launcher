@@ -26,6 +26,12 @@ class LauncherSettings {
         Electron
     }
 
+    enum class WebUIChannel {
+        Stable,
+        Preview,
+        Bundled
+    }
+
     // Directories
     fun rootDir(): LauncherPreference<String?> {
         return LauncherPreference(
