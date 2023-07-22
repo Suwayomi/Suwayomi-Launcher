@@ -23,7 +23,7 @@ import javax.swing.UIManager
 
 fun RootDir(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
     MigLayout(
-        LC().fill()
+        LC().alignX("center").alignY("center")
     )
 ) {
     jTextArea("Root path") {

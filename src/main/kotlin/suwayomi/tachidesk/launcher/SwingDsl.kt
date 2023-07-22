@@ -36,6 +36,7 @@ import javax.swing.JFrame
 import javax.swing.JPanel
 import javax.swing.JPasswordField
 import javax.swing.JSpinner
+import javax.swing.JTabbedPane
 import javax.swing.JTextArea
 import javax.swing.JTextField
 import javax.swing.JToggleButton
@@ -71,6 +72,18 @@ inline fun jpanel(
     builder: JPanel.() -> Unit
 ): JPanel {
     return JPanel(layoutManager, isDoubleBuffered).apply {
+        builder()
+    }
+}
+
+/** Define a [JTabbedPane] */
+@SwingDsl
+inline fun jTabbedPane(
+    tabPlacement: Int = JTabbedPane.TOP,
+    tabLayoutPolicy: Int = JTabbedPane.WRAP_TAB_LAYOUT,
+    builder: JTabbedPane.() -> Unit
+): JTabbedPane {
+    return JTabbedPane(tabPlacement, tabLayoutPolicy).apply {
         builder()
     }
 }

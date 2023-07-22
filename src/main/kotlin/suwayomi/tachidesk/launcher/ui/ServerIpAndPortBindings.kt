@@ -21,7 +21,7 @@ import javax.swing.SpinnerNumberModel
 
 fun ServerIpAndPortBindings(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
     MigLayout(
-        LC().fill()
+        LC().alignX("center").alignY("center")
     )
 ) {
     /*

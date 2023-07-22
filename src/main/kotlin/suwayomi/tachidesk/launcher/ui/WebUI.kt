@@ -13,8 +13,10 @@ import suwayomi.tachidesk.launcher.KeyListenerEvent
 import suwayomi.tachidesk.launcher.LauncherViewModel
 import suwayomi.tachidesk.launcher.actions
 import suwayomi.tachidesk.launcher.bind
+import suwayomi.tachidesk.launcher.changes
 import suwayomi.tachidesk.launcher.jCheckBox
 import suwayomi.tachidesk.launcher.jComboBox
+import suwayomi.tachidesk.launcher.jSpinner
 import suwayomi.tachidesk.launcher.jTextArea
 import suwayomi.tachidesk.launcher.jTextField
 import suwayomi.tachidesk.launcher.jbutton
@@ -22,11 +24,12 @@ import suwayomi.tachidesk.launcher.jpanel
 import suwayomi.tachidesk.launcher.keyListener
 import suwayomi.tachidesk.launcher.settings.LauncherSettings
 import javax.swing.JFileChooser
+import javax.swing.SpinnerNumberModel
 import javax.swing.UIManager
 
 fun WebUI(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
     MigLayout(
-        LC().fill()
+        LC().alignX("center").alignY("center")
     )
 ) {
     jCheckBox("WebUI", selected = vm.webUIEnabled.value) {
@@ -130,4 +133,56 @@ fun WebUI(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
             .flowOn(Dispatchers.Default)
             .launchIn(scope)
     }.bind(CC().grow().spanX().wrap())
+    jTextArea("WebUI Channel") {
+        isEditable = false
+    }.bind()
+    jComboBox(LauncherSettings.WebUIChannel.values()) {
+        selectedItem = LauncherSettings.WebUIChannel.values().find { it.name.equals(vm.webUIChannel.value, true) }
+        vm.webUIEnabled
+            .onEach {
+                isEnabled = it
+            }
+            .launchIn(scope)
+        toolTipText = "\"bundled\" (the version bundled with the server release), \"stable\" or \"preview\" - the WebUI version that should be used"
+        actions()
+            .onEach {
+                vm.webUIChannel.value = (selectedItem as LauncherSettings.WebUIChannel).name.lowercase()
+            }
+            .flowOn(Dispatchers.Default)
+            .launchIn(scope)
+    }.bind(CC().grow().spanX().wrap())
+
+    val spinner = jSpinner(SpinnerNumberModel(vm.webUIUpdateCheckInterval.value.coerceIn(1.0, 23.0), 1.0, 23.0, 0.5)) {
+        toolTipText = "Time in hours, how often the server should check for WebUI updates" // todo improve
+        changes()
+            .onEach {
+                vm.webUIUpdateCheckInterval.value = value as Double
+            }
+            .flowOn(Dispatchers.Default)
+            .launchIn(scope)
+        if (vm.webUIUpdateCheckInterval.value == 0.0) {
+            isEnabled = false
+            value = 12.0
+        }
+    }
+
+    jCheckBox("WebUI Updates", selected = vm.webUIUpdateCheckInterval.value != 0.0) {
+        // todo toolTipText = ""
+        actions()
+            .onEach {
+                vm.webUIUpdateCheckInterval.value = if (isSelected) {
+                    spinner.value as Double
+                } else {
+                    0.0
+                }
+                spinner.isEnabled = isSelected
+            }
+            .flowOn(Dispatchers.Default)
+            .launchIn(scope)
+    }.bind(CC().spanX())
+
+    jTextArea("WebUI Update Interval") {
+        isEditable = false
+    }.bind()
+    spinner.bind(CC().grow().spanX())
 }

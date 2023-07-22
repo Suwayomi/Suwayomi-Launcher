@@ -22,7 +22,7 @@ import suwayomi.tachidesk.launcher.keyListener
 
 fun BasicAuth(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
     MigLayout(
-        LC().fill()
+        LC().alignX("center").alignY("center")
     )
 ) {
     jCheckBox("Basic Authentication", selected = vm.basicAuthEnabled.value) {

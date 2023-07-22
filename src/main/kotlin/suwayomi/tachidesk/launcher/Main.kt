@@ -9,7 +9,6 @@ package suwayomi.tachidesk.launcher
  */
 
 import com.github.weisj.darklaf.LafManager
-import com.github.weisj.darklaf.settings.ThemeSettings
 import com.github.weisj.darklaf.theme.Theme
 import com.github.weisj.darklaf.theme.event.ThemeChangeEvent
 import com.github.weisj.darklaf.theme.event.ThemeChangeListener
@@ -20,7 +19,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.swing.Swing
 import kotlinx.coroutines.withContext
-import net.miginfocom.layout.AC
+import net.miginfocom.layout.CC
 import net.miginfocom.layout.LC
 import net.miginfocom.swing.MigLayout
 import suwayomi.tachidesk.launcher.ui.Backup
@@ -33,7 +32,6 @@ import suwayomi.tachidesk.launcher.ui.Socks5
 import suwayomi.tachidesk.launcher.ui.Updater
 import suwayomi.tachidesk.launcher.ui.WebUI
 import java.awt.Dimension
-import java.awt.FlowLayout
 import java.io.ByteArrayOutputStream
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
@@ -48,12 +46,12 @@ suspend fun main() {
         setupTheme(vm)
 
         jframe("Tachidesk-Server Launcher") {
-            size = Dimension(800, 900)
+            size = Dimension(360, 440)
             isResizable = false
             setLocationRelativeTo(null)
             defaultCloseOperation = JFrame.EXIT_ON_CLOSE
             contentPane = jpanel(MigLayout(LC().fill())) {
-                jpanel(
+                /*jpanel(
                     FlowLayout().apply {
                         alignment = FlowLayout.TRAILING
                     }
@@ -66,25 +64,19 @@ suspend fun main() {
                             .flowOn(Dispatchers.Default)
                             .launchIn(scope)
                     }.bind()
-                }.bind("north")
-                // todo consider tabs
-                jpanel(
-                    MigLayout(
-                        LC().wrap().fill().insetsAll("16"),
-                        AC().count(1).align("leading").gap("20"),
-                        AC().align("center").gap("20")
-                    )
-                ) {
-                    RootDir(vm, scope).bind()
-                    ServerIpAndPortBindings(vm, scope).bind()
-                    Socks5(vm, scope).bind()
-                    BasicAuth(vm, scope).bind()
-                    WebUI(vm, scope).bind()
-                    Updater(vm, scope).bind()
-                    Downloader(vm, scope).bind()
-                    Misc(vm, scope).bind()
-                    Backup(vm, scope).bind()
-                }.bind("center")
+                }.bind("north")*/
+
+                jTabbedPane {
+                    addTab("Root Directory", RootDir(vm, scope))
+                    addTab("Server bindings", ServerIpAndPortBindings(vm, scope))
+                    addTab("SOCKS Proxy", Socks5(vm, scope))
+                    addTab("Authentication", BasicAuth(vm, scope))
+                    addTab("WebUI", WebUI(vm, scope))
+                    addTab("Updater", Updater(vm, scope))
+                    addTab("Downloader", Downloader(vm, scope))
+                    addTab("Misc", Misc(vm, scope))
+                    addTab("Backup", Backup(vm, scope))
+                }.bind(CC().grow())
                 jpanel {
                     jbutton("Launch") {
                         actions()

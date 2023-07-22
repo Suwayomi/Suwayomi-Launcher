@@ -16,7 +16,7 @@ import suwayomi.tachidesk.launcher.jpanel
 
 fun Misc(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
     MigLayout(
-        LC().fill()
+        LC().alignX("center").alignY("center")
     )
 ) {
     jCheckBox("Debug logging", selected = vm.debug.value) {

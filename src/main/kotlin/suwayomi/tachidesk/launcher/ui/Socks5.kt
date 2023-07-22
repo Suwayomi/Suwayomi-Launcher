@@ -21,7 +21,7 @@ import javax.swing.SpinnerNumberModel
 
 fun Socks5(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
     MigLayout(
-        LC().fill()
+        LC().alignX("center").alignY("center")
     )
 ) {
     jCheckBox("Socks5 Proxy", selected = vm.socksProxyEnabled.value) {

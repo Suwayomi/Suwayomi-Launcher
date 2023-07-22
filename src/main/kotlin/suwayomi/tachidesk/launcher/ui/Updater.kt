@@ -20,7 +20,7 @@ import javax.swing.SpinnerNumberModel
 
 fun Updater(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
     MigLayout(
-        LC().fill()
+        LC().alignX("center").alignY("center")
     )
 ) {
     jTextArea("Max Parallel Update Requests") {
@@ -66,7 +66,7 @@ fun Updater(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
             .launchIn(scope)
     }.bind(CC().spanX())
 
-    val spinner = jSpinner(SpinnerNumberModel(vm.globalUpdateInterval.value.coerceAtLeast(6.0), 6.0, 168.0, 0.5)) {
+    val spinner = jSpinner(SpinnerNumberModel(vm.globalUpdateInterval.value.coerceIn(6.0, 168.0), 6.0, 168.0, 0.5)) {
         toolTipText = "Time in hours, the interval in which the global update will be automatically triggered" // todo improve
         changes()
             .onEach {

@@ -27,7 +27,7 @@ import javax.swing.UIManager
 
 fun Backup(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
     MigLayout(
-        LC().fill()
+        LC().alignX("center").alignY("center")
     )
 ) {
     jTextArea("Backups path") {
@@ -70,7 +70,7 @@ fun Backup(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
      - Warning when changing this value
      - Format checking to display an error when its an invalid ip
      */
-    jTextArea("IP") {
+    jTextArea("Backup Time") {
         isEditable = false
     }.bind()
     jTextField(vm.backupTime.value) {
@@ -78,8 +78,8 @@ fun Backup(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
         actions()
             .filter {
                 text.count { it == ':' } == 1 &&
-                    text.substringBefore(':').all { it.isDigit() } &&
-                    text.substringAfter(':').all { it.isDigit() }
+                    text.substringBefore(':').let { it.isNotEmpty() && it.all { it.isDigit() } && it.toInt() in 0..23 } &&
+                    text.substringAfter(':').let { it.isNotEmpty() && it.all { it.isDigit() } && it.toInt() in 0..59 }
             }
             .onEach {
                 vm.backupTime.value = text
