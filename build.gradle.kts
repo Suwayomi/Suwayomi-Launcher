@@ -6,7 +6,6 @@ import org.jmailen.gradle.kotlinter.tasks.FormatTask
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.kotlin.jvm)
-    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.kotlinter)
     application
     alias(libs.plugins.shadowjar)
@@ -35,7 +34,6 @@ dependencies {
     implementation(libs.bundles.coroutines)
     implementation(libs.settings.core)
     implementation(libs.appdirs)
-    implementation(libs.serialization.hocon)
 
     // Logging
     implementation(libs.slf4japi)
@@ -45,6 +43,10 @@ dependencies {
     // UI
     implementation(libs.darklaf)
     implementation(libs.miglayout)
+
+    // Config
+    implementation(libs.config)
+    implementation(libs.config4k)
 
     // Test
     testImplementation(libs.kotlin.test.junit5)

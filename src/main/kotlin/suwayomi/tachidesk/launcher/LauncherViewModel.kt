@@ -9,6 +9,16 @@ package suwayomi.tachidesk.launcher
  */
 
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+import net.harawata.appdirs.AppDirsFactory
+import suwayomi.tachidesk.launcher.config.ConfigManager
+import suwayomi.tachidesk.launcher.config.ServerConfig
 import suwayomi.tachidesk.launcher.settings.LauncherSettings
 import kotlin.io.path.Path
 import kotlin.io.path.absolutePathString
@@ -17,34 +27,37 @@ import kotlin.system.exitProcess
 class LauncherViewModel {
     private val scope = MainScope()
     private val settings = LauncherSettings()
+    val rootDir = settings.rootDir().asStateFlow(scope)
+    private val config = rootDir.drop(1)
+        .map(::getServerConfig)
+        .stateIn(scope, SharingStarted.Eagerly, getServerConfig(settings.rootDir().get()))
 
     // Server ip and port bindings
-    val ip = settings.ip().asStateFlow(scope)
-    val port = settings.port().asStateFlow(scope)
+    val ip = config.asStateFlow { it.ip }
+    val port = config.asStateFlow { it.port }
 
     // Socks5 proxy
-    val socksProxyEnabled = settings.socksProxyEnabled().asStateFlow(scope)
-    val socksProxyHost = settings.socksProxyHost().asStateFlow(scope)
-    val socksProxyPort = settings.socksProxyPort().asStateFlow(scope)
+    val socksProxyEnabled = config.asStateFlow { it.socksProxyEnabled }
+    val socksProxyHost = config.asStateFlow { it.socksProxyHost }
+    val socksProxyPort = config.asStateFlow { it.socksProxyPort }
 
     // WebUI
-    val webUIEnabled = settings.webUIEnabled().asStateFlow(scope)
-    val webUIFlavor = settings.webUIFlavor().asStateFlow(scope)
-    val initialOpenInBrowserEnabled = settings.initialOpenInBrowserEnabled().asStateFlow(scope)
-    val webUIInterface = settings.webUIInterface().asStateFlow(scope)
-    val electronPath = settings.electronPath().asStateFlow(scope)
+    val webUIEnabled = config.asStateFlow { it.webUIEnabled }
+    val webUIFlavor = config.asStateFlow { it.webUIFlavor }
+    val initialOpenInBrowserEnabled = config.asStateFlow { it.initialOpenInBrowserEnabled }
+    val webUIInterface = config.asStateFlow { it.webUIInterface }
+    val electronPath = config.asStateFlow { it.electronPath }
 
     // Authentication
-    val basicAuthEnabled = settings.basicAuthEnabled().asStateFlow(scope)
-    val basicAuthUsername = settings.basicAuthUsername().asStateFlow(scope)
-    val basicAuthPassword = settings.basicAuthPassword().asStateFlow(scope)
+    val basicAuthEnabled = config.asStateFlow { it.basicAuthEnabled }
+    val basicAuthUsername = config.asStateFlow { it.basicAuthUsername }
+    val basicAuthPassword = config.asStateFlow { it.basicAuthPassword }
 
     // Misc
-    val debug = settings.debugLogs().asStateFlow(scope)
-    val systemTray = settings.systemTray().asStateFlow(scope)
+    val debug = config.asStateFlow { it.debugLogsEnabled }
+    val systemTray = config.asStateFlow { it.systemTrayEnabled }
 
-    val rootDir = settings.rootDir().asStateFlow(scope)
-    val downloadsPath = settings.downloadsPath().asStateFlow(scope)
+    val downloadsPath = config.asStateFlow { it.downloadsPath }
 
     val theme = settings.theme().asStateFlow(scope)
 
@@ -52,9 +65,44 @@ class LauncherViewModel {
         // todo validate
         val javaPath = Path("jre/bin/javaw").absolutePathString()
         val jarFile = Path("bin/Tachidesk-Server.jar").absolutePathString()
-        val properties = settings.getProperties().toTypedArray()
+        val properties = settings.getProperties().toMutableList()
+        if (webUIInterface.value.equals("electron", true) && electronPath.value.isBlank()) {
+            val os = System.getProperty("os.name").lowercase()
+            val path = if (os.startsWith("mac os x")) {
+                Path("electron/Electron.app/Contents/MacOS/Electron").absolutePathString()
+            } else if (os.startsWith("windows")) {
+                Path("electron/electron.exe").absolutePathString()
+            } else {
+                // Probably linux.
+                Path("./electron/electron").absolutePathString()
+            }
+            properties += "-Dsuwayomi.tachidesk.config.server.electronPath=$path"
+        }
 
-        ProcessBuilder(javaPath, *properties, "-jar", jarFile).start()
+
+        ProcessBuilder(javaPath, *properties.toTypedArray(), "-jar", jarFile).start()
         exitProcess(0)
+    }
+
+    private fun getServerConfig(rootDir: String?): ServerConfig {
+        val resolvedRootDir = rootDir
+            ?: AppDirsFactory.getInstance().getUserDataDir("Tachidesk", null, null)
+
+        val configManager = ConfigManager(resolvedRootDir)
+
+        configManager.updateUserConfig()
+
+        return ServerConfig(scope, configManager)
+    }
+
+    private fun <T> StateFlow<ServerConfig>.asStateFlow(flow: (ServerConfig) -> MutableStateFlow<T>): MutableStateFlow<T> {
+        val stateFlow = MutableStateFlow(flow(value).value)
+        scope.launch {
+            val latestFlow = map { flow(it) }.stateIn(this, SharingStarted.Eagerly, flow(value))
+            stateFlow.collect {
+                latestFlow.value.value = it
+            }
+        }
+        return stateFlow
     }
 }

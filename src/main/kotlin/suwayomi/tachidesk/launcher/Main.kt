@@ -36,7 +36,6 @@ import java.io.ObjectOutputStream
 import java.util.Base64
 import javax.swing.JFileChooser
 import javax.swing.JFrame
-import javax.swing.JPanel
 import javax.swing.SpinnerNumberModel
 import javax.swing.UIManager
 
@@ -205,7 +204,7 @@ fun Socks5(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
     jTextArea("Socks5 Port") {
         isEditable = false
     }.bind()
-    jSpinner(SpinnerNumberModel(vm.socksProxyPort.value ?: 0, 0, Int.MAX_VALUE, 1)) {
+    jSpinner(SpinnerNumberModel(vm.socksProxyPort.value.toIntOrNull() ?: 0, 0, Int.MAX_VALUE, 1)) {
         // todo toolTipText = ""
         isEnabled = vm.socksProxyEnabled.value
         vm.socksProxyEnabled
@@ -215,7 +214,7 @@ fun Socks5(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
             .launchIn(scope)
         changes()
             .onEach {
-                vm.socksProxyPort.value = (value as Int).takeUnless { it == 0 }
+                vm.socksProxyPort.value = (value as Int).takeUnless { it == 0 }?.toString().orEmpty()
             }
             .flowOn(Dispatchers.Default)
             .launchIn(scope)
@@ -240,7 +239,7 @@ fun WebUI(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
         isEditable = false
     }.bind()
     jComboBox(WebUIFlavor.values()) {
-        selectedItem = vm.webUIFlavor.value
+        selectedItem = WebUIFlavor.values().find { it.name.equals(vm.webUIFlavor.value, true) }
         vm.webUIEnabled
             .onEach {
                 isEnabled = it
@@ -249,7 +248,7 @@ fun WebUI(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
         // todo toolTipText = ""
         actions()
             .onEach {
-                vm.webUIFlavor.value = selectedItem as WebUIFlavor
+                vm.webUIFlavor.value = (selectedItem as WebUIFlavor).name
             }
             .flowOn(Dispatchers.Default)
             .launchIn(scope)
@@ -273,7 +272,7 @@ fun WebUI(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
         isEditable = false
     }.bind()
     jComboBox(WebUIInterface.values()) {
-        selectedItem = vm.webUIInterface.value
+        selectedItem = WebUIInterface.values().find { it.name.equals(vm.webUIInterface.value, true) }
         vm.webUIEnabled
             .onEach {
                 isEnabled = it
@@ -282,7 +281,7 @@ fun WebUI(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
         // todo toolTipText = ""
         actions()
             .onEach {
-                vm.webUIInterface.value = selectedItem as WebUIInterface
+                vm.webUIInterface.value = (selectedItem as WebUIInterface).name.lowercase()
             }
             .flowOn(Dispatchers.Default)
             .launchIn(scope)
@@ -302,7 +301,7 @@ fun WebUI(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
         keyListener()
             .filterIsInstance<KeyListenerEvent.Released>()
             .onEach {
-                vm.electronPath.value = text?.takeUnless { it.isBlank() }?.trim()
+                vm.electronPath.value = text?.trim().orEmpty()
             }
             .flowOn(Dispatchers.Default)
             .launchIn(scope)
@@ -359,7 +358,7 @@ fun BasicAuth(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
         keyListener()
             .filterIsInstance<KeyListenerEvent.Released>()
             .onEach {
-                vm.basicAuthUsername.value = text?.takeUnless { it.isBlank() }?.trim()
+                vm.basicAuthUsername.value = text?.trim().orEmpty()
             }
             .flowOn(Dispatchers.Default)
             .launchIn(scope)
@@ -380,7 +379,7 @@ fun BasicAuth(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
         keyListener()
             .filterIsInstance<KeyListenerEvent.Released>()
             .onEach {
-                vm.basicAuthPassword.value = password.toString().takeUnless { it.isBlank() }?.trim()
+                vm.basicAuthPassword.value = password?.toString()?.trim().orEmpty()
             }
             .flowOn(Dispatchers.Default)
             .launchIn(scope)
@@ -456,12 +455,12 @@ fun Directories(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
     jTextArea("Downloads path") {
         isEditable = false
     }.bind()
-    val downloadsPathField = jTextField(vm.downloadsPath.value.orEmpty()) {
+    val downloadsPathField = jTextField(vm.downloadsPath.value) {
         // todo toolTipText = ""
         keyListener()
             .filterIsInstance<KeyListenerEvent.Released>()
             .onEach {
-                vm.downloadsPath.value = text?.takeUnless { it.isBlank() }?.trim()
+                vm.downloadsPath.value = text?.trim().orEmpty()
             }
             .flowOn(Dispatchers.Default)
             .launchIn(scope)

@@ -50,7 +50,7 @@ open class LauncherPreference<T>(
 
     open fun getProperty() = get().takeIf { it != default }?.let { propertyPrefix + adapter.asPropertyValue(it) }
 
-    protected val propertyPrefix
+    private val propertyPrefix
         get() = "$argPrefix$launcherKey="
 
     companion object {
