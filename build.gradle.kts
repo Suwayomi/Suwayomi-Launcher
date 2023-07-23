@@ -24,7 +24,7 @@ buildscript {
 }
 
 group = "suwayomi.tachidesk"
-version = "1.0-SNAPSHOT"
+version = "1.0.0"
 
 repositories {
     mavenCentral()
@@ -53,6 +53,11 @@ dependencies {
     testImplementation(libs.coroutines.test)
 }
 
+val MainClass = "suwayomi.tachidesk.launcher.MainKt"
+application {
+    mainClass.set(MainClass)
+}
+
 tasks {
     test {
         useJUnitPlatform()
@@ -62,6 +67,7 @@ tasks {
         dependsOn("formatKotlin")
         kotlinOptions {
             jvmTarget = JavaVersion.VERSION_1_8.toString()
+            freeCompilerArgs = listOf("-Xcontext-receivers")
         }
     }
 
@@ -72,15 +78,18 @@ tasks {
     withType<FormatTask> {
         source(files("src/kotlin"))
     }
-}
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        jvmTarget = "1.8"
-        freeCompilerArgs = listOf("-Xcontext-receivers")
+    shadowJar {
+        manifest {
+            attributes(
+                "Main-Class" to MainClass,
+                "Implementation-Title" to rootProject.name,
+                "Implementation-Vendor" to "The Suwayomi Project",
+                "Specification-Version" to project.version.toString(),
+            )
+        }
+        archiveBaseName.set(rootProject.name)
+        archiveClassifier.set(null as String?)
+        destinationDirectory.set(File("$rootDir/build"))
     }
-}
-
-application {
-    mainClass.set("suwayomi.tachidesk.launcher.MainKt")
 }
