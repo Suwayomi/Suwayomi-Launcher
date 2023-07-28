@@ -21,6 +21,7 @@ import suwayomi.tachidesk.launcher.config.ConfigManager
 import suwayomi.tachidesk.launcher.config.ServerConfig
 import suwayomi.tachidesk.launcher.settings.LauncherSettings
 import java.nio.file.Path
+import java.nio.file.Paths
 import kotlin.io.path.Path
 import kotlin.io.path.absolutePathString
 import kotlin.io.path.div
@@ -30,7 +31,7 @@ import kotlin.system.exitProcess
 class LauncherViewModel {
     private val scope = MainScope()
 
-    private val homeDir: Path = Path(this::class.java.protectionDomain.codeSource.location.toURI().path).parent
+    private val homeDir: Path = Paths.get(this::class.java.protectionDomain.codeSource.location.toURI()).parent
     private val tachideskServer = homeDir / "bin" / "Tachidesk-Server.jar"
 
     init {
