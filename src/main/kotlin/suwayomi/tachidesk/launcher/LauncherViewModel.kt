@@ -148,8 +148,6 @@ class LauncherViewModel {
 
         val configManager = ConfigManager(tachideskServer, resolvedRootDir)
 
-        configManager.updateUserConfig()
-
         return ServerConfig(scope, configManager)
     }
 

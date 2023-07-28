@@ -35,6 +35,8 @@ class ConfigManager(
                 it.getPath("/server-reference.conf").copyTo(userConfigFile.createParentDirectories())
             }
         }
+
+        updateUserConfig()
     }
 
     private fun getUserConfig(): Config {
