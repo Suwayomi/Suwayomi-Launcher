@@ -94,11 +94,30 @@ class LauncherViewModel {
 
     fun launch() {
         // todo validate
-        val javaPath = Path("jre/bin/javaw").absolutePathString()
-        val jarFile = Path("bin/Tachidesk-Server.jar").absolutePathString()
+        val os = System.getProperty("os.name").lowercase()
+        val javaPath = if (os.startsWith("mac os x")) {
+            homeDir / "jre/Contents/Home/bin/java"
+        } else if (os.startsWith("windows")) {
+            homeDir / "jre/bin/javaw"
+        } else {
+            // Probably linux.
+            val javaPath = homeDir / "jre/bin/java"
+            if (javaPath.exists()) {
+                javaPath
+            } else {
+                Path("/usr/bin/java")
+            }
+        }
+        val java = if (!javaPath.exists()) {
+            println("Java executable was not found! Defaulting to 'java'")
+            "java"
+        } else {
+            javaPath.absolutePathString()
+        }
+
+        val jarFile = tachideskServer.absolutePathString()
         val properties = settings.getProperties().toMutableList()
         if (webUIInterface.value.equals("electron", true) && electronPath.value.isBlank()) {
-            val os = System.getProperty("os.name").lowercase()
             val path = if (os.startsWith("mac os x")) {
                 Path("electron/Electron.app/Contents/MacOS/Electron").absolutePathString()
             } else if (os.startsWith("windows")) {
@@ -110,7 +129,7 @@ class LauncherViewModel {
             properties += "-Dsuwayomi.tachidesk.config.server.electronPath=$path"
         }
 
-        ProcessBuilder(javaPath, *properties.toTypedArray(), "-jar", jarFile).start()
+        ProcessBuilder(java, *properties.toTypedArray(), "-jar", jarFile).start()
         exitProcess(0)
     }
 
