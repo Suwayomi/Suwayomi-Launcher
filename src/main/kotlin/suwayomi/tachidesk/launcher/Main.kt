@@ -46,7 +46,7 @@ suspend fun main() {
         setupTheme(vm)
 
         jframe("Tachidesk-Server Launcher") {
-            size = Dimension(360, 440)
+            size = Dimension(360, 480)
             isResizable = false
             setLocationRelativeTo(null)
             defaultCloseOperation = JFrame.EXIT_ON_CLOSE
