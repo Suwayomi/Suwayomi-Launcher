@@ -93,7 +93,6 @@ class LauncherViewModel {
     val theme = settings.theme().asStateFlow(scope)
 
     fun launch() {
-        // todo validate
         val os = System.getProperty("os.name").lowercase()
         val javaPath = if (os.startsWith("mac os x")) {
             homeDir / "jre/Contents/Home/bin/java"
@@ -118,15 +117,24 @@ class LauncherViewModel {
         val jarFile = tachideskServer.absolutePathString()
         val properties = settings.getProperties().toMutableList()
         if (webUIInterface.value.equals("electron", true) && electronPath.value.isBlank()) {
-            val path = if (os.startsWith("mac os x")) {
-                Path("electron/Electron.app/Contents/MacOS/Electron").absolutePathString()
+            val electronPath = if (os.startsWith("mac os x")) {
+                homeDir / "electron/Electron.app/Contents/MacOS/Electron"
             } else if (os.startsWith("windows")) {
-                Path("electron/electron.exe").absolutePathString()
+                homeDir / "electron/electron.exe"
             } else {
                 // Probably linux.
-                Path("./electron/electron").absolutePathString()
+                val electronPath = homeDir / "electron/electron"
+                if (electronPath.exists()) {
+                    electronPath
+                } else {
+                    Path("/usr/bin/electron")
+                }
             }
-            properties += "-Dsuwayomi.tachidesk.config.server.electronPath=$path"
+            if (electronPath.exists()) {
+                properties += "-Dsuwayomi.tachidesk.config.server.electronPath=${electronPath.absolutePathString()}"
+            } else {
+                println("Electron executable was not found! In order to run this launcher, you may need Electron installed.")
+            }
         }
 
         ProcessBuilder(java, *properties.toTypedArray(), "-jar", jarFile).start()
