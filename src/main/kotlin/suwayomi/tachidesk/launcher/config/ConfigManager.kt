@@ -14,6 +14,8 @@ import com.typesafe.config.ConfigValue
 import com.typesafe.config.ConfigValueFactory
 import com.typesafe.config.parser.ConfigDocument
 import com.typesafe.config.parser.ConfigDocumentFactory
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import java.nio.file.FileSystems
 import java.nio.file.Path
 import kotlin.io.path.Path
@@ -87,11 +89,15 @@ class ConfigManager(
         userConfigFile.writeText(newFileContent)
     }
 
-    fun updateValue(path: String, value: Any) {
-        val configValue = ConfigValueFactory.fromAnyRef(value)
+    private val configMutex = Mutex()
 
-        updateUserConfigFile(path, configValue)
+    suspend fun updateValue(path: String, value: Any) {
+        configMutex.withLock {
+            val configValue = ConfigValueFactory.fromAnyRef(value)
 
-        config = getUserConfig()
+            updateUserConfigFile(path, configValue)
+
+            config = getUserConfig()
+        }
     }
 }
