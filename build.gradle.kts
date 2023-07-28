@@ -30,6 +30,11 @@ repositories {
     mavenCentral()
 }
 
+java {
+    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_1_8
+}
+
 dependencies {
     implementation(libs.bundles.coroutines)
     implementation(libs.settings.core)
