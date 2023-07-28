@@ -14,17 +14,32 @@ import com.typesafe.config.ConfigValue
 import com.typesafe.config.ConfigValueFactory
 import com.typesafe.config.parser.ConfigDocument
 import com.typesafe.config.parser.ConfigDocumentFactory
-import java.io.File
 import java.nio.file.FileSystems
+import java.nio.file.Path
 import kotlin.io.path.Path
+import kotlin.io.path.copyTo
+import kotlin.io.path.createParentDirectories
+import kotlin.io.path.exists
 import kotlin.io.path.readText
+import kotlin.io.path.writeText
 
-class ConfigManager(rootDir: String) {
-    private val userConfigFile = File(rootDir, "server.conf")
+class ConfigManager(
+    private val tachideskServer: Path,
+    rootDir: String
+) {
+    private val userConfigFile = Path(rootDir, "server.conf")
+
+    init {
+        if (!userConfigFile.exists()) {
+            FileSystems.newFileSystem(tachideskServer, null as ClassLoader?).use {
+                it.getPath("/server-reference.conf").copyTo(userConfigFile.createParentDirectories())
+            }
+        }
+    }
 
     private fun getUserConfig(): Config {
         return userConfigFile.let {
-            ConfigFactory.parseFile(it)
+            ConfigFactory.parseFile(it.toFile())
         }
     }
 
@@ -38,7 +53,7 @@ class ConfigManager(rootDir: String) {
      *  - removes outdated settings
      */
     fun updateUserConfig() {
-        val serverConfigFileContent = FileSystems.newFileSystem(Path("bin/Tachidesk-Server.jar"), null as ClassLoader?).use {
+        val serverConfigFileContent = FileSystems.newFileSystem(tachideskServer, null as ClassLoader?).use {
             it.getPath("/server-reference.conf").readText()
         }
 
@@ -64,7 +79,7 @@ class ConfigManager(rootDir: String) {
     }
 
     private fun updateUserConfigFile(path: String, value: ConfigValue) {
-        val userConfigDoc = ConfigDocumentFactory.parseFile(userConfigFile)
+        val userConfigDoc = ConfigDocumentFactory.parseFile(userConfigFile.toFile())
         val updatedConfigDoc = userConfigDoc.withValue(path, value)
         val newFileContent = updatedConfigDoc.render()
         userConfigFile.writeText(newFileContent)

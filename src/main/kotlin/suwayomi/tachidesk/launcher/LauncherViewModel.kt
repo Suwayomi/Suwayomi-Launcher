@@ -20,12 +20,25 @@ import net.harawata.appdirs.AppDirsFactory
 import suwayomi.tachidesk.launcher.config.ConfigManager
 import suwayomi.tachidesk.launcher.config.ServerConfig
 import suwayomi.tachidesk.launcher.settings.LauncherSettings
+import java.nio.file.Path
 import kotlin.io.path.Path
 import kotlin.io.path.absolutePathString
+import kotlin.io.path.div
+import kotlin.io.path.exists
 import kotlin.system.exitProcess
 
 class LauncherViewModel {
     private val scope = MainScope()
+
+    private val homeDir: Path = Path(this::class.java.protectionDomain.codeSource.location.toURI().path).parent
+    private val tachideskServer = homeDir / "bin" / "Tachidesk-Server.jar"
+
+    init {
+        require(tachideskServer.exists()) {
+            "Could not find Tachidesk-Server.jar at '${tachideskServer.absolutePathString()}'"
+        }
+    }
+
     private val settings = LauncherSettings()
     val rootDir = settings.rootDir().asStateFlow(scope)
     private val config = rootDir.drop(1)
@@ -105,7 +118,7 @@ class LauncherViewModel {
         val resolvedRootDir = rootDir
             ?: AppDirsFactory.getInstance().getUserDataDir("Tachidesk", null, null)
 
-        val configManager = ConfigManager(resolvedRootDir)
+        val configManager = ConfigManager(tachideskServer, resolvedRootDir)
 
         configManager.updateUserConfig()
 
