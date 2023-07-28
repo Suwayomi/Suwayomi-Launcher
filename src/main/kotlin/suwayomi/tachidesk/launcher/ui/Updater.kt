@@ -34,7 +34,7 @@ fun Updater(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
     jTextArea("Max Parallel Update Requests") {
         isEditable = false
     }.bind()
-    jSpinner(SpinnerNumberModel(vm.maxParallelUpdateRequests.value.coerceIn(1, 16), 1, 16, 1)) {
+    jSpinner(SpinnerNumberModel(vm.maxParallelUpdateRequests.value.coerceIn(1, 20), 1, 20, 1)) {
         toolTipText = "Sets how many sources can be updated in parallel. Updates are grouped by source and all mangas of a source are updated synchronously" // todo improve
         changes()
             .onEach {
