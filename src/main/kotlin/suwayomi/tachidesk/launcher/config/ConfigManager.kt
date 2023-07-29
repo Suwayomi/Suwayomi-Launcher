@@ -32,12 +32,6 @@ class ConfigManager(
     private val userConfigFile = Path(rootDir, "server.conf")
 
     init {
-        if (!userConfigFile.exists()) {
-            FileSystems.newFileSystem(tachideskServer, null as ClassLoader?).use {
-                it.getPath("/server-reference.conf").copyTo(userConfigFile.createParentDirectories())
-            }
-        }
-
         updateUserConfig()
     }
 
@@ -56,9 +50,13 @@ class ConfigManager(
      *  - adds missing settings
      *  - removes outdated settings
      */
-    fun updateUserConfig() {
+    private fun updateUserConfig() {
         val serverConfigFileContent = FileSystems.newFileSystem(tachideskServer, null as ClassLoader?).use {
             it.getPath("/server-reference.conf").readText()
+        }
+
+        if (!userConfigFile.exists()) {
+            userConfigFile.createParentDirectories().writeText(serverConfigFileContent)
         }
 
         val serverConfig = ConfigFactory.parseString(serverConfigFileContent)

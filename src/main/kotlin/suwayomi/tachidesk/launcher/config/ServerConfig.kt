@@ -25,11 +25,11 @@ class ServerConfig(
         private var flow: MutableStateFlow<T>? = null
 
         override fun getValue(thisRef: ServerConfig, property: KProperty<*>): MutableStateFlow<T> {
-            val path = "server.${property.name}"
             if (flow != null) {
                 return flow!!
             }
 
+            val path = "server.${property.name}"
             val value = configManager.config.getValue(path)
             val stateFlow = MutableStateFlow(configAdapter.toType(value))
             flow = stateFlow
