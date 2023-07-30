@@ -91,6 +91,9 @@ class LauncherViewModel {
     val backupInterval = config.asStateFlow { it.backupInterval }
     val backupTTL = config.asStateFlow { it.backupTTL }
 
+    // Local Source
+    val localSourcePath = config.asStateFlow { it.localSourcePath }
+
     val theme = settings.theme().asStateFlow(scope)
 
     fun launch() {

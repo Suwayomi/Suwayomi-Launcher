@@ -88,4 +88,7 @@ class ServerConfig(
     val backupTime: MutableStateFlow<String> by OverrideConfigValue(StringConfigAdapter)
     val backupInterval: MutableStateFlow<Int> by OverrideConfigValue(IntConfigAdapter)
     val backupTTL: MutableStateFlow<Int> by OverrideConfigValue(IntConfigAdapter)
+
+    // local source
+    val localSourcePath: MutableStateFlow<String> by OverrideConfigValue(StringConfigAdapter)
 }
