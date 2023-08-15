@@ -26,6 +26,7 @@ import kotlin.io.path.Path
 import kotlin.io.path.absolutePathString
 import kotlin.io.path.div
 import kotlin.io.path.exists
+import kotlin.io.path.notExists
 import kotlin.system.exitProcess
 
 class LauncherViewModel {
@@ -122,7 +123,7 @@ class LauncherViewModel {
 
         val jarFile = tachideskServer.absolutePathString()
         val properties = settings.getProperties().toMutableList()
-        if (webUIInterface.value.equals("electron", true) && electronPath.value.isBlank()) {
+        if (webUIInterface.value.equals("electron", true) && (electronPath.value.isBlank() || Path(electronPath.value).notExists())) {
             val electronPath = if (os.startsWith("mac os x")) {
                 homeDir / "electron/Electron.app/Contents/MacOS/Electron"
             } else if (os.startsWith("windows")) {
@@ -137,9 +138,10 @@ class LauncherViewModel {
                 }
             }
             if (electronPath.exists()) {
-                properties += "-Dsuwayomi.tachidesk.config.server.electronPath=${electronPath.absolutePathString()}"
+                this.electronPath.value = electronPath.absolutePathString()
             } else {
-                println("Electron executable was not found! In order to run this launcher, you may need Electron installed.")
+                println("Electron executable was not found! Disabling Electron")
+                this.webUIInterface.value = LauncherSettings.WebUIInterface.Browser.name.lowercase()
             }
         }
 
