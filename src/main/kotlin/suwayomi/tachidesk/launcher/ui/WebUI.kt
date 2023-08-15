@@ -52,8 +52,8 @@ fun WebUI(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
     jTextArea("WebUI Flavor") {
         isEditable = false
     }.bind()
-    jComboBox(LauncherSettings.WebUIFlavor.values()) {
-        selectedItem = LauncherSettings.WebUIFlavor.values().find { it.name.equals(vm.webUIFlavor.value, true) }
+    jComboBox(LauncherSettings.WebUIFlavor.entries.toTypedArray()) {
+        selectedItem = LauncherSettings.WebUIFlavor.entries.find { it.name.equals(vm.webUIFlavor.value, true) }
         vm.webUIEnabled
             .onEach {
                 isEnabled = it
@@ -85,8 +85,8 @@ fun WebUI(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
     jTextArea("WebUI Interface") {
         isEditable = false
     }.bind()
-    jComboBox(LauncherSettings.WebUIInterface.values()) {
-        selectedItem = LauncherSettings.WebUIInterface.values().find { it.name.equals(vm.webUIInterface.value, true) }
+    jComboBox(LauncherSettings.WebUIInterface.entries.toTypedArray()) {
+        selectedItem = LauncherSettings.WebUIInterface.entries.find { it.name.equals(vm.webUIInterface.value, true) }
         vm.webUIEnabled
             .onEach {
                 isEnabled = it
@@ -104,7 +104,7 @@ fun WebUI(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
     jTextArea("Electron path") {
         isEditable = false
     }.bind()
-    val textField = jTextField(vm.electronPath.value.orEmpty()) {
+    val textField = jTextField(vm.electronPath.value) {
         isEnabled = vm.webUIEnabled.value
         vm.webUIEnabled
             .onEach {
@@ -144,8 +144,8 @@ fun WebUI(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
     jTextArea("WebUI Channel") {
         isEditable = false
     }.bind()
-    jComboBox(LauncherSettings.WebUIChannel.values()) {
-        selectedItem = LauncherSettings.WebUIChannel.values().find { it.name.equals(vm.webUIChannel.value, true) }
+    jComboBox(LauncherSettings.WebUIChannel.entries.toTypedArray()) {
+        selectedItem = LauncherSettings.WebUIChannel.entries.find { it.name.equals(vm.webUIChannel.value, true) }
         vm.webUIEnabled
             .onEach {
                 isEnabled = it
