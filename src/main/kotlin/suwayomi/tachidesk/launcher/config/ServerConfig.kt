@@ -62,13 +62,15 @@ class ServerConfig(
     val webUIChannel: MutableStateFlow<String> by OverrideConfigValue(StringConfigAdapter)
     val webUIUpdateCheckInterval: MutableStateFlow<Double> by OverrideConfigValue(DoubleConfigAdapter)
 
+    // requests
+    val maxSourcesInParallel: MutableStateFlow<Int> by OverrideConfigValue(IntConfigAdapter)
+
     // downloader
     val downloadAsCbz: MutableStateFlow<Boolean> by OverrideConfigValue(BooleanConfigAdapter)
     val downloadsPath: MutableStateFlow<String> by OverrideConfigValue(StringConfigAdapter)
     val autoDownloadNewChapters: MutableStateFlow<Boolean> by OverrideConfigValue(BooleanConfigAdapter)
 
     // updater
-    val maxParallelUpdateRequests: MutableStateFlow<Int> by OverrideConfigValue(IntConfigAdapter)
     val excludeUnreadChapters: MutableStateFlow<Boolean> by OverrideConfigValue(BooleanConfigAdapter)
     val excludeNotStarted: MutableStateFlow<Boolean> by OverrideConfigValue(BooleanConfigAdapter)
     val excludeCompleted: MutableStateFlow<Boolean> by OverrideConfigValue(BooleanConfigAdapter)

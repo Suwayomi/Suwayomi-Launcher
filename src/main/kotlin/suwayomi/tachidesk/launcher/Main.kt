@@ -27,6 +27,7 @@ import suwayomi.tachidesk.launcher.ui.BasicAuth
 import suwayomi.tachidesk.launcher.ui.Downloader
 import suwayomi.tachidesk.launcher.ui.LocalSource
 import suwayomi.tachidesk.launcher.ui.Misc
+import suwayomi.tachidesk.launcher.ui.Requests
 import suwayomi.tachidesk.launcher.ui.RootDir
 import suwayomi.tachidesk.launcher.ui.ServerIpAndPortBindings
 import suwayomi.tachidesk.launcher.ui.Socks5
@@ -78,6 +79,7 @@ suspend fun main() {
                     addTab("Misc", Misc(vm, scope))
                     addTab("Backup", Backup(vm, scope))
                     addTab("Local Source", LocalSource(vm, scope))
+                    addTab("Requests", Requests(vm, scope))
                 }.bind(CC().grow())
                 jpanel {
                     jbutton("Launch") {

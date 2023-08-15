@@ -31,19 +31,6 @@ fun Updater(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
         LC().alignX("center").alignY("center")
     )
 ) {
-    jTextArea("Max Parallel Update Requests") {
-        isEditable = false
-    }.bind()
-    jSpinner(SpinnerNumberModel(vm.maxParallelUpdateRequests.value.coerceIn(1, 20), 1, 20, 1)) {
-        toolTipText = "Sets how many sources can be updated in parallel. Updates are grouped by source and all mangas of a source are updated synchronously" // todo improve
-        changes()
-            .onEach {
-                vm.maxParallelUpdateRequests.value = value as Int
-            }
-            .flowOn(Dispatchers.Default)
-            .launchIn(scope)
-    }.bind(CC().grow().spanX())
-
     jCheckBox("Exclude unread chapters", selected = vm.excludeUnreadChapters.value) {
         // todo toolTipText = ""
         actions()
