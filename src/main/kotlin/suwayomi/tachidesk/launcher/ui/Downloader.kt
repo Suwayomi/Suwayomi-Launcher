@@ -13,6 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import net.miginfocom.layout.CC
 import net.miginfocom.layout.LC
@@ -29,6 +30,9 @@ import suwayomi.tachidesk.launcher.jpanel
 import suwayomi.tachidesk.launcher.keyListener
 import javax.swing.JFileChooser
 import javax.swing.UIManager
+import kotlin.io.path.Path
+import kotlin.io.path.createDirectories
+import kotlin.io.path.isWritable
 
 fun Downloader(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
     MigLayout(
@@ -51,8 +55,13 @@ fun Downloader(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
         // todo toolTipText = ""
         keyListener()
             .filterIsInstance<KeyListenerEvent.Released>()
+            .map {
+                text?.trim()
+            }
             .onEach {
-                vm.downloadsPath.value = text?.trim().orEmpty()
+                if (it.isNullOrBlank() || runCatching { Path(it).createDirectories().isWritable() }.getOrElse { false }) {
+                    vm.downloadsPath.value = it.orEmpty()
+                }
             }
             .flowOn(Dispatchers.Default)
             .launchIn(scope)
