@@ -34,13 +34,41 @@ import suwayomi.tachidesk.launcher.ui.Socks5
 import suwayomi.tachidesk.launcher.ui.Updater
 import suwayomi.tachidesk.launcher.ui.WebUI
 import java.awt.Dimension
+import java.awt.Toolkit
+import java.awt.datatransfer.StringSelection
 import java.io.ByteArrayOutputStream
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
 import java.util.Base64
 import javax.swing.JFrame
+import javax.swing.JOptionPane
+import kotlin.system.exitProcess
 
 suspend fun main() {
+    Thread.setDefaultUncaughtExceptionHandler { _, e ->
+        val option = JOptionPane.showOptionDialog(
+            null,
+            e.message ?: "Unknown error",
+            "Uncaught exception",
+            JOptionPane.YES_NO_CANCEL_OPTION,
+            JOptionPane.ERROR_MESSAGE,
+            null,
+            arrayOf(
+                "Copy",
+                "Reset",
+                "Close"
+            ),
+            1
+        )
+        when (option) {
+            0 -> {
+                val error = StringSelection(e.message + ":\n" + e.stackTraceToString())
+                Toolkit.getDefaultToolkit().systemClipboard.setContents(error, error)
+            }
+            1 -> LauncherViewModel.reset()
+        }
+        exitProcess(100)
+    }
     val scope = MainScope()
     val vm = LauncherViewModel()
 

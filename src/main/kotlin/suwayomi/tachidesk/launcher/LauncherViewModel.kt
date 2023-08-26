@@ -32,9 +32,6 @@ import kotlin.system.exitProcess
 class LauncherViewModel {
     private val scope = MainScope()
 
-    private val homeDir: Path = Paths.get(this::class.java.protectionDomain.codeSource.location.toURI()).parent
-    private val tachideskServer = homeDir / "bin" / "Tachidesk-Server.jar"
-
     init {
         require(tachideskServer.exists()) {
             "Could not find Tachidesk-Server.jar at '${tachideskServer.absolutePathString()}'"
@@ -167,5 +164,31 @@ class LauncherViewModel {
             }
         }
         return stateFlow
+    }
+
+    companion object {
+        private val homeDir: Path by lazy {
+            Paths.get(this::class.java.protectionDomain.codeSource.location.toURI()).parent
+        }
+        private val tachideskServer by lazy {
+            homeDir / "bin" / "Tachidesk-Server.jar"
+        }
+
+        private fun getRootDir(rootDir: String?): String {
+            return rootDir ?: AppDirsFactory.getInstance().getUserDataDir("Tachidesk", null, null)
+        }
+
+        fun reset() {
+            val settings = LauncherSettings()
+
+            try {
+                ConfigManager.resetConfig(tachideskServer, getRootDir(settings.rootDir().get()))
+            } catch (e: Exception) {
+                val rootDir = settings.rootDir().get()
+                if (rootDir != null) {
+                    settings.rootDir().set(null)
+                }
+            }
+        }
     }
 }

@@ -20,6 +20,7 @@ import java.nio.file.FileSystems
 import java.nio.file.Path
 import kotlin.io.path.Path
 import kotlin.io.path.createParentDirectories
+import kotlin.io.path.deleteIfExists
 import kotlin.io.path.exists
 import kotlin.io.path.readText
 import kotlin.io.path.writeText
@@ -28,7 +29,7 @@ class ConfigManager(
     private val tachideskServer: Path,
     rootDir: String
 ) {
-    private val userConfigFile = Path(rootDir, "server.conf")
+    private val userConfigFile = getServerConf(rootDir)
 
     init {
         updateUserConfig()
@@ -50,10 +51,7 @@ class ConfigManager(
      *  - removes outdated settings
      */
     private fun updateUserConfig() {
-        val serverConfigFileContent = FileSystems.newFileSystem(tachideskServer, null as ClassLoader?).use {
-            it.getPath("/server-reference.conf").readText()
-        }
-
+        val serverConfigFileContent = getDefaultConfig(tachideskServer)
         if (!userConfigFile.exists()) {
             userConfigFile.createParentDirectories().writeText(serverConfigFileContent)
         }
@@ -96,5 +94,25 @@ class ConfigManager(
 
             config = getUserConfig()
         }
+    }
+
+    companion object {
+        private fun getDefaultConfig(tachideskServer: Path): String {
+            return FileSystems.newFileSystem(tachideskServer, null as ClassLoader?).use {
+                it.getPath("/server-reference.conf").readText()
+            }
+        }
+
+        fun getServerConf(rootDir: String) = Path(rootDir, "server.conf")
+
+        fun resetConfig(
+            tachideskServer: Path,
+            rootDir: String
+        ) {
+            val userConfigFile = getServerConf(rootDir)
+            userConfigFile.createParentDirectories().writeText(getDefaultConfig(tachideskServer))
+        }
+
+        fun deleteConfig(rootDir: String) = getServerConf(rootDir).deleteIfExists()
     }
 }
