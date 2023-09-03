@@ -83,6 +83,7 @@ class LauncherViewModel {
 
     // Misc
     val debug = config.asStateFlow { it.debugLogsEnabled }
+    val gqlDebug = config.asStateFlow { it.gqlDebugLogsEnabled }
     val systemTray = config.asStateFlow { it.systemTrayEnabled }
 
     // Backup
