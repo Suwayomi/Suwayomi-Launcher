@@ -113,7 +113,7 @@ fun Backup(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
         toolTipText = "time in days - 0 to disable it - Interval in which the server will automatically create a backup." // todo improve
         changes()
             .onEach {
-                vm.port.value = value as Int
+                vm.backupInterval.value = value as Int
             }
             .flowOn(Dispatchers.Default)
             .launchIn(scope)
@@ -122,11 +122,11 @@ fun Backup(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
     jTextArea("Backup TTL") {
         isEditable = false
     }.bind()
-    jSpinner(SpinnerNumberModel(vm.backupInterval.value.coerceIn(0, 30), 0, 30, 1)) {
+    jSpinner(SpinnerNumberModel(vm.backupTTL.value.coerceIn(0, 30), 0, 30, 1)) {
         toolTipText = "time in days - 0 to disable it - How long backup files will be kept before they will get deleted." // todo improve
         changes()
             .onEach {
-                vm.port.value = value as Int
+                vm.backupTTL.value = value as Int
             }
             .flowOn(Dispatchers.Default)
             .launchIn(scope)
