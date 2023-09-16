@@ -69,6 +69,8 @@ class LauncherViewModel {
     val downloadAsCbz = config.asStateFlow { it.downloadAsCbz }
     val downloadsPath = config.asStateFlow { it.downloadsPath }
     val autoDownloadNewChapters = config.asStateFlow { it.autoDownloadNewChapters }
+    val excludeEntryWithUnreadChapters = config.asStateFlow { it.excludeEntryWithUnreadChapters }
+    val autoDownloadAheadLimit = config.asStateFlow { it.autoDownloadAheadLimit }
 
     // Updater
     val excludeUnreadChapters = config.asStateFlow { it.excludeUnreadChapters }

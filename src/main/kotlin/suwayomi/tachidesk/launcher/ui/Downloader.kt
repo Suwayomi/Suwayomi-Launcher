@@ -22,13 +22,16 @@ import suwayomi.tachidesk.launcher.KeyListenerEvent
 import suwayomi.tachidesk.launcher.LauncherViewModel
 import suwayomi.tachidesk.launcher.actions
 import suwayomi.tachidesk.launcher.bind
+import suwayomi.tachidesk.launcher.changes
 import suwayomi.tachidesk.launcher.jCheckBox
+import suwayomi.tachidesk.launcher.jSpinner
 import suwayomi.tachidesk.launcher.jTextArea
 import suwayomi.tachidesk.launcher.jTextField
 import suwayomi.tachidesk.launcher.jbutton
 import suwayomi.tachidesk.launcher.jpanel
 import suwayomi.tachidesk.launcher.keyListener
 import javax.swing.JFileChooser
+import javax.swing.SpinnerNumberModel
 import javax.swing.UIManager
 import kotlin.io.path.Path
 import kotlin.io.path.createDirectories
@@ -97,4 +100,27 @@ fun Downloader(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
             .flowOn(Dispatchers.Default)
             .launchIn(scope)
     }.bind(CC().wrap())
+
+    jCheckBox("Exclude unread entries", selected = vm.excludeEntryWithUnreadChapters.value) {
+        toolTipText = "Ignore automatic chapter downloads of entries with unread chapters." // todo improve
+        actions()
+            .onEach {
+                vm.excludeEntryWithUnreadChapters.value = isSelected
+            }
+            .flowOn(Dispatchers.Default)
+            .launchIn(scope)
+    }.bind(CC().wrap())
+
+    jTextArea("Download ahead limit") {
+        isEditable = false
+    }.bind()
+    jSpinner(SpinnerNumberModel(vm.autoDownloadAheadLimit.value.coerceAtLeast(0), 0, Int.MAX_VALUE, 1)) {
+        toolTipText = "0 to disable it - How many unread downloaded chapters should be available - If the limit is reached, new chapters won't be downloaded automatically"
+        changes()
+            .onEach {
+                vm.autoDownloadAheadLimit.value = (value as Int)
+            }
+            .flowOn(Dispatchers.Default)
+            .launchIn(scope)
+    }.bind(CC().grow().spanX().wrap())
 }
