@@ -94,4 +94,14 @@ fun Updater(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
         isEditable = false
     }.bind()
     spinner.bind(CC().grow().spanX())
+
+    jCheckBox("Update manga info", selected = vm.updateMangas.value) {
+        // todo toolTipText = ""
+        actions()
+            .onEach {
+                vm.updateMangas.value = isSelected
+            }
+            .flowOn(Dispatchers.Default)
+            .launchIn(scope)
+    }.bind(CC().spanX())
 }

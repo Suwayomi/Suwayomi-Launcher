@@ -77,6 +77,7 @@ class LauncherViewModel {
     val excludeNotStarted = config.asStateFlow { it.excludeNotStarted }
     val excludeCompleted = config.asStateFlow { it.excludeCompleted }
     val globalUpdateInterval = config.asStateFlow { it.globalUpdateInterval }
+    val updateMangas = config.asStateFlow { it.updateMangas }
 
     // Authentication
     val basicAuthEnabled = config.asStateFlow { it.basicAuthEnabled }
