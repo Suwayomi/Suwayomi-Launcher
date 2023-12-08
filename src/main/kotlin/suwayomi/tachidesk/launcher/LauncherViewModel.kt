@@ -19,9 +19,9 @@ import kotlinx.coroutines.launch
 import net.harawata.appdirs.AppDirsFactory
 import suwayomi.tachidesk.launcher.config.ConfigManager
 import suwayomi.tachidesk.launcher.config.ServerConfig
+import suwayomi.tachidesk.launcher.settings.LauncherPreference
 import suwayomi.tachidesk.launcher.settings.LauncherSettings
 import java.nio.file.Path
-import java.nio.file.Paths
 import kotlin.io.path.Path
 import kotlin.io.path.absolutePathString
 import kotlin.io.path.div
@@ -100,7 +100,7 @@ class LauncherViewModel {
 
     val theme = settings.theme().asStateFlow(scope)
 
-    fun launch() {
+    fun launch(forceElectron: Boolean = false) {
         val os = System.getProperty("os.name").lowercase()
         val javaPath = if (os.startsWith("mac os x")) {
             homeDir / "jre/Contents/Home/bin/java"
@@ -128,7 +128,7 @@ class LauncherViewModel {
 
         val jarFile = tachideskServer.absolutePathString()
         val properties = settings.getProperties().toMutableList()
-        if (webUIInterface.value.equals("electron", true) && (electronPath.value.isBlank() || Path(electronPath.value).notExists())) {
+        if (forceElectron || webUIInterface.value.equals("electron", true) && (electronPath.value.isBlank() || Path(electronPath.value).notExists())) {
             val electronPath = if (os.startsWith("mac os x")) {
                 homeDir / "electron/Electron.app/Contents/MacOS/Electron"
             } else if (os.startsWith("windows")) {
@@ -148,6 +148,10 @@ class LauncherViewModel {
                 println("Electron executable was not found! Disabling Electron")
                 this.webUIInterface.value = LauncherSettings.WebUIInterface.Browser.name.lowercase()
             }
+        }
+
+        if (forceElectron) {
+            properties.add(LauncherPreference.argPrefix + "webUIInterface=electron")
         }
 
         ProcessBuilder(java, *properties.toTypedArray(), "-jar", jarFile).start()
@@ -176,7 +180,7 @@ class LauncherViewModel {
 
     companion object {
         private val homeDir: Path by lazy {
-            Paths.get(this::class.java.protectionDomain.codeSource.location.toURI()).parent
+            Path(".") // Paths.get(this::class.java.protectionDomain.codeSource.location.toURI()).parent
         }
         private val tachideskServer by lazy {
             homeDir / "bin" / "Tachidesk-Server.jar"

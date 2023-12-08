@@ -118,6 +118,14 @@ suspend fun main() {
                             .flowOn(Dispatchers.Default)
                             .launchIn(scope)
                     }.bind()
+                    jbutton("Electron") {
+                        actions()
+                            .onEach {
+                                vm.launch(forceElectron = true)
+                            }
+                            .flowOn(Dispatchers.Default)
+                            .launchIn(scope)
+                    }.bind()
                 }.bind("south")
             }
         }
