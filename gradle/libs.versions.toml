@@ -1,5 +1,5 @@
 [versions]
-kotlin = "1.9.0"
+kotlin = "1.9.21"
 coroutines = "1.7.2"
 settings = "1.0.0-RC"
 
@@ -14,12 +14,8 @@ coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", 
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 
 # Logging
-# Stuck on old versions since
-# 1. Logback 1.3.0+ requires Java 9
-# 2. Slf4j 2.0.0+ doesn't register older versions of Logback
-# 3. Kotlin-logging 3.0.2+ requires Java 11, but this is probably a bug
-slf4japi = "org.slf4j:slf4j-api:2.0.7"
-logback = "ch.qos.logback:logback-classic:1.3.8"
+slf4japi = "org.slf4j:slf4j-api:2.0.9"
+logback = "ch.qos.logback:logback-classic:1.3.14" #Logback 1.4.0+ requires Java 9+
 kotlinlogging = "io.github.microutils:kotlin-logging:3.0.5"
 
 # Disk & File
