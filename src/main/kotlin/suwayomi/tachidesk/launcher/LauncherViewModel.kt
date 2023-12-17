@@ -8,6 +8,7 @@ package suwayomi.tachidesk.launcher
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
+import ca.gosyer.appdirs.AppDirs
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -16,7 +17,6 @@ import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import net.harawata.appdirs.AppDirsFactory
 import suwayomi.tachidesk.launcher.config.ConfigManager
 import suwayomi.tachidesk.launcher.config.ServerConfig
 import suwayomi.tachidesk.launcher.settings.LauncherPreference
@@ -161,7 +161,7 @@ class LauncherViewModel {
 
     private fun getServerConfig(rootDir: String?): ServerConfig {
         val resolvedRootDir = rootDir
-            ?: AppDirsFactory.getInstance().getUserDataDir("Tachidesk", null, null)
+            ?: AppDirs("Tachidesk").getUserDataDir()
 
         val configManager = ConfigManager(tachideskServer, resolvedRootDir)
 
@@ -188,7 +188,7 @@ class LauncherViewModel {
         }
 
         private fun getRootDir(rootDir: String?): String {
-            return rootDir ?: AppDirsFactory.getInstance().getUserDataDir("Tachidesk", null, null)
+            return rootDir ?: AppDirs("Tachidesk").getUserDataDir()
         }
 
         fun reset() {
