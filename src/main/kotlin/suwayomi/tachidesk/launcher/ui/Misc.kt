@@ -48,7 +48,7 @@ fun Misc(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
     }.bind(CC().wrap())
 
     jCheckBox("System Tray", selected = vm.systemTray.value) {
-        toolTipText = "Use this to toggle Tachidesk showing in the system tray." // todo improve
+        toolTipText = "Use this to toggle Suwayomi showing in the system tray." // todo improve
         actions()
             .onEach {
                 vm.systemTray.value = isSelected

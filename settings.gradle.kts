@@ -1,3 +1,3 @@
 
-rootProject.name = "Tachidesk-Launcher"
+rootProject.name = "Suwayomi-Launcher"
 

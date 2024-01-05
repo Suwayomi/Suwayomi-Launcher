@@ -75,7 +75,7 @@ suspend fun main() {
     withContext(Dispatchers.Swing.immediate) {
         setupTheme(vm)
 
-        jframe("Tachidesk-Server Launcher") {
+        jframe("Suwayomi-Server Launcher") {
             size = Dimension(380, 480)
             isResizable = false
             setLocationRelativeTo(null)

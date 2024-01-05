@@ -92,7 +92,7 @@ fun Downloader(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
     }.bind(CC().grow().spanX().wrap())
 
     jCheckBox("Download new chapters", selected = vm.autoDownloadNewChapters.value) {
-        toolTipText = "If new chapters that have been found, should Tachidesk download them automatically." // todo improve
+        toolTipText = "If new chapters that have been found, should Suwayomi download them automatically." // todo improve
         actions()
             .onEach {
                 vm.autoDownloadNewChapters.value = isSelected

@@ -35,7 +35,7 @@ class LauncherViewModel {
 
     init {
         require(tachideskServer.exists()) {
-            "Could not find Tachidesk-Server.jar at '${tachideskServer.absolutePathString()}'"
+            "Could not find Suwayomi-Server.jar at '${tachideskServer.absolutePathString()}'"
         }
     }
 
@@ -184,7 +184,7 @@ class LauncherViewModel {
             Paths.get(this::class.java.protectionDomain.codeSource.location.toURI()).parent
         }
         private val tachideskServer by lazy {
-            homeDir / "bin" / "Tachidesk-Server.jar"
+            homeDir / "bin" / "Suwayomi-Server.jar"
         }
 
         private fun getRootDir(rootDir: String?): String {
