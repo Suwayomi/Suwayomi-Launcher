@@ -25,6 +25,7 @@ import net.miginfocom.swing.MigLayout
 import suwayomi.tachidesk.launcher.ui.Backup
 import suwayomi.tachidesk.launcher.ui.BasicAuth
 import suwayomi.tachidesk.launcher.ui.Downloader
+import suwayomi.tachidesk.launcher.ui.Extension
 import suwayomi.tachidesk.launcher.ui.LocalSource
 import suwayomi.tachidesk.launcher.ui.Misc
 import suwayomi.tachidesk.launcher.ui.Requests
@@ -108,6 +109,7 @@ suspend fun main() {
                     addTab("Backup", Backup(vm, scope))
                     addTab("Local Source", LocalSource(vm, scope))
                     addTab("Requests", Requests(vm, scope))
+                    addTab("Extension", Extension(vm, scope))
                 }.bind(CC().grow())
                 jpanel {
                     jbutton("Launch") {

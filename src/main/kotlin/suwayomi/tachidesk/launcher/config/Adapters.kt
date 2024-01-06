@@ -37,3 +37,10 @@ object DoubleConfigAdapter : ConfigAdapter<Double> {
         return (configValue.unwrapped() as Number).toDouble()
     }
 }
+
+object StringListConfigAdapter : ConfigAdapter<List<String>> {
+    override fun toType(configValue: ConfigValue): List<String> {
+        @Suppress("UNCHECKED_CAST")
+        return configValue.unwrapped() as List<String>
+    }
+}

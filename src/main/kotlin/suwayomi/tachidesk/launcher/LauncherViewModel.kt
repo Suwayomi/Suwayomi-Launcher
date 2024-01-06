@@ -63,15 +63,18 @@ class LauncherViewModel {
     val webUIChannel = config.asStateFlow { it.webUIChannel }
     val webUIUpdateCheckInterval = config.asStateFlow { it.webUIUpdateCheckInterval }
 
-    // Requests
-    val maxSourcesInParallel = config.asStateFlow { it.maxSourcesInParallel }
-
     // Downloader
     val downloadAsCbz = config.asStateFlow { it.downloadAsCbz }
     val downloadsPath = config.asStateFlow { it.downloadsPath }
     val autoDownloadNewChapters = config.asStateFlow { it.autoDownloadNewChapters }
     val excludeEntryWithUnreadChapters = config.asStateFlow { it.excludeEntryWithUnreadChapters }
     val autoDownloadAheadLimit = config.asStateFlow { it.autoDownloadAheadLimit }
+
+    // Extension
+    val extensionRepos = config.asStateFlow { it.extensionRepos }
+
+    // Requests
+    val maxSourcesInParallel = config.asStateFlow { it.maxSourcesInParallel }
 
     // Updater
     val excludeUnreadChapters = config.asStateFlow { it.excludeUnreadChapters }
