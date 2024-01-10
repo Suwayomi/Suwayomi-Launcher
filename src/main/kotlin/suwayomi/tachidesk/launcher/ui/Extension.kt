@@ -33,8 +33,8 @@ import javax.swing.JScrollPane
 
 private val repoMatchRegex =
     (
-        "https:\\/\\/(?:www|raw)?(?:github|githubusercontent)\\.com" +
-            "\\/([^\\/]+)\\/([^\\/]+)(?:\\/(?:tree|blob)\\/(.*))?\\/?"
+        "https:\\/\\/(?>www\\.|raw\\.)?(github|githubusercontent)\\.com" +
+            "\\/([^\\/]+)\\/([^\\/]+)(?>(?>\\/tree|\\/blob)?\\/([^\\/\\n]*))?(?>\\/([^\\/\\n]*\\.json)?)?"
         ).toRegex()
 
 fun Extension(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
