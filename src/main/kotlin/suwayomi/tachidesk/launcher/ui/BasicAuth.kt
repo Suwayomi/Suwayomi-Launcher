@@ -78,7 +78,7 @@ fun BasicAuth(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
         keyListener()
             .filterIsInstance<KeyListenerEvent.Released>()
             .onEach {
-                vm.basicAuthPassword.value = password?.toString()?.trim().orEmpty()
+                vm.basicAuthPassword.value = password?.concatToString()?.trim().orEmpty()
             }
             .flowOn(Dispatchers.Default)
             .launchIn(scope)
