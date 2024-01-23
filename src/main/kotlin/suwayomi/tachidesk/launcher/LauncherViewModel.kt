@@ -102,6 +102,11 @@ class LauncherViewModel {
     // Local Source
     val localSourcePath = config.asStateFlow { it.localSourcePath }
 
+    // Cloudflare bypass
+    val flareSolverrEnabled = config.asStateFlow { it.flareSolverrEnabled }
+    val flareSolverrUrl = config.asStateFlow { it.flareSolverrUrl }
+    val flareSolverrTimeout = config.asStateFlow { it.flareSolverrTimeout }
+
     val theme = settings.theme().asStateFlow(scope)
 
     fun launch(forceElectron: Boolean = false) {

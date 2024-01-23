@@ -24,6 +24,7 @@ import net.miginfocom.layout.LC
 import net.miginfocom.swing.MigLayout
 import suwayomi.tachidesk.launcher.ui.Backup
 import suwayomi.tachidesk.launcher.ui.BasicAuth
+import suwayomi.tachidesk.launcher.ui.Cloudflare
 import suwayomi.tachidesk.launcher.ui.Downloader
 import suwayomi.tachidesk.launcher.ui.Extension
 import suwayomi.tachidesk.launcher.ui.LocalSource
@@ -110,6 +111,7 @@ suspend fun main() {
                     addTab("Local Source", LocalSource(vm, scope))
                     addTab("Requests", Requests(vm, scope))
                     addTab("Extension", Extension(vm, scope))
+                    addTab("Cloudflare", Cloudflare(vm, scope))
                 }.bind(CC().grow())
                 jpanel {
                     jbutton("Launch") {
