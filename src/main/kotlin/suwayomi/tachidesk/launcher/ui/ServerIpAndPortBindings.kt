@@ -18,13 +18,13 @@ import net.miginfocom.layout.CC
 import net.miginfocom.layout.LC
 import net.miginfocom.swing.MigLayout
 import suwayomi.tachidesk.launcher.LauncherViewModel
-import suwayomi.tachidesk.launcher.actions
 import suwayomi.tachidesk.launcher.bind
 import suwayomi.tachidesk.launcher.changes
 import suwayomi.tachidesk.launcher.jSpinner
 import suwayomi.tachidesk.launcher.jTextArea
 import suwayomi.tachidesk.launcher.jTextField
 import suwayomi.tachidesk.launcher.jpanel
+import suwayomi.tachidesk.launcher.keyListener
 import javax.swing.SpinnerNumberModel
 
 fun ServerIpAndPortBindings(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
@@ -42,9 +42,9 @@ fun ServerIpAndPortBindings(vm: LauncherViewModel, scope: CoroutineScope) = jpan
     }.bind()
     jTextField(vm.ip.value) {
         toolTipText = "Where to expose the server, 0.0.0.0 is the default and suggested value" // todo improve
-        actions()
+        keyListener()
             .filter {
-                text.count { it == '.' } == 4 &&
+                text.count { it == '.' } == 3 &&
                     text.split('.').all {
                         val int = it.toIntOrNull()
                         int != null && int in 0..255
