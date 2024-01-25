@@ -78,4 +78,37 @@ fun Cloudflare(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
             .flowOn(Dispatchers.Default)
             .launchIn(scope)
     }.bind(CC().grow().spanX().wrap())
+
+    jTextArea("FlareSolverr Session") {
+        isEditable = false
+    }.bind()
+    jTextField(vm.flareSolverrSessionName.value) {
+        toolTipText = "FlareSolver session name"
+        keyListener()
+            .filterIsInstance<KeyListenerEvent.Released>()
+            .map {
+                text?.trim()
+            }
+            .onEach {
+                if (!it.isNullOrBlank()) {
+                    vm.flareSolverrSessionName.value = it
+                }
+            }
+            .flowOn(Dispatchers.Default)
+            .launchIn(scope)
+        columns = 10
+    }.bind(CC().grow().spanX().wrap())
+
+    jTextArea("FlareSolverr Session TTL") {
+        isEditable = false
+    }.bind()
+    jSpinner(SpinnerNumberModel(vm.flareSolverrSessionTtl.value.coerceAtLeast(2), 2, Int.MAX_VALUE, 1)) {
+        toolTipText = "FlareSolverr session time to live in minutes"
+        changes()
+            .onEach {
+                vm.flareSolverrSessionTtl.value = (value as Int)
+            }
+            .flowOn(Dispatchers.Default)
+            .launchIn(scope)
+    }.bind(CC().grow().spanX().wrap())
 }
