@@ -18,6 +18,7 @@ class LauncherSettings {
 
     enum class WebUIFlavor {
         WebUI,
+        VUI,
         Custom
     }
 
