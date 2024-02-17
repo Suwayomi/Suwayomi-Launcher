@@ -68,7 +68,7 @@ class LauncherViewModel {
     val downloadsPath = config.asStateFlow { it.downloadsPath }
     val autoDownloadNewChapters = config.asStateFlow { it.autoDownloadNewChapters }
     val excludeEntryWithUnreadChapters = config.asStateFlow { it.excludeEntryWithUnreadChapters }
-    val autoDownloadAheadLimit = config.asStateFlow { it.autoDownloadAheadLimit }
+    val autoDownloadNewChaptersLimit = config.asStateFlow { it.autoDownloadNewChaptersLimit }
 
     // Extension
     val extensionRepos = config.asStateFlow { it.extensionRepos }

@@ -111,14 +111,14 @@ fun Downloader(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
             .launchIn(scope)
     }.bind(CC().wrap())
 
-    jTextArea("Download ahead limit") {
+    jTextArea("Download new chapters limit") {
         isEditable = false
     }.bind()
-    jSpinner(SpinnerNumberModel(vm.autoDownloadAheadLimit.value.coerceAtLeast(0), 0, Int.MAX_VALUE, 1)) {
+    jSpinner(SpinnerNumberModel(vm.autoDownloadNewChaptersLimit.value.coerceAtLeast(0), 0, Int.MAX_VALUE, 1)) {
         toolTipText = "0 to disable it - How many unread downloaded chapters should be available - If the limit is reached, new chapters won't be downloaded automatically"
         changes()
             .onEach {
-                vm.autoDownloadAheadLimit.value = (value as Int)
+                vm.autoDownloadNewChaptersLimit.value = (value as Int)
             }
             .flowOn(Dispatchers.Default)
             .launchIn(scope)

@@ -67,7 +67,7 @@ class ServerConfig(
     val downloadsPath: MutableStateFlow<String> by OverrideConfigValue(StringConfigAdapter)
     val autoDownloadNewChapters: MutableStateFlow<Boolean> by OverrideConfigValue(BooleanConfigAdapter)
     val excludeEntryWithUnreadChapters: MutableStateFlow<Boolean> by OverrideConfigValue(BooleanConfigAdapter)
-    val autoDownloadAheadLimit: MutableStateFlow<Int> by OverrideConfigValue(IntConfigAdapter)
+    val autoDownloadNewChaptersLimit: MutableStateFlow<Int> by OverrideConfigValue(IntConfigAdapter)
 
     // extension
     val extensionRepos: MutableStateFlow<List<String>> by OverrideConfigValue(StringListConfigAdapter)
