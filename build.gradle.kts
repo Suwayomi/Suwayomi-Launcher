@@ -39,6 +39,7 @@ dependencies {
     implementation(libs.bundles.coroutines)
     implementation(libs.settings.core)
     implementation(libs.appdirs)
+    implementation(libs.okhttp)
 
     // Logging
     implementation(libs.slf4japi)

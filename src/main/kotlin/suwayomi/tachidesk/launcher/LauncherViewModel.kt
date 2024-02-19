@@ -9,6 +9,7 @@ package suwayomi.tachidesk.launcher
  */
 
 import ca.gosyer.appdirs.AppDirs
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -21,8 +22,10 @@ import suwayomi.tachidesk.launcher.config.ConfigManager
 import suwayomi.tachidesk.launcher.config.ServerConfig
 import suwayomi.tachidesk.launcher.settings.LauncherPreference
 import suwayomi.tachidesk.launcher.settings.LauncherSettings
+import suwayomi.tachidesk.launcher.util.checkIfPortInUse
 import java.nio.file.Path
 import java.nio.file.Paths
+import javax.swing.JOptionPane
 import kotlin.io.path.Path
 import kotlin.io.path.absolutePathString
 import kotlin.io.path.div
@@ -112,61 +115,91 @@ class LauncherViewModel {
     val theme = settings.theme().asStateFlow(scope)
 
     fun launch(forceElectron: Boolean = false) {
-        val os = System.getProperty("os.name").lowercase()
-        val javaPath = if (os.startsWith("mac os x")) {
-            homeDir / "jre/Contents/Home/bin/java"
-        } else if (os.startsWith("windows")) {
-            if (debug.value) {
-                homeDir / "jre/bin/java"
-            } else {
-                homeDir / "jre/bin/javaw"
-            }
-        } else {
-            // Probably linux.
-            val javaPath = homeDir / "jre/bin/java"
-            if (javaPath.exists()) {
-                javaPath
-            } else {
-                Path("/usr/bin/java")
-            }
-        }
-        val java = if (!javaPath.exists()) {
-            println("Java executable was not found! Defaulting to 'java'")
-            "java"
-        } else {
-            javaPath.absolutePathString()
-        }
-
-        val jarFile = tachideskServer.absolutePathString()
-        val properties = settings.getProperties().toMutableList()
-        if (forceElectron || webUIInterface.value.equals("electron", true) && (electronPath.value.isBlank() || Path(electronPath.value).notExists())) {
-            val electronPath = if (os.startsWith("mac os x")) {
-                homeDir / "electron/Electron.app/Contents/MacOS/Electron"
-            } else if (os.startsWith("windows")) {
-                homeDir / "electron/electron.exe"
-            } else {
-                // Probably linux.
-                val electronPath = homeDir / "electron/electron"
-                if (electronPath.exists()) {
-                    electronPath
-                } else {
-                    Path("/usr/bin/electron")
+        scope.launch(Dispatchers.Main.immediate) {
+            if (checkIfPortInUse(ip.value, port.value)) {
+                val option = JOptionPane.showOptionDialog(
+                    null,
+                    "The server is already running in the background. " +
+                        "If you try to start it again, any changes you made won't be saved. " +
+                        "Please close the current server before you click Continue. " +
+                        "Or, you can continue without saving your changes.",
+                    "Server found",
+                    JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.ERROR_MESSAGE,
+                    null,
+                    arrayOf(
+                        "Cancel",
+                        "Continue"
+                    ),
+                    1
+                )
+                when (option) {
+                    0 -> {
+                        return@launch
+                    }
+                    1 -> Unit
                 }
             }
-            if (electronPath.exists()) {
-                this.electronPath.value = electronPath.absolutePathString()
+
+            val os = System.getProperty("os.name").lowercase()
+            val javaPath = if (os.startsWith("mac os x")) {
+                homeDir / "jre/Contents/Home/bin/java"
+            } else if (os.startsWith("windows")) {
+                if (debug.value) {
+                    homeDir / "jre/bin/java"
+                } else {
+                    homeDir / "jre/bin/javaw"
+                }
             } else {
-                println("Electron executable was not found! Disabling Electron")
-                this.webUIInterface.value = LauncherSettings.WebUIInterface.Browser.name.lowercase()
+                // Probably linux.
+                val javaPath = homeDir / "jre/bin/java"
+                if (javaPath.exists()) {
+                    javaPath
+                } else {
+                    Path("/usr/bin/java")
+                }
             }
-        }
+            val java = if (!javaPath.exists()) {
+                println("Java executable was not found! Defaulting to 'java'")
+                "java"
+            } else {
+                javaPath.absolutePathString()
+            }
 
-        if (forceElectron) {
-            properties.add(LauncherPreference.argPrefix + "webUIInterface=electron")
-        }
+            val jarFile = tachideskServer.absolutePathString()
+            val properties = settings.getProperties().toMutableList()
+            if (
+                forceElectron || webUIInterface.value.equals("electron", true) &&
+                (electronPath.value.isBlank() || Path(electronPath.value).notExists())
+            ) {
+                val electronPath = if (os.startsWith("mac os x")) {
+                    homeDir / "electron/Electron.app/Contents/MacOS/Electron"
+                } else if (os.startsWith("windows")) {
+                    homeDir / "electron/electron.exe"
+                } else {
+                    // Probably linux.
+                    val electronPath = homeDir / "electron/electron"
+                    if (electronPath.exists()) {
+                        electronPath
+                    } else {
+                        Path("/usr/bin/electron")
+                    }
+                }
+                if (electronPath.exists()) {
+                    this@LauncherViewModel.electronPath.value = electronPath.absolutePathString()
+                } else {
+                    println("Electron executable was not found! Disabling Electron")
+                    this@LauncherViewModel.webUIInterface.value = LauncherSettings.WebUIInterface.Browser.name.lowercase()
+                }
+            }
 
-        ProcessBuilder(java, *properties.toTypedArray(), "-jar", jarFile).start()
-        exitProcess(0)
+            if (forceElectron) {
+                properties.add(LauncherPreference.argPrefix + "webUIInterface=electron")
+            }
+
+            ProcessBuilder(java, *properties.toTypedArray(), "-jar", jarFile).start()
+            exitProcess(0)
+        }
     }
 
     private fun getServerConfig(rootDir: String?): ServerConfig {

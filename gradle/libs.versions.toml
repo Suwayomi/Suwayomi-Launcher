@@ -2,6 +2,7 @@
 kotlin = "1.9.21"
 coroutines = "1.7.2"
 settings = "1.0.0-RC"
+okhttp = "5.0.0-alpha.11"
 
 [libraries]
 # Kotlin
@@ -27,6 +28,9 @@ settings-core = { module = "com.russhwolf:multiplatform-settings-jvm", version.r
 # Config
 config = "com.typesafe:config:1.4.2"
 config4k = "io.github.config4k:config4k:0.5.0"
+
+# Http
+okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 
 # UI
 darklaf = "com.github.weisj:darklaf-core:3.0.2"
