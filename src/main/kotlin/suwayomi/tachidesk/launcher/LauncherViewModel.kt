@@ -54,8 +54,11 @@ class LauncherViewModel {
 
     // Socks5 proxy
     val socksProxyEnabled = config.asStateFlow { it.socksProxyEnabled }
+    val socksProxyVersion = config.asStateFlow { it.socksProxyVersion }
     val socksProxyHost = config.asStateFlow { it.socksProxyHost }
     val socksProxyPort = config.asStateFlow { it.socksProxyPort }
+    val socksProxyUsername = config.asStateFlow { it.socksProxyUsername }
+    val socksProxyPassword = config.asStateFlow { it.socksProxyPassword }
 
     // WebUI
     val webUIEnabled = config.asStateFlow { it.webUIEnabled }
