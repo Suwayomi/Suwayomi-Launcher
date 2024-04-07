@@ -150,9 +150,9 @@ class LauncherViewModel {
                 homeDir / "jre/Contents/Home/bin/java"
             } else if (os.startsWith("windows")) {
                 if (debug.value) {
-                    homeDir / "jre/bin/java"
+                    homeDir / "jre/bin/java.exe"
                 } else {
-                    homeDir / "jre/bin/javaw"
+                    homeDir / "jre/bin/javaw.exe"
                 }
             } else {
                 // Probably linux.
