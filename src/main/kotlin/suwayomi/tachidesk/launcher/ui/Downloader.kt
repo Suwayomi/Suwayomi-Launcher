@@ -111,6 +111,16 @@ fun Downloader(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
             .launchIn(scope)
     }.bind(CC().wrap())
 
+    jCheckBox("Exclude re-uploaded entries", selected = vm.autoDownloadIgnoreReUploads.value) {
+        toolTipText = "Ignore automatic chapter downloads of entries that are already uploaded." // todo improve
+        actions()
+            .onEach {
+                vm.autoDownloadIgnoreReUploads.value = isSelected
+            }
+            .flowOn(Dispatchers.Default)
+            .launchIn(scope)
+    }.bind(CC().wrap())
+
     jTextArea("Download new chapters limit") {
         isEditable = false
     }.bind()
