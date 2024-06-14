@@ -21,6 +21,8 @@ import java.awt.GraphicsConfiguration
 import java.awt.LayoutManager
 import java.awt.event.ActionEvent
 import java.awt.event.ActionListener
+import java.awt.event.FocusEvent
+import java.awt.event.FocusListener
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
 import java.text.Format
@@ -202,6 +204,27 @@ fun Component.keyListener(): Flow<KeyListenerEvent> = callbackFlow {
     }
     addKeyListener(keyListener)
     awaitClose { removeKeyListener(keyListener) }
+}.flowOn(Dispatchers.Swing)
+
+sealed class FocusListenerEvent {
+    data object Gained : FocusListenerEvent()
+    data object Lost : FocusListenerEvent()
+}
+
+/** Default [FocusListenerEvent] for [Component] */
+@SwingDsl
+fun Component.focusListener(): Flow<FocusListenerEvent> = callbackFlow {
+    val focusListener = object : FocusListener {
+        override fun focusGained(e: FocusEvent?) {
+            trySend(FocusListenerEvent.Gained)
+        }
+
+        override fun focusLost(e: FocusEvent?) {
+            trySend(FocusListenerEvent.Lost)
+        }
+    }
+    addFocusListener(focusListener)
+    awaitClose { removeFocusListener(focusListener) }
 }.flowOn(Dispatchers.Swing)
 
 /** Default [ActionEvent] for [AbstractButton] */

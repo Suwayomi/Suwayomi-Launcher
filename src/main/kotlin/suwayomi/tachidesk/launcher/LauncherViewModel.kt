@@ -9,8 +9,10 @@ package suwayomi.tachidesk.launcher
  */
 
 import ca.gosyer.appdirs.AppDirs
+import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -119,7 +121,7 @@ class LauncherViewModel {
     val theme = settings.theme().asStateFlow(scope)
 
     fun launch(forceElectron: Boolean = false) {
-        scope.launch(Dispatchers.Main.immediate) {
+        scope.launch(Dispatchers.Main.immediate) launchMain@{
             if (checkIfPortInUse(ip.value, port.value)) {
                 val option = JOptionPane.showOptionDialog(
                     null,
@@ -139,7 +141,7 @@ class LauncherViewModel {
                 )
                 when (option) {
                     0 -> {
-                        return@launch
+                        return@launchMain
                     }
                     1 -> Unit
                 }
@@ -164,16 +166,18 @@ class LauncherViewModel {
                 }
             }
             val java = if (!javaPath.exists()) {
-                println("Java executable was not found! Defaulting to 'java'")
+                logger.info { "Java executable was not found! Defaulting to 'java'" }
                 "java"
             } else {
                 javaPath.absolutePathString()
             }
 
+            logger.info { "Java path: $java" }
+
             val jarFile = tachideskServer.absolutePathString()
             val properties = settings.getProperties().toMutableList()
             if (
-                forceElectron || webUIInterface.value.equals("electron", true) &&
+                (forceElectron || webUIInterface.value.equals("electron", true)) &&
                 (electronPath.value.isBlank() || Path(electronPath.value).notExists())
             ) {
                 val electronPath = if (os.startsWith("mac os x")) {
@@ -189,10 +193,11 @@ class LauncherViewModel {
                         Path("/usr/bin/electron")
                     }
                 }
+                logger.info { "Electron path: ${electronPath.absolutePathString()}" }
                 if (electronPath.exists()) {
                     this@LauncherViewModel.electronPath.value = electronPath.absolutePathString()
                 } else {
-                    println("Electron executable was not found! Disabling Electron")
+                    logger.info { "Electron executable was not found! Disabling Electron" }
                     this@LauncherViewModel.webUIInterface.value = LauncherSettings.WebUIInterface.Browser.name.lowercase()
                 }
             }
@@ -201,6 +206,8 @@ class LauncherViewModel {
                 properties.add(LauncherPreference.argPrefix + "webUIInterface=electron")
             }
 
+            logger.debug { "Properties:\n" + properties.joinToString(separator = "\n") }
+            delay(100)
             ProcessBuilder(java, *properties.toTypedArray(), "-jar", jarFile).start()
             exitProcess(0)
         }
@@ -250,5 +257,6 @@ class LauncherViewModel {
                 }
             }
         }
+        private val logger = KotlinLogging.logger {}
     }
 }

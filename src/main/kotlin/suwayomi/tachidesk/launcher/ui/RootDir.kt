@@ -10,6 +10,8 @@ package suwayomi.tachidesk.launcher.ui
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
@@ -18,15 +20,18 @@ import kotlinx.coroutines.flow.onEach
 import net.miginfocom.layout.CC
 import net.miginfocom.layout.LC
 import net.miginfocom.swing.MigLayout
+import suwayomi.tachidesk.launcher.FocusListenerEvent
 import suwayomi.tachidesk.launcher.KeyListenerEvent
 import suwayomi.tachidesk.launcher.LauncherViewModel
 import suwayomi.tachidesk.launcher.actions
 import suwayomi.tachidesk.launcher.bind
+import suwayomi.tachidesk.launcher.focusListener
 import suwayomi.tachidesk.launcher.jTextArea
 import suwayomi.tachidesk.launcher.jTextField
 import suwayomi.tachidesk.launcher.jbutton
 import suwayomi.tachidesk.launcher.jpanel
 import suwayomi.tachidesk.launcher.keyListener
+import java.awt.event.KeyEvent
 import javax.swing.JFileChooser
 import javax.swing.UIManager
 import kotlin.io.path.Path
@@ -43,8 +48,13 @@ fun RootDir(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
     }.bind()
     val rootDirField = jTextField(vm.rootDir.value.orEmpty()) {
         // todo toolTipText = ""
-        keyListener()
-            .filterIsInstance<KeyListenerEvent.Released>()
+        focusListener()
+            .filterIsInstance<FocusListenerEvent.Lost>()
+            .combine(
+                keyListener()
+                    .filterIsInstance<KeyListenerEvent.Released>()
+                    .filter { it.event?.keyCode == KeyEvent.VK_ENTER }
+            ) { _, _ -> }
             .map {
                 text?.trim()
             }

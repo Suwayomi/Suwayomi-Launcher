@@ -99,7 +99,7 @@ suspend fun main() {
                 }.bind("north")*/
 
                 jTabbedPane {
-                    addTab("Root Directory", RootDir(vm, scope))
+                    addTab("Extension", Extension(vm, scope))
                     addTab("Server bindings", ServerIpAndPortBindings(vm, scope))
                     addTab("SOCKS Proxy", Socks5(vm, scope))
                     addTab("Authentication", BasicAuth(vm, scope))
@@ -110,8 +110,8 @@ suspend fun main() {
                     addTab("Backup", Backup(vm, scope))
                     addTab("Local Source", LocalSource(vm, scope))
                     addTab("Requests", Requests(vm, scope))
-                    addTab("Extension", Extension(vm, scope))
                     addTab("Cloudflare", Cloudflare(vm, scope))
+                    addTab("Root Directory", RootDir(vm, scope))
                 }.bind(CC().grow())
                 jpanel {
                     jbutton("Launch") {
