@@ -117,6 +117,7 @@ class LauncherViewModel {
     val flareSolverrTimeout = config.asStateFlow { it.flareSolverrTimeout }
     val flareSolverrSessionName = config.asStateFlow { it.flareSolverrSessionName }
     val flareSolverrSessionTtl = config.asStateFlow { it.flareSolverrSessionTtl }
+    val flareSolverrAsResponseFallback = config.asStateFlow { it.flareSolverrAsResponseFallback }
 
     val theme = settings.theme().asStateFlow(scope)
 

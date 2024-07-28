@@ -111,4 +111,13 @@ fun Cloudflare(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
             .flowOn(Dispatchers.Default)
             .launchIn(scope)
     }.bind(CC().grow().spanX().wrap())
+    jCheckBox("FlareSolverr as fallback", selected = vm.flareSolverrAsResponseFallback.value) {
+        toolTipText = "Use FlareSolverr response as fallback." // todo improve
+        actions()
+            .onEach {
+                vm.flareSolverrAsResponseFallback.value = isSelected
+            }
+            .flowOn(Dispatchers.Default)
+            .launchIn(scope)
+    }.bind(CC().wrap())
 }

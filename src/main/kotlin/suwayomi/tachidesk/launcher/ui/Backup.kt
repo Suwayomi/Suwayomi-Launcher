@@ -49,7 +49,7 @@ fun Backup(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
     jTextArea("Backups path") {
         isEditable = false
     }.bind()
-    val downloadsPathField = jTextField(vm.backupPath.value) {
+    val backupPathField = jTextField(vm.backupPath.value) {
         // todo toolTipText = ""
         focusListener()
             .filterIsInstance<FocusListenerEvent.Lost>()
@@ -83,7 +83,7 @@ fun Backup(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
                     JFileChooser.APPROVE_OPTION -> {
                         val path = chooser.selectedFile.absolutePath
                         vm.backupPath.value = path
-                        downloadsPathField.text = path
+                        backupPathField.text = path
                     }
                 }
             }
