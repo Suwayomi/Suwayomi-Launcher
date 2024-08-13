@@ -14,6 +14,7 @@ import com.github.weisj.darklaf.theme.event.ThemeChangeEvent
 import com.github.weisj.darklaf.theme.event.ThemeChangeListener
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -46,7 +47,7 @@ import javax.swing.JFrame
 import javax.swing.JOptionPane
 import kotlin.system.exitProcess
 
-suspend fun main() {
+suspend fun main(args: Array<String>) {
     Thread.setDefaultUncaughtExceptionHandler { _, e ->
         val option = JOptionPane.showOptionDialog(
             null,
@@ -73,6 +74,12 @@ suspend fun main() {
     }
     val scope = MainScope()
     val vm = LauncherViewModel()
+
+    if (args.contains("--launch")) {
+        vm.launch(forceElectron = args.contains("--electron"))
+        delay(Long.MAX_VALUE)
+        return
+    }
 
     withContext(Dispatchers.Swing.immediate) {
         setupTheme(vm)
