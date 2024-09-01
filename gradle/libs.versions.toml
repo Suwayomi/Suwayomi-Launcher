@@ -34,7 +34,7 @@ okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 
 # UI
 darklaf = "com.github.weisj:darklaf-core:3.0.2"
-miglayout = "com.miglayout:miglayout-swing:5.3"
+miglayout = "com.miglayout:miglayout-swing:11.4.2"
 
 # Testing
 mockk = "io.mockk:mockk:1.13.12"
