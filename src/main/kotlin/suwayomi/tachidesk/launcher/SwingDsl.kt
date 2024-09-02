@@ -57,7 +57,7 @@ inline fun jframe(
     title: String? = null,
     graphicsConfiguration: GraphicsConfiguration? = null,
     isVisible: Boolean = true,
-    builder: JFrame.() -> Unit
+    builder: JFrame.() -> Unit,
 ): JFrame {
     return JFrame(title, graphicsConfiguration).apply {
         builder()
@@ -71,7 +71,7 @@ inline fun jframe(
 inline fun jpanel(
     layoutManager: LayoutManager = FlowLayout(),
     isDoubleBuffered: Boolean = true,
-    builder: JPanel.() -> Unit
+    builder: JPanel.() -> Unit,
 ): JPanel {
     return JPanel(layoutManager, isDoubleBuffered).apply {
         builder()
@@ -83,7 +83,7 @@ inline fun jpanel(
 inline fun jTabbedPane(
     tabPlacement: Int = JTabbedPane.TOP,
     tabLayoutPolicy: Int = JTabbedPane.WRAP_TAB_LAYOUT,
-    builder: JTabbedPane.() -> Unit
+    builder: JTabbedPane.() -> Unit,
 ): JTabbedPane {
     return JTabbedPane(tabPlacement, tabLayoutPolicy).apply {
         builder()
@@ -152,7 +152,7 @@ inline fun jPasswordField(text: String? = null, columns: Int = 0, document: Docu
 inline fun <E> jComboBox(
     items: Array<E>? = null,
     model: ComboBoxModel<E>? = null,
-    builder: JComboBox<E>.() -> Unit
+    builder: JComboBox<E>.() -> Unit,
 ): JComboBox<E> {
     require(items != null || model != null) { "Both items and model were null" }
     return JComboBox(model ?: DefaultComboBoxModel(items)).apply {

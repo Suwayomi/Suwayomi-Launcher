@@ -40,8 +40,8 @@ import kotlin.io.path.isWritable
 
 fun LocalSource(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
     MigLayout(
-        LC().alignX("center").alignY("center")
-    )
+        LC().alignX("center").alignY("center"),
+    ),
 ) {
     jTextArea("Local Source path") {
         isEditable = false
@@ -53,7 +53,7 @@ fun LocalSource(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
             .combine(
                 keyListener()
                     .filterIsInstance<KeyListenerEvent.Released>()
-                    .filter { it.event?.keyCode == KeyEvent.VK_ENTER }
+                    .filter { it.event?.keyCode == KeyEvent.VK_ENTER },
             ) { _, _ -> }
             .map {
                 text?.trim()

@@ -33,8 +33,8 @@ import javax.swing.SpinnerNumberModel
 
 fun Socks5(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
     MigLayout(
-        LC().alignX("center").alignY("center")
-    )
+        LC().alignX("center").alignY("center"),
+    ),
 ) {
     jCheckBox("Socks Proxy", selected = vm.socksProxyEnabled.value) {
         // todo toolTipText = ""

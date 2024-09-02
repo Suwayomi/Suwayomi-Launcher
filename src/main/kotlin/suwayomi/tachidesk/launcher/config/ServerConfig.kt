@@ -18,7 +18,7 @@ import kotlin.reflect.KProperty
 
 class ServerConfig(
     private val scope: CoroutineScope,
-    private val configManager: ConfigManager
+    private val configManager: ConfigManager,
 ) {
 
     inner class OverrideConfigValue<T : Any>(private val configAdapter: ConfigAdapter<T>) : ReadOnlyProperty<ServerConfig, MutableStateFlow<T>> {

@@ -37,8 +37,8 @@ import javax.swing.UIManager
 
 fun WebUI(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
     MigLayout(
-        LC().alignX("center").alignY("center")
-    )
+        LC().alignX("center").alignY("center"),
+    ),
 ) {
     jCheckBox("WebUI", selected = vm.webUIEnabled.value) {
         // todo toolTipText = ""

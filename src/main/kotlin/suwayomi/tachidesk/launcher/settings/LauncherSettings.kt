@@ -13,24 +13,24 @@ import java.util.prefs.Preferences
 
 class LauncherSettings {
     private val settings = PreferencesSettings(
-        Preferences.userRoot().node("suwayomi/launcher")
+        Preferences.userRoot().node("suwayomi/launcher"),
     )
 
     enum class WebUIFlavor {
         WebUI,
         VUI,
-        Custom
+        Custom,
     }
 
     enum class WebUIInterface {
         Browser,
-        Electron
+        Electron,
     }
 
     enum class WebUIChannel {
         Stable,
         Preview,
-        Bundled
+        Bundled,
     }
 
     // Directories
@@ -40,7 +40,7 @@ class LauncherSettings {
             "root",
             null,
             settings,
-            StringOrNullAdapter
+            StringOrNullAdapter,
         )
     }
 
@@ -50,7 +50,7 @@ class LauncherSettings {
             "theme",
             null,
             settings,
-            StringOrNullAdapter
+            StringOrNullAdapter,
         )
     }
 

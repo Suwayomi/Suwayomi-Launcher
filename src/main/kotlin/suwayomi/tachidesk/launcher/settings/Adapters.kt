@@ -86,7 +86,7 @@ object StringOrNullAdapter : Adapter<String?> {
 
 class SerializableAdapter<E>(
     private val serialize: (E) -> String,
-    private val deserialize: (String) -> E
+    private val deserialize: (String) -> E,
 ) : Adapter<E> {
     override fun get(settings: ObservableSettings, key: String, default: E) =
         settings.getStringOrNull(key)?.let { deserialize(it) } ?: default

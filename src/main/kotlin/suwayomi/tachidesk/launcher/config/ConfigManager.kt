@@ -27,7 +27,7 @@ import kotlin.io.path.writeText
 
 class ConfigManager(
     private val tachideskServer: Path,
-    rootDir: String
+    rootDir: String,
 ) {
     private val userConfigFile = getServerConf(rootDir)
 
@@ -107,7 +107,7 @@ class ConfigManager(
 
         fun resetConfig(
             tachideskServer: Path,
-            rootDir: String
+            rootDir: String,
         ) {
             val userConfigFile = getServerConf(rootDir)
             userConfigFile.createParentDirectories().writeText(getDefaultConfig(tachideskServer))

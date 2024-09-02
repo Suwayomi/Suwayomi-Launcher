@@ -136,9 +136,9 @@ class LauncherViewModel {
                     null,
                     arrayOf(
                         "Cancel",
-                        "Continue"
+                        "Continue",
                     ),
-                    1
+                    1,
                 )
                 when (option) {
                     0 -> {

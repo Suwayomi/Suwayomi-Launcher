@@ -34,8 +34,8 @@ import javax.swing.SpinnerNumberModel
 
 fun Cloudflare(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
     MigLayout(
-        LC().alignX("center").alignY("center")
-    )
+        LC().alignX("center").alignY("center"),
+    ),
 ) {
     jCheckBox("Use FlareSolverr", selected = vm.flareSolverrEnabled.value) {
         toolTipText = "Use FlareSolverr instance to bypass Cloudflare." // todo improve

@@ -59,9 +59,9 @@ suspend fun main(args: Array<String>) {
             arrayOf(
                 "Copy",
                 "Reset",
-                "Close"
+                "Close",
             ),
-            1
+            1,
         )
         when (option) {
             0 -> {
@@ -168,6 +168,6 @@ fun setupTheme(vm: LauncherViewModel) {
                     vm.theme.value = Base64.getEncoder().encodeToString(it.toByteArray())
                 }
             }
-        }
+        },
     )
 }

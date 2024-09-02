@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit
 
 suspend fun checkIfPortInUse(
     ip: String,
-    port: Int
+    port: Int,
 ): Boolean {
     val appIP = if (ip == "0.0.0.0") "127.0.0.1" else ip
 
@@ -32,7 +32,7 @@ suspend fun checkIfPortInUse(
                 Request.Builder()
                     .get()
                     .url("http://$appIP:$port/api/v1/settings/about/")
-                    .build()
+                    .build(),
             ).execute().body.string()
         }
         return true

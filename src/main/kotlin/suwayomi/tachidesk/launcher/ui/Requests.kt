@@ -26,8 +26,8 @@ import javax.swing.SpinnerNumberModel
 
 fun Requests(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
     MigLayout(
-        LC().alignX("center").alignY("center")
-    )
+        LC().alignX("center").alignY("center"),
+    ),
 ) {
     jTextArea("Max Parallel Source Requests") {
         isEditable = false

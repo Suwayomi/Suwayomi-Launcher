@@ -21,7 +21,7 @@ open class LauncherPreference<T>(
     private val key: String,
     private val default: T,
     private val settings: ObservableSettings,
-    private val adapter: Adapter<T>
+    private val adapter: Adapter<T>,
 ) {
 
     fun get(): T {

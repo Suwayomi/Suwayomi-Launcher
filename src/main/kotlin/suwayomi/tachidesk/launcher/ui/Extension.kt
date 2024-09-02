@@ -39,8 +39,8 @@ private val repoMatchRegex =
 
 fun Extension(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
     MigLayout(
-        LC().alignX("center").alignY("center")
-    )
+        LC().alignX("center").alignY("center"),
+    ),
 ) {
     jTextArea("Extension repos") {
         isEditable = false

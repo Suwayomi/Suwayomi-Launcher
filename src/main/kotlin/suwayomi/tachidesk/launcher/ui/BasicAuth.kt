@@ -30,8 +30,8 @@ import suwayomi.tachidesk.launcher.keyListener
 
 fun BasicAuth(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
     MigLayout(
-        LC().alignX("center").alignY("center")
-    )
+        LC().alignX("center").alignY("center"),
+    ),
 ) {
     jCheckBox("Basic Authentication", selected = vm.basicAuthEnabled.value) {
         // todo toolTipText = ""

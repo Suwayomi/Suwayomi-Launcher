@@ -24,8 +24,8 @@ import suwayomi.tachidesk.launcher.jpanel
 
 fun Misc(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
     MigLayout(
-        LC().alignX("center").alignY("center")
-    )
+        LC().alignX("center").alignY("center"),
+    ),
 ) {
     jCheckBox("Debug logging", selected = vm.debug.value) {
         toolTipText = "Use this to toggle extra logging to the console window to help debug issues." // todo improve

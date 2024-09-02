@@ -28,8 +28,8 @@ import javax.swing.SpinnerNumberModel
 
 fun Updater(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
     MigLayout(
-        LC().alignX("center").alignY("center")
-    )
+        LC().alignX("center").alignY("center"),
+    ),
 ) {
     jCheckBox("Exclude unread chapters", selected = vm.excludeUnreadChapters.value) {
         // todo toolTipText = ""
