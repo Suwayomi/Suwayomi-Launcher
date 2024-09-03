@@ -46,9 +46,11 @@ class LauncherViewModel {
 
     private val settings = LauncherSettings()
     val rootDir = settings.rootDir().asStateFlow(scope)
-    private val config = rootDir.drop(1)
-        .map(::getServerConfig)
-        .stateIn(scope, SharingStarted.Eagerly, getServerConfig(settings.rootDir().get()))
+    private val config =
+        rootDir
+            .drop(1)
+            .map(::getServerConfig)
+            .stateIn(scope, SharingStarted.Eagerly, getServerConfig(settings.rootDir().get()))
 
     // Server ip and port bindings
     val ip = config.asStateFlow { it.ip }
@@ -124,22 +126,23 @@ class LauncherViewModel {
     fun launch(forceElectron: Boolean = false) {
         scope.launch(Dispatchers.Main.immediate) launchMain@{
             if (checkIfPortInUse(ip.value, port.value)) {
-                val option = JOptionPane.showOptionDialog(
-                    null,
-                    "The server is already running in the background. " +
-                        "If you try to start it again, any changes you made won't be saved. " +
-                        "Please close the current server before you click Continue. " +
-                        "Or, you can continue without saving your changes.",
-                    "Server found",
-                    JOptionPane.YES_NO_CANCEL_OPTION,
-                    JOptionPane.ERROR_MESSAGE,
-                    null,
-                    arrayOf(
-                        "Cancel",
-                        "Continue",
-                    ),
-                    1,
-                )
+                val option =
+                    JOptionPane.showOptionDialog(
+                        null,
+                        "The server is already running in the background. " +
+                            "If you try to start it again, any changes you made won't be saved. " +
+                            "Please close the current server before you click Continue. " +
+                            "Or, you can continue without saving your changes.",
+                        "Server found",
+                        JOptionPane.YES_NO_CANCEL_OPTION,
+                        JOptionPane.ERROR_MESSAGE,
+                        null,
+                        arrayOf(
+                            "Cancel",
+                            "Continue",
+                        ),
+                        1,
+                    )
                 when (option) {
                     0 -> {
                         return@launchMain
@@ -149,29 +152,31 @@ class LauncherViewModel {
             }
 
             val os = System.getProperty("os.name").lowercase()
-            val javaPath = if (os.startsWith("mac os x")) {
-                homeDir / "jre/Contents/Home/bin/java"
-            } else if (os.startsWith("windows")) {
-                if (debug.value) {
-                    homeDir / "jre/bin/java.exe"
+            val javaPath =
+                if (os.startsWith("mac os x")) {
+                    homeDir / "jre/Contents/Home/bin/java"
+                } else if (os.startsWith("windows")) {
+                    if (debug.value) {
+                        homeDir / "jre/bin/java.exe"
+                    } else {
+                        homeDir / "jre/bin/javaw.exe"
+                    }
                 } else {
-                    homeDir / "jre/bin/javaw.exe"
+                    // Probably linux.
+                    val javaPath = homeDir / "jre/bin/java"
+                    if (javaPath.exists()) {
+                        javaPath
+                    } else {
+                        Path("/usr/bin/java")
+                    }
                 }
-            } else {
-                // Probably linux.
-                val javaPath = homeDir / "jre/bin/java"
-                if (javaPath.exists()) {
-                    javaPath
+            val java =
+                if (!javaPath.exists()) {
+                    logger.info { "Java executable was not found! Defaulting to 'java'" }
+                    "java"
                 } else {
-                    Path("/usr/bin/java")
+                    javaPath.absolutePathString()
                 }
-            }
-            val java = if (!javaPath.exists()) {
-                logger.info { "Java executable was not found! Defaulting to 'java'" }
-                "java"
-            } else {
-                javaPath.absolutePathString()
-            }
 
             logger.info { "Java path: $java" }
 
@@ -181,30 +186,33 @@ class LauncherViewModel {
                 (forceElectron || webUIInterface.value.equals("electron", true)) &&
                 (electronPath.value.isBlank() || Path(electronPath.value).notExists())
             ) {
-                val electronPath = if (os.startsWith("mac os x")) {
-                    homeDir / "electron/Electron.app/Contents/MacOS/Electron"
-                } else if (os.startsWith("windows")) {
-                    homeDir / "electron/electron.exe"
-                } else {
-                    // Probably linux.
-                    val electronPath = homeDir / "electron/electron"
-                    if (electronPath.exists()) {
-                        electronPath
+                val electronPath =
+                    if (os.startsWith("mac os x")) {
+                        homeDir / "electron/Electron.app/Contents/MacOS/Electron"
+                    } else if (os.startsWith("windows")) {
+                        homeDir / "electron/electron.exe"
                     } else {
-                        Path("/usr/bin/electron")
+                        // Probably linux.
+                        val electronPath = homeDir / "electron/electron"
+                        if (electronPath.exists()) {
+                            electronPath
+                        } else {
+                            Path("/usr/bin/electron")
+                        }
                     }
-                }
                 logger.info { "Electron path: ${electronPath.absolutePathString()}" }
                 if (electronPath.exists()) {
                     this@LauncherViewModel.electronPath.value = electronPath.absolutePathString()
                 } else {
                     logger.info { "Electron executable was not found! Disabling Electron" }
-                    this@LauncherViewModel.webUIInterface.value = LauncherSettings.WebUIInterface.Browser.name.lowercase()
+                    this@LauncherViewModel.webUIInterface.value =
+                        LauncherSettings.WebUIInterface.Browser.name
+                            .lowercase()
                 }
             }
 
             if (forceElectron) {
-                properties.add(LauncherPreference.argPrefix + "webUIInterface=electron")
+                properties.add(LauncherPreference.ARG_PREFIX + "webUIInterface=electron")
             }
 
             logger.debug { "Properties:\n" + properties.joinToString(separator = "\n") }
@@ -215,8 +223,9 @@ class LauncherViewModel {
     }
 
     private fun getServerConfig(rootDir: String?): ServerConfig {
-        val resolvedRootDir = rootDir
-            ?: AppDirs("Tachidesk").getUserDataDir()
+        val resolvedRootDir =
+            rootDir
+                ?: AppDirs("Tachidesk").getUserDataDir()
 
         val configManager = ConfigManager(tachideskServer, resolvedRootDir)
 
@@ -242,9 +251,7 @@ class LauncherViewModel {
             homeDir / "bin" / "Suwayomi-Server.jar"
         }
 
-        private fun getRootDir(rootDir: String?): String {
-            return rootDir ?: AppDirs("Tachidesk").getUserDataDir()
-        }
+        private fun getRootDir(rootDir: String?): String = rootDir ?: AppDirs("Tachidesk").getUserDataDir()
 
         fun reset() {
             val settings = LauncherSettings()
@@ -258,6 +265,7 @@ class LauncherViewModel {
                 }
             }
         }
+
         private val logger = KotlinLogging.logger {}
     }
 }

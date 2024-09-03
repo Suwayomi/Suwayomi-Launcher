@@ -58,13 +58,12 @@ inline fun jframe(
     graphicsConfiguration: GraphicsConfiguration? = null,
     isVisible: Boolean = true,
     builder: JFrame.() -> Unit,
-): JFrame {
-    return JFrame(title, graphicsConfiguration).apply {
+): JFrame =
+    JFrame(title, graphicsConfiguration).apply {
         builder()
 
         this.isVisible = isVisible
     }
-}
 
 /** Define a [JPanel] */
 @SwingDsl
@@ -72,11 +71,10 @@ inline fun jpanel(
     layoutManager: LayoutManager = FlowLayout(),
     isDoubleBuffered: Boolean = true,
     builder: JPanel.() -> Unit,
-): JPanel {
-    return JPanel(layoutManager, isDoubleBuffered).apply {
+): JPanel =
+    JPanel(layoutManager, isDoubleBuffered).apply {
         builder()
     }
-}
 
 /** Define a [JTabbedPane] */
 @SwingDsl
@@ -84,68 +82,94 @@ inline fun jTabbedPane(
     tabPlacement: Int = JTabbedPane.TOP,
     tabLayoutPolicy: Int = JTabbedPane.WRAP_TAB_LAYOUT,
     builder: JTabbedPane.() -> Unit,
-): JTabbedPane {
-    return JTabbedPane(tabPlacement, tabLayoutPolicy).apply {
+): JTabbedPane =
+    JTabbedPane(tabPlacement, tabLayoutPolicy).apply {
         builder()
     }
-}
 
 /** Define a [JButton] */
 @SwingDsl
-inline fun jbutton(text: String? = null, icon: Icon? = null, builder: JButton.() -> Unit): JButton {
-    return JButton(text, icon).apply {
+inline fun jbutton(
+    text: String? = null,
+    icon: Icon? = null,
+    builder: JButton.() -> Unit,
+): JButton =
+    JButton(text, icon).apply {
         builder()
     }
-}
 
 /** Define a [JToggleButton] */
 @SwingDsl
-inline fun jToggleButton(text: String? = null, icon: Icon? = null, selected: Boolean = false, builder: JToggleButton.() -> Unit): JToggleButton {
-    return JToggleButton(text, icon, selected).apply {
+inline fun jToggleButton(
+    text: String? = null,
+    icon: Icon? = null,
+    selected: Boolean = false,
+    builder: JToggleButton.() -> Unit,
+): JToggleButton =
+    JToggleButton(text, icon, selected).apply {
         builder()
     }
-}
 
 /** Define a [JCheckBox] */
 @SwingDsl
-inline fun jCheckBox(text: String? = null, icon: Icon? = null, selected: Boolean = false, builder: JCheckBox.() -> Unit): JCheckBox {
-    return JCheckBox(text, icon, selected).apply {
+inline fun jCheckBox(
+    text: String? = null,
+    icon: Icon? = null,
+    selected: Boolean = false,
+    builder: JCheckBox.() -> Unit,
+): JCheckBox =
+    JCheckBox(text, icon, selected).apply {
         builder()
     }
-}
 
 /** Define a [JTextArea] */
 @SwingDsl
-inline fun jTextArea(text: String? = null, rows: Int = 0, columns: Int = 0, document: Document? = null, builder: JTextArea.() -> Unit): JTextArea {
-    return JTextArea(document, text, rows, columns).apply {
+inline fun jTextArea(
+    text: String? = null,
+    rows: Int = 0,
+    columns: Int = 0,
+    document: Document? = null,
+    builder: JTextArea.() -> Unit,
+): JTextArea =
+    JTextArea(document, text, rows, columns).apply {
         builder()
     }
-}
 
 /** Define a [JTextField] */
 @SwingDsl
-inline fun jTextField(text: String? = null, columns: Int = 0, document: Document? = null, builder: JTextField.() -> Unit): JTextField {
-    return JTextField(document, text, columns).apply {
+inline fun jTextField(
+    text: String? = null,
+    columns: Int = 0,
+    document: Document? = null,
+    builder: JTextField.() -> Unit,
+): JTextField =
+    JTextField(document, text, columns).apply {
         builder()
     }
-}
 
 /** Define a [JFormattedTextField] */
 @SwingDsl
-inline fun jFormattedTextField(format: Format, value: Any? = null, builder: JFormattedTextField.() -> Unit): JFormattedTextField {
-    return JFormattedTextField(format).apply {
+inline fun jFormattedTextField(
+    format: Format,
+    value: Any? = null,
+    builder: JFormattedTextField.() -> Unit,
+): JFormattedTextField =
+    JFormattedTextField(format).apply {
         setValue(value)
         builder()
     }
-}
 
 /** Define a [JPasswordField] */
 @SwingDsl
-inline fun jPasswordField(text: String? = null, columns: Int = 0, document: Document? = null, builder: JPasswordField.() -> Unit): JPasswordField {
-    return JPasswordField(document, text, columns).apply {
+inline fun jPasswordField(
+    text: String? = null,
+    columns: Int = 0,
+    document: Document? = null,
+    builder: JPasswordField.() -> Unit,
+): JPasswordField =
+    JPasswordField(document, text, columns).apply {
         builder()
     }
-}
 
 /** Define a [JComboBox] */
 @SwingDsl
@@ -162,14 +186,19 @@ inline fun <E> jComboBox(
 
 /** Define a [JSpinner] */
 @SwingDsl
-inline fun jSpinner(model: SpinnerModel = SpinnerNumberModel(), builder: JSpinner.() -> Unit): JSpinner {
-    return JSpinner(model).apply {
+inline fun jSpinner(
+    model: SpinnerModel = SpinnerNumberModel(),
+    builder: JSpinner.() -> Unit,
+): JSpinner =
+    JSpinner(model).apply {
         builder()
     }
-}
 
 @SwingDsl
-fun Component.addTo(container: Container, constraints: Any? = null) {
+fun Component.addTo(
+    container: Container,
+    constraints: Any? = null,
+) {
     container.add(this, constraints)
 }
 
@@ -183,86 +212,110 @@ fun <T : Component> T.bind(constraints: Any? = null): T {
 
 sealed class KeyListenerEvent {
     abstract val event: KeyEvent?
-    data class Pressed(override val event: KeyEvent?) : KeyListenerEvent()
-    data class Typed(override val event: KeyEvent?) : KeyListenerEvent()
-    data class Released(override val event: KeyEvent?) : KeyListenerEvent()
+
+    data class Pressed(
+        override val event: KeyEvent?,
+    ) : KeyListenerEvent()
+
+    data class Typed(
+        override val event: KeyEvent?,
+    ) : KeyListenerEvent()
+
+    data class Released(
+        override val event: KeyEvent?,
+    ) : KeyListenerEvent()
 }
 
 /** Default [KeyListenerEvent] for [Component] */
 @SwingDsl
-fun Component.keyListener(): Flow<KeyListenerEvent> = callbackFlow {
-    val keyListener = object : KeyListener {
-        override fun keyPressed(e: KeyEvent?) {
-            trySend(KeyListenerEvent.Pressed(e))
-        }
-        override fun keyTyped(e: KeyEvent?) {
-            trySend(KeyListenerEvent.Typed(e))
-        }
-        override fun keyReleased(e: KeyEvent?) {
-            trySend(KeyListenerEvent.Released(e))
-        }
-    }
-    addKeyListener(keyListener)
-    awaitClose { removeKeyListener(keyListener) }
-}.flowOn(Dispatchers.Swing)
+fun Component.keyListener(): Flow<KeyListenerEvent> =
+    callbackFlow {
+        val keyListener =
+            object : KeyListener {
+                override fun keyPressed(e: KeyEvent?) {
+                    trySend(KeyListenerEvent.Pressed(e))
+                }
+
+                override fun keyTyped(e: KeyEvent?) {
+                    trySend(KeyListenerEvent.Typed(e))
+                }
+
+                override fun keyReleased(e: KeyEvent?) {
+                    trySend(KeyListenerEvent.Released(e))
+                }
+            }
+        addKeyListener(keyListener)
+        awaitClose { removeKeyListener(keyListener) }
+    }.flowOn(Dispatchers.Swing)
 
 sealed class FocusListenerEvent {
     data object Gained : FocusListenerEvent()
+
     data object Lost : FocusListenerEvent()
 }
 
 /** Default [FocusListenerEvent] for [Component] */
 @SwingDsl
-fun Component.focusListener(): Flow<FocusListenerEvent> = callbackFlow {
-    val focusListener = object : FocusListener {
-        override fun focusGained(e: FocusEvent?) {
-            trySend(FocusListenerEvent.Gained)
-        }
+fun Component.focusListener(): Flow<FocusListenerEvent> =
+    callbackFlow {
+        val focusListener =
+            object : FocusListener {
+                override fun focusGained(e: FocusEvent?) {
+                    trySend(FocusListenerEvent.Gained)
+                }
 
-        override fun focusLost(e: FocusEvent?) {
-            trySend(FocusListenerEvent.Lost)
-        }
-    }
-    addFocusListener(focusListener)
-    awaitClose { removeFocusListener(focusListener) }
-}.flowOn(Dispatchers.Swing)
+                override fun focusLost(e: FocusEvent?) {
+                    trySend(FocusListenerEvent.Lost)
+                }
+            }
+        addFocusListener(focusListener)
+        awaitClose { removeFocusListener(focusListener) }
+    }.flowOn(Dispatchers.Swing)
 
 /** Default [ActionEvent] for [AbstractButton] */
 @SwingDsl
-fun AbstractButton.actions(): Flow<ActionEvent> = callbackFlow {
-    val actionListener = ActionListener {
-        trySend(it)
-    }
-    addActionListener(actionListener)
-    awaitClose { removeActionListener(actionListener) }
-}.flowOn(Dispatchers.Swing)
+fun AbstractButton.actions(): Flow<ActionEvent> =
+    callbackFlow {
+        val actionListener =
+            ActionListener {
+                trySend(it)
+            }
+        addActionListener(actionListener)
+        awaitClose { removeActionListener(actionListener) }
+    }.flowOn(Dispatchers.Swing)
 
 /** Default [ActionEvent] for [JTextField] */
 @SwingDsl
-fun JTextField.actions(): Flow<ActionEvent> = callbackFlow {
-    val actionListener = ActionListener {
-        trySend(it)
-    }
-    addActionListener(actionListener)
-    awaitClose { removeActionListener(actionListener) }
-}.flowOn(Dispatchers.Swing)
+fun JTextField.actions(): Flow<ActionEvent> =
+    callbackFlow {
+        val actionListener =
+            ActionListener {
+                trySend(it)
+            }
+        addActionListener(actionListener)
+        awaitClose { removeActionListener(actionListener) }
+    }.flowOn(Dispatchers.Swing)
 
 /** Default [ActionEvent] for [JComboBox] */
 @SwingDsl
-fun <E> JComboBox<E>.actions(): Flow<ActionEvent> = callbackFlow {
-    val actionListener = ActionListener {
-        trySend(it)
-    }
-    addActionListener(actionListener)
-    awaitClose { removeActionListener(actionListener) }
-}.flowOn(Dispatchers.Swing)
+fun <E> JComboBox<E>.actions(): Flow<ActionEvent> =
+    callbackFlow {
+        val actionListener =
+            ActionListener {
+                trySend(it)
+            }
+        addActionListener(actionListener)
+        awaitClose { removeActionListener(actionListener) }
+    }.flowOn(Dispatchers.Swing)
 
 /** Default [ActionEvent] for [JSpinner] */
 @SwingDsl
-fun JSpinner.changes(): Flow<ChangeEvent> = callbackFlow {
-    val actionListener = ChangeListener {
-        trySend(it)
-    }
-    addChangeListener(actionListener)
-    awaitClose { removeChangeListener(actionListener) }
-}.flowOn(Dispatchers.Swing)
+fun JSpinner.changes(): Flow<ChangeEvent> =
+    callbackFlow {
+        val actionListener =
+            ChangeListener {
+                trySend(it)
+            }
+        addChangeListener(actionListener)
+        awaitClose { removeChangeListener(actionListener) }
+    }.flowOn(Dispatchers.Swing)

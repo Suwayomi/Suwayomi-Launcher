@@ -32,7 +32,11 @@ import suwayomi.tachidesk.launcher.keyListener
 import java.net.URL
 import javax.swing.SpinnerNumberModel
 
-fun Cloudflare(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
+@Suppress("ktlint:standard:function-naming")
+fun Cloudflare(
+    vm: LauncherViewModel,
+    scope: CoroutineScope,
+) = jpanel(
     MigLayout(
         LC().alignX("center").alignY("center"),
     ),
@@ -42,8 +46,7 @@ fun Cloudflare(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
         actions()
             .onEach {
                 vm.flareSolverrEnabled.value = isSelected
-            }
-            .flowOn(Dispatchers.Default)
+            }.flowOn(Dispatchers.Default)
             .launchIn(scope)
     }.bind(CC().wrap())
     jTextArea("FlareSolverr URL") {
@@ -55,13 +58,11 @@ fun Cloudflare(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
             .filterIsInstance<KeyListenerEvent.Released>()
             .map {
                 text?.trim()
-            }
-            .onEach {
+            }.onEach {
                 if (!it.isNullOrBlank() && runCatching { URL(it).toURI() }.isSuccess) {
                     vm.flareSolverrUrl.value = it
                 }
-            }
-            .flowOn(Dispatchers.Default)
+            }.flowOn(Dispatchers.Default)
             .launchIn(scope)
         columns = 10
     }.bind(CC().grow().spanX().wrap())
@@ -69,13 +70,19 @@ fun Cloudflare(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
     jTextArea("FlareSolverr timeout") {
         isEditable = false
     }.bind()
-    jSpinner(SpinnerNumberModel(vm.flareSolverrTimeout.value.coerceAtLeast(10), 10, Int.MAX_VALUE, 1)) {
+    jSpinner(
+        SpinnerNumberModel(
+            vm.flareSolverrTimeout.value.coerceAtLeast(10),
+            10,
+            Int.MAX_VALUE,
+            1,
+        ),
+    ) {
         toolTipText = "Time limit in seconds for FlareSolverr to run, will fail if it goes over"
         changes()
             .onEach {
                 vm.flareSolverrTimeout.value = (value as Int)
-            }
-            .flowOn(Dispatchers.Default)
+            }.flowOn(Dispatchers.Default)
             .launchIn(scope)
     }.bind(CC().grow().spanX().wrap())
 
@@ -88,13 +95,11 @@ fun Cloudflare(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
             .filterIsInstance<KeyListenerEvent.Released>()
             .map {
                 text?.trim()
-            }
-            .onEach {
+            }.onEach {
                 if (!it.isNullOrBlank()) {
                     vm.flareSolverrSessionName.value = it
                 }
-            }
-            .flowOn(Dispatchers.Default)
+            }.flowOn(Dispatchers.Default)
             .launchIn(scope)
         columns = 10
     }.bind(CC().grow().spanX().wrap())
@@ -102,13 +107,19 @@ fun Cloudflare(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
     jTextArea("FlareSolverr Session TTL") {
         isEditable = false
     }.bind()
-    jSpinner(SpinnerNumberModel(vm.flareSolverrSessionTtl.value.coerceAtLeast(2), 2, Int.MAX_VALUE, 1)) {
+    jSpinner(
+        SpinnerNumberModel(
+            vm.flareSolverrSessionTtl.value.coerceAtLeast(2),
+            2,
+            Int.MAX_VALUE,
+            1,
+        ),
+    ) {
         toolTipText = "FlareSolverr session time to live in minutes"
         changes()
             .onEach {
                 vm.flareSolverrSessionTtl.value = (value as Int)
-            }
-            .flowOn(Dispatchers.Default)
+            }.flowOn(Dispatchers.Default)
             .launchIn(scope)
     }.bind(CC().grow().spanX().wrap())
     jCheckBox("FlareSolverr as fallback", selected = vm.flareSolverrAsResponseFallback.value) {
@@ -116,8 +127,7 @@ fun Cloudflare(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
         actions()
             .onEach {
                 vm.flareSolverrAsResponseFallback.value = isSelected
-            }
-            .flowOn(Dispatchers.Default)
+            }.flowOn(Dispatchers.Default)
             .launchIn(scope)
     }.bind(CC().wrap())
 }

@@ -38,7 +38,11 @@ import kotlin.io.path.Path
 import kotlin.io.path.createDirectories
 import kotlin.io.path.isWritable
 
-fun RootDir(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
+@Suppress("ktlint:standard:function-naming")
+fun RootDir(
+    vm: LauncherViewModel,
+    scope: CoroutineScope,
+) = jpanel(
     MigLayout(
         LC().alignX("center").alignY("center"),
     ),
@@ -46,36 +50,40 @@ fun RootDir(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
     jTextArea("Root path") {
         isEditable = false
     }.bind()
-    val rootDirField = jTextField(vm.rootDir.value.orEmpty()) {
-        // todo toolTipText = ""
-        focusListener()
-            .filterIsInstance<FocusListenerEvent.Lost>()
-            .combine(
-                keyListener()
-                    .filterIsInstance<KeyListenerEvent.Released>()
-                    .filter { it.event?.keyCode == KeyEvent.VK_ENTER },
-            ) { _, _ -> }
-            .map {
-                text?.trim()
-            }
-            .onEach {
-                if (it.isNullOrBlank() || runCatching { Path(it).createDirectories().isWritable() }.getOrElse { false }) {
-                    vm.rootDir.value = it?.ifEmpty { null }
-                }
-            }
-            .flowOn(Dispatchers.Default)
-            .launchIn(scope)
-        columns = 10
-    }.bind()
+    val rootDirField =
+        jTextField(vm.rootDir.value.orEmpty()) {
+            // todo toolTipText = ""
+            focusListener()
+                .filterIsInstance<FocusListenerEvent.Lost>()
+                .combine(
+                    keyListener()
+                        .filterIsInstance<KeyListenerEvent.Released>()
+                        .filter { it.event?.keyCode == KeyEvent.VK_ENTER },
+                ) { _, _ -> }
+                .map {
+                    text?.trim()
+                }.onEach {
+                    if (it.isNullOrBlank() ||
+                        runCatching {
+                            Path(it).createDirectories().isWritable()
+                        }.getOrElse { false }
+                    ) {
+                        vm.rootDir.value = it?.ifEmpty { null }
+                    }
+                }.flowOn(Dispatchers.Default)
+                .launchIn(scope)
+            columns = 10
+        }.bind()
     jbutton(icon = UIManager.getIcon("FileView.directoryIcon")) {
         // todo toolTipText = ""
         actions()
             .onEach {
-                val chooser = JFileChooser().apply {
-                    val details = actionMap.get("viewTypeDetails")
-                    details?.actionPerformed(null)
-                    fileSelectionMode = JFileChooser.DIRECTORIES_ONLY
-                }
+                val chooser =
+                    JFileChooser().apply {
+                        val details = actionMap.get("viewTypeDetails")
+                        details?.actionPerformed(null)
+                        fileSelectionMode = JFileChooser.DIRECTORIES_ONLY
+                    }
                 when (chooser.showOpenDialog(this)) {
                     JFileChooser.APPROVE_OPTION -> {
                         val path = chooser.selectedFile.absolutePath
@@ -83,8 +91,7 @@ fun RootDir(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
                         rootDirField.text = path
                     }
                 }
-            }
-            .flowOn(Dispatchers.Default)
+            }.flowOn(Dispatchers.Default)
             .launchIn(scope)
     }.bind(CC().grow().spanX().wrap())
 }

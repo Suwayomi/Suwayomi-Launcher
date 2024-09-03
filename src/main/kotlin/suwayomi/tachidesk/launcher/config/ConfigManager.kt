@@ -35,11 +35,10 @@ class ConfigManager(
         updateUserConfig()
     }
 
-    private fun getUserConfig(): Config {
-        return userConfigFile.let {
+    private fun getUserConfig(): Config =
+        userConfigFile.let {
             ConfigFactory.parseFile(it.toFile())
         }
-    }
 
     var config: Config = getUserConfig()
         private set
@@ -72,12 +71,18 @@ class ConfigManager(
         userConfigFile.writeText(serverConfigDoc.render())
 
         var newUserConfigDoc: ConfigDocument = serverConfigDoc
-        userConfig.entrySet().filter { serverConfig.hasPath(it.key) }.forEach { newUserConfigDoc = newUserConfigDoc.withValue(it.key, it.value) }
+        userConfig.entrySet().filter { serverConfig.hasPath(it.key) }.forEach {
+            newUserConfigDoc =
+                newUserConfigDoc.withValue(it.key, it.value)
+        }
 
         userConfigFile.writeText(newUserConfigDoc.render())
     }
 
-    private fun updateUserConfigFile(path: String, value: ConfigValue) {
+    private fun updateUserConfigFile(
+        path: String,
+        value: ConfigValue,
+    ) {
         val userConfigDoc = ConfigDocumentFactory.parseFile(userConfigFile.toFile())
         val updatedConfigDoc = userConfigDoc.withValue(path, value)
         val newFileContent = updatedConfigDoc.render()
@@ -86,7 +91,10 @@ class ConfigManager(
 
     private val configMutex = Mutex()
 
-    suspend fun updateValue(path: String, value: Any) {
+    suspend fun updateValue(
+        path: String,
+        value: Any,
+    ) {
         configMutex.withLock {
             val configValue = ConfigValueFactory.fromAnyRef(value)
 
@@ -97,11 +105,10 @@ class ConfigManager(
     }
 
     companion object {
-        private fun getDefaultConfig(tachideskServer: Path): String {
-            return FileSystems.newFileSystem(tachideskServer, null as ClassLoader?).use {
+        private fun getDefaultConfig(tachideskServer: Path): String =
+            FileSystems.newFileSystem(tachideskServer, null as ClassLoader?).use {
                 it.getPath("/server-reference.conf").readText()
             }
-        }
 
         fun getServerConf(rootDir: String) = Path(rootDir, "server.conf")
 

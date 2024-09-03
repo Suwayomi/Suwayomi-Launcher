@@ -2,6 +2,7 @@
 .gradle
 /.idea
 gradle.properties
+.kotlin
 
 # But we need these
 !/.idea/runConfigurations/

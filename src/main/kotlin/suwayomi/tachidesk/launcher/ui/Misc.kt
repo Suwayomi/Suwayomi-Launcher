@@ -22,28 +22,32 @@ import suwayomi.tachidesk.launcher.bind
 import suwayomi.tachidesk.launcher.jCheckBox
 import suwayomi.tachidesk.launcher.jpanel
 
-fun Misc(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
+@Suppress("ktlint:standard:function-naming")
+fun Misc(
+    vm: LauncherViewModel,
+    scope: CoroutineScope,
+) = jpanel(
     MigLayout(
         LC().alignX("center").alignY("center"),
     ),
 ) {
     jCheckBox("Debug logging", selected = vm.debug.value) {
-        toolTipText = "Use this to toggle extra logging to the console window to help debug issues." // todo improve
+        toolTipText =
+            "Use this to toggle extra logging to the console window to help debug issues." // todo improve
         actions()
             .onEach {
                 vm.debug.value = isSelected
-            }
-            .flowOn(Dispatchers.Default)
+            }.flowOn(Dispatchers.Default)
             .launchIn(scope)
     }.bind(CC().wrap())
 
     jCheckBox("GraphQL Debug logging", selected = vm.gqlDebug.value) {
-        toolTipText = "Use this to toggle extra logging to the console window to help debug graphql issues." // todo improve
+        toolTipText =
+            "Use this to toggle extra logging to the console window to help debug graphql issues." // todo improve
         actions()
             .onEach {
                 vm.gqlDebug.value = isSelected
-            }
-            .flowOn(Dispatchers.Default)
+            }.flowOn(Dispatchers.Default)
             .launchIn(scope)
     }.bind(CC().wrap())
 
@@ -52,8 +56,7 @@ fun Misc(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
         actions()
             .onEach {
                 vm.systemTray.value = isSelected
-            }
-            .flowOn(Dispatchers.Default)
+            }.flowOn(Dispatchers.Default)
             .launchIn(scope)
     }.bind()
 }

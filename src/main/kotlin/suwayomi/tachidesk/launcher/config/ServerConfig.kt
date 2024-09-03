@@ -20,11 +20,15 @@ class ServerConfig(
     private val scope: CoroutineScope,
     private val configManager: ConfigManager,
 ) {
-
-    inner class OverrideConfigValue<T : Any>(private val configAdapter: ConfigAdapter<T>) : ReadOnlyProperty<ServerConfig, MutableStateFlow<T>> {
+    inner class OverrideConfigValue<T : Any>(
+        private val configAdapter: ConfigAdapter<T>,
+    ) : ReadOnlyProperty<ServerConfig, MutableStateFlow<T>> {
         private var flow: MutableStateFlow<T>? = null
 
-        override fun getValue(thisRef: ServerConfig, property: KProperty<*>): MutableStateFlow<T> {
+        override fun getValue(
+            thisRef: ServerConfig,
+            property: KProperty<*>,
+        ): MutableStateFlow<T> {
             if (flow != null) {
                 return flow!!
             }
@@ -38,8 +42,7 @@ class ServerConfig(
                 .drop(1)
                 .onEach {
                     configManager.updateValue(path, it)
-                }
-                .launchIn(scope)
+                }.launchIn(scope)
 
             return stateFlow
         }

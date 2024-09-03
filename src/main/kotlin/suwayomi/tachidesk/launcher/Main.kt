@@ -49,20 +49,21 @@ import kotlin.system.exitProcess
 
 suspend fun main(args: Array<String>) {
     Thread.setDefaultUncaughtExceptionHandler { _, e ->
-        val option = JOptionPane.showOptionDialog(
-            null,
-            e.message ?: "Unknown error",
-            "Uncaught exception",
-            JOptionPane.YES_NO_CANCEL_OPTION,
-            JOptionPane.ERROR_MESSAGE,
-            null,
-            arrayOf(
-                "Copy",
-                "Reset",
-                "Close",
-            ),
-            1,
-        )
+        val option =
+            JOptionPane.showOptionDialog(
+                null,
+                e.message ?: "Unknown error",
+                "Uncaught exception",
+                JOptionPane.YES_NO_CANCEL_OPTION,
+                JOptionPane.ERROR_MESSAGE,
+                null,
+                arrayOf(
+                    "Copy",
+                    "Reset",
+                    "Close",
+                ),
+                1,
+            )
         when (option) {
             0 -> {
                 val error = StringSelection(e.message + ":\n" + e.stackTraceToString())
@@ -89,7 +90,8 @@ suspend fun main(args: Array<String>) {
             isResizable = false
             setLocationRelativeTo(null)
             defaultCloseOperation = JFrame.EXIT_ON_CLOSE
-            contentPane = jpanel(MigLayout(LC().fill())) {
+            contentPane =
+                jpanel(MigLayout(LC().fill())) {
                 /*jpanel(
                     FlowLayout().apply {
                         alignment = FlowLayout.TRAILING
@@ -105,40 +107,38 @@ suspend fun main(args: Array<String>) {
                     }.bind()
                 }.bind("north")*/
 
-                jTabbedPane {
-                    addTab("Extension", Extension(vm, scope))
-                    addTab("Server bindings", ServerIpAndPortBindings(vm, scope))
-                    addTab("SOCKS Proxy", Socks5(vm, scope))
-                    addTab("Authentication", BasicAuth(vm, scope))
-                    addTab("WebUI", WebUI(vm, scope))
-                    addTab("Updater", Updater(vm, scope))
-                    addTab("Downloader", Downloader(vm, scope))
-                    addTab("Misc", Misc(vm, scope))
-                    addTab("Backup", Backup(vm, scope))
-                    addTab("Local Source", LocalSource(vm, scope))
-                    addTab("Requests", Requests(vm, scope))
-                    addTab("Cloudflare", Cloudflare(vm, scope))
-                    addTab("Root Directory", RootDir(vm, scope))
-                }.bind(CC().grow())
-                jpanel {
-                    jbutton("Launch") {
-                        actions()
-                            .onEach {
-                                vm.launch()
-                            }
-                            .flowOn(Dispatchers.Default)
-                            .launchIn(scope)
-                    }.bind()
-                    jbutton("Electron") {
-                        actions()
-                            .onEach {
-                                vm.launch(forceElectron = true)
-                            }
-                            .flowOn(Dispatchers.Default)
-                            .launchIn(scope)
-                    }.bind()
-                }.bind("south")
-            }
+                    jTabbedPane {
+                        addTab("Extension", Extension(vm, scope))
+                        addTab("Server bindings", ServerIpAndPortBindings(vm, scope))
+                        addTab("SOCKS Proxy", Socks5(vm, scope))
+                        addTab("Authentication", BasicAuth(vm, scope))
+                        addTab("WebUI", WebUI(vm, scope))
+                        addTab("Updater", Updater(vm, scope))
+                        addTab("Downloader", Downloader(vm, scope))
+                        addTab("Misc", Misc(vm, scope))
+                        addTab("Backup", Backup(vm, scope))
+                        addTab("Local Source", LocalSource(vm, scope))
+                        addTab("Requests", Requests(vm, scope))
+                        addTab("Cloudflare", Cloudflare(vm, scope))
+                        addTab("Root Directory", RootDir(vm, scope))
+                    }.bind(CC().grow())
+                    jpanel {
+                        jbutton("Launch") {
+                            actions()
+                                .onEach {
+                                    vm.launch()
+                                }.flowOn(Dispatchers.Default)
+                                .launchIn(scope)
+                        }.bind()
+                        jbutton("Electron") {
+                            actions()
+                                .onEach {
+                                    vm.launch(forceElectron = true)
+                                }.flowOn(Dispatchers.Default)
+                                .launchIn(scope)
+                        }.bind()
+                    }.bind("south")
+                }
         }
     }
 }
@@ -146,11 +146,12 @@ suspend fun main(args: Array<String>) {
 fun setupTheme(vm: LauncherViewModel) {
     vm.theme.value?.let {
         try {
-            val theme = Base64.getDecoder().decode(it).inputStream().use {
-                ObjectInputStream(it).use {
-                    it.readObject() as Theme
+            val theme =
+                Base64.getDecoder().decode(it).inputStream().use {
+                    ObjectInputStream(it).use {
+                        it.readObject() as Theme
+                    }
                 }
-            }
             LafManager.setTheme(theme)
         } catch (e: Exception) {
             LafManager.setTheme(LafManager.getPreferredThemeStyle())
@@ -160,6 +161,7 @@ fun setupTheme(vm: LauncherViewModel) {
     LafManager.addThemeChangeListener(
         object : ThemeChangeListener {
             override fun themeChanged(e: ThemeChangeEvent) {}
+
             override fun themeInstalled(e: ThemeChangeEvent) {
                 ByteArrayOutputStream().use { it ->
                     ObjectOutputStream(it).use {

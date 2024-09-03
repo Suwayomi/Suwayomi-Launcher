@@ -12,9 +12,10 @@ import com.russhwolf.settings.PreferencesSettings
 import java.util.prefs.Preferences
 
 class LauncherSettings {
-    private val settings = PreferencesSettings(
-        Preferences.userRoot().node("suwayomi/launcher"),
-    )
+    private val settings =
+        PreferencesSettings(
+            Preferences.userRoot().node("suwayomi/launcher"),
+        )
 
     enum class WebUIFlavor {
         WebUI,
@@ -34,25 +35,23 @@ class LauncherSettings {
     }
 
     // Directories
-    fun rootDir(): LauncherPreference<String?> {
-        return LauncherPreference(
+    fun rootDir(): LauncherPreference<String?> =
+        LauncherPreference(
             "rootDir",
             "root",
             null,
             settings,
             StringOrNullAdapter,
         )
-    }
 
-    fun theme(): LauncherPreference<String?> {
-        return LauncherPreference(
+    fun theme(): LauncherPreference<String?> =
+        LauncherPreference(
             "theme",
             "theme",
             null,
             settings,
             StringOrNullAdapter,
         )
-    }
 
     fun getProperties() = listOf(rootDir()).mapNotNull { it.getProperty() }
 }

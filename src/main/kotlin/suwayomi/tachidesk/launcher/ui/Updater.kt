@@ -26,7 +26,11 @@ import suwayomi.tachidesk.launcher.jTextArea
 import suwayomi.tachidesk.launcher.jpanel
 import javax.swing.SpinnerNumberModel
 
-fun Updater(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
+@Suppress("ktlint:standard:function-naming")
+fun Updater(
+    vm: LauncherViewModel,
+    scope: CoroutineScope,
+) = jpanel(
     MigLayout(
         LC().alignX("center").alignY("center"),
     ),
@@ -36,8 +40,7 @@ fun Updater(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
         actions()
             .onEach {
                 vm.excludeUnreadChapters.value = isSelected
-            }
-            .flowOn(Dispatchers.Default)
+            }.flowOn(Dispatchers.Default)
             .launchIn(scope)
     }.bind(CC().spanX())
 
@@ -46,8 +49,7 @@ fun Updater(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
         actions()
             .onEach {
                 vm.excludeNotStarted.value = isSelected
-            }
-            .flowOn(Dispatchers.Default)
+            }.flowOn(Dispatchers.Default)
             .launchIn(scope)
     }.bind(CC().spanX())
 
@@ -56,37 +58,44 @@ fun Updater(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
         actions()
             .onEach {
                 vm.excludeCompleted.value = isSelected
-            }
-            .flowOn(Dispatchers.Default)
+            }.flowOn(Dispatchers.Default)
             .launchIn(scope)
     }.bind(CC().spanX())
 
-    val spinner = jSpinner(SpinnerNumberModel(vm.globalUpdateInterval.value.coerceIn(6.0, 168.0), 6.0, 168.0, 0.5)) {
-        toolTipText = "Time in hours, the interval in which the global update will be automatically triggered" // todo improve
-        changes()
-            .onEach {
-                vm.globalUpdateInterval.value = value as Double
+    val spinner =
+        jSpinner(
+            SpinnerNumberModel(
+                vm.globalUpdateInterval.value.coerceIn(6.0, 168.0),
+                6.0,
+                168.0,
+                0.5,
+            ),
+        ) {
+            toolTipText =
+                "Time in hours, the interval in which the global update will be automatically triggered" // todo improve
+            changes()
+                .onEach {
+                    vm.globalUpdateInterval.value = value as Double
+                }.flowOn(Dispatchers.Default)
+                .launchIn(scope)
+            if (vm.globalUpdateInterval.value == 0.0) {
+                isEnabled = false
+                value = 12.0
             }
-            .flowOn(Dispatchers.Default)
-            .launchIn(scope)
-        if (vm.globalUpdateInterval.value == 0.0) {
-            isEnabled = false
-            value = 12.0
         }
-    }
 
     jCheckBox("Global Update", selected = vm.globalUpdateInterval.value != 0.0) {
         // todo toolTipText = ""
         actions()
             .onEach {
-                vm.globalUpdateInterval.value = if (isSelected) {
-                    spinner.value as Double
-                } else {
-                    0.0
-                }
+                vm.globalUpdateInterval.value =
+                    if (isSelected) {
+                        spinner.value as Double
+                    } else {
+                        0.0
+                    }
                 spinner.isEnabled = isSelected
-            }
-            .flowOn(Dispatchers.Default)
+            }.flowOn(Dispatchers.Default)
             .launchIn(scope)
     }.bind(CC().spanX())
 
@@ -100,8 +109,7 @@ fun Updater(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
         actions()
             .onEach {
                 vm.updateMangas.value = isSelected
-            }
-            .flowOn(Dispatchers.Default)
+            }.flowOn(Dispatchers.Default)
             .launchIn(scope)
     }.bind(CC().spanX())
 }

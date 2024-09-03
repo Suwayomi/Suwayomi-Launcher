@@ -15,27 +15,19 @@ interface ConfigAdapter<T> {
 }
 
 object StringConfigAdapter : ConfigAdapter<String> {
-    override fun toType(configValue: ConfigValue): String {
-        return configValue.unwrapped() as String
-    }
+    override fun toType(configValue: ConfigValue): String = configValue.unwrapped() as String
 }
 
 object IntConfigAdapter : ConfigAdapter<Int> {
-    override fun toType(configValue: ConfigValue): Int {
-        return (configValue.unwrapped() as Number).toInt()
-    }
+    override fun toType(configValue: ConfigValue): Int = (configValue.unwrapped() as Number).toInt()
 }
 
 object BooleanConfigAdapter : ConfigAdapter<Boolean> {
-    override fun toType(configValue: ConfigValue): Boolean {
-        return configValue.unwrapped() as Boolean
-    }
+    override fun toType(configValue: ConfigValue): Boolean = configValue.unwrapped() as Boolean
 }
 
 object DoubleConfigAdapter : ConfigAdapter<Double> {
-    override fun toType(configValue: ConfigValue): Double {
-        return (configValue.unwrapped() as Number).toDouble()
-    }
+    override fun toType(configValue: ConfigValue): Double = (configValue.unwrapped() as Number).toDouble()
 }
 
 object StringListConfigAdapter : ConfigAdapter<List<String>> {

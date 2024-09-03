@@ -35,9 +35,13 @@ private val repoMatchRegex =
     (
         "https:\\/\\/(?>www\\.|raw\\.)?(github|githubusercontent)\\.com" +
             "\\/([^\\/]+)\\/([^\\/]+)(?>(?>\\/tree|\\/blob)?\\/([^\\/\\n]*))?(?>\\/([^\\/\\n]*\\.json)?)?"
-        ).toRegex()
+    ).toRegex()
 
-fun Extension(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
+@Suppress("ktlint:standard:function-naming")
+fun Extension(
+    vm: LauncherViewModel,
+    scope: CoroutineScope,
+) = jpanel(
     MigLayout(
         LC().alignX("center").alignY("center"),
     ),
@@ -50,20 +54,20 @@ fun Extension(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
         .drop(1)
         .onEach {
             extensionRepos.setListData(it.toTypedArray())
-        }
-        .flowOn(Dispatchers.Main)
+        }.flowOn(Dispatchers.Main)
         .launchIn(scope)
     val textField = MutableStateFlow("")
-    val jTextField = jTextField(textField.value) {
-        toolTipText = "Add additional repos to Suwayomi, the format of a repo is \"https://github.com/MY_ACCOUNT/MY_REPO\""
-        keyListener()
-            .filterIsInstance<KeyListenerEvent.Released>()
-            .onEach {
-                textField.value = text?.trim().orEmpty()
-            }
-            .flowOn(Dispatchers.Default)
-            .launchIn(scope)
-    }.bind(CC().grow().spanX())
+    val jTextField =
+        jTextField(textField.value) {
+            toolTipText =
+                "Add additional repos to Suwayomi, the format of a repo is \"https://github.com/MY_ACCOUNT/MY_REPO\""
+            keyListener()
+                .filterIsInstance<KeyListenerEvent.Released>()
+                .onEach {
+                    textField.value = text?.trim().orEmpty()
+                }.flowOn(Dispatchers.Default)
+                .launchIn(scope)
+        }.bind(CC().grow().spanX())
     jbutton("Add") {
         actions()
             .onEach {
@@ -71,14 +75,12 @@ fun Extension(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
                 vm.extensionRepos.value = changed.distinct()
                 textField.value = ""
                 jTextField.text = ""
-            }
-            .flowOn(Dispatchers.Default)
+            }.flowOn(Dispatchers.Default)
             .launchIn(scope)
         textField
             .onEach {
                 isEnabled = it.matches(repoMatchRegex)
-            }
-            .flowOn(Dispatchers.Main)
+            }.flowOn(Dispatchers.Main)
             .launchIn(scope)
     }.bind()
     jbutton("Remove") {
@@ -89,8 +91,7 @@ fun Extension(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
             .onEach {
                 val changed = vm.extensionRepos.value - extensionRepos.selectedValuesList.toSet()
                 vm.extensionRepos.value = changed.distinct()
-            }
-            .flowOn(Dispatchers.Default)
+            }.flowOn(Dispatchers.Default)
             .launchIn(scope)
     }.bind(CC().wrap())
 

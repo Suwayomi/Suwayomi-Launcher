@@ -24,7 +24,11 @@ import suwayomi.tachidesk.launcher.jTextArea
 import suwayomi.tachidesk.launcher.jpanel
 import javax.swing.SpinnerNumberModel
 
-fun Requests(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
+@Suppress("ktlint:standard:function-naming")
+fun Requests(
+    vm: LauncherViewModel,
+    scope: CoroutineScope,
+) = jpanel(
     MigLayout(
         LC().alignX("center").alignY("center"),
     ),
@@ -33,12 +37,14 @@ fun Requests(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
         isEditable = false
     }.bind()
     jSpinner(SpinnerNumberModel(vm.maxSourcesInParallel.value.coerceIn(6, 20), 6, 20, 1)) {
-        toolTipText = "Sets how many sources can do requests (updates, downloads) in parallel. Updates/Downloads are grouped by source and all mangas of a source are updated/downloaded synchronously" // todo improve
+        toolTipText =
+            "Sets how many sources can do requests (updates, downloads) in parallel. " +
+            "Updates/Downloads are grouped by source and all mangas of a source are " +
+            "updated/downloaded synchronously" // todo improve
         changes()
             .onEach {
                 vm.maxSourcesInParallel.value = value as Int
-            }
-            .flowOn(Dispatchers.Default)
+            }.flowOn(Dispatchers.Default)
             .launchIn(scope)
     }.bind(CC().grow().spanX())
 }

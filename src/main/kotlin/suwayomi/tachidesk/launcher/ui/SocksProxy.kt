@@ -31,7 +31,11 @@ import suwayomi.tachidesk.launcher.jpanel
 import suwayomi.tachidesk.launcher.keyListener
 import javax.swing.SpinnerNumberModel
 
-fun Socks5(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
+@Suppress("ktlint:standard:function-naming")
+fun Socks5(
+    vm: LauncherViewModel,
+    scope: CoroutineScope,
+) = jpanel(
     MigLayout(
         LC().alignX("center").alignY("center"),
     ),
@@ -41,8 +45,7 @@ fun Socks5(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
         actions()
             .onEach {
                 vm.socksProxyEnabled.value = isSelected
-            }
-            .flowOn(Dispatchers.Default)
+            }.flowOn(Dispatchers.Default)
             .launchIn(scope)
     }.bind(CC().spanX())
 
@@ -50,8 +53,7 @@ fun Socks5(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
         changes()
             .onEach {
                 vm.socksProxyVersion.value = (value as Int)
-            }
-            .flowOn(Dispatchers.Default)
+            }.flowOn(Dispatchers.Default)
             .launchIn(scope)
     }.bind(CC().grow().spanX().wrap())
 
@@ -67,14 +69,12 @@ fun Socks5(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
         vm.socksProxyEnabled
             .onEach {
                 isEnabled = it
-            }
-            .launchIn(scope)
+            }.launchIn(scope)
         // todo toolTipText = ""
         actions()
             .onEach {
                 vm.socksProxyHost.value = text
-            }
-            .flowOn(Dispatchers.Default)
+            }.flowOn(Dispatchers.Default)
             .launchIn(scope)
         columns = 10
     }.bind(CC().grow().spanX().wrap())
@@ -82,19 +82,27 @@ fun Socks5(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
     jTextArea("Socks Port") {
         isEditable = false
     }.bind()
-    jSpinner(SpinnerNumberModel(vm.socksProxyPort.value.toIntOrNull()?.coerceAtLeast(0) ?: 0, 0, Int.MAX_VALUE, 1)) {
+    jSpinner(
+        SpinnerNumberModel(
+            vm.socksProxyPort.value
+                .toIntOrNull()
+                ?.coerceAtLeast(0) ?: 0,
+            0,
+            Int.MAX_VALUE,
+            1,
+        ),
+    ) {
         // todo toolTipText = ""
         isEnabled = vm.socksProxyEnabled.value
         vm.socksProxyEnabled
             .onEach {
                 isEnabled = it
-            }
-            .launchIn(scope)
+            }.launchIn(scope)
         changes()
             .onEach {
-                vm.socksProxyPort.value = (value as Int).takeUnless { it == 0 }?.toString().orEmpty()
-            }
-            .flowOn(Dispatchers.Default)
+                vm.socksProxyPort.value =
+                    (value as Int).takeUnless { it == 0 }?.toString().orEmpty()
+            }.flowOn(Dispatchers.Default)
             .launchIn(scope)
     }.bind(CC().grow().spanX().wrap())
 
@@ -106,15 +114,13 @@ fun Socks5(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
         vm.socksProxyEnabled
             .onEach {
                 isEnabled = it
-            }
-            .launchIn(scope)
+            }.launchIn(scope)
         // todo toolTipText = ""
         keyListener()
             .filterIsInstance<KeyListenerEvent.Released>()
             .onEach {
                 vm.socksProxyUsername.value = text?.trim().orEmpty()
-            }
-            .flowOn(Dispatchers.Default)
+            }.flowOn(Dispatchers.Default)
             .launchIn(scope)
         columns = 10 // todo why?
     }.bind(CC().grow().spanX().wrap())
@@ -127,15 +133,13 @@ fun Socks5(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
         vm.socksProxyEnabled
             .onEach {
                 isEnabled = it
-            }
-            .launchIn(scope)
+            }.launchIn(scope)
         // todo toolTipText = ""
         keyListener()
             .filterIsInstance<KeyListenerEvent.Released>()
             .onEach {
                 vm.socksProxyPassword.value = password?.concatToString()?.trim().orEmpty()
-            }
-            .flowOn(Dispatchers.Default)
+            }.flowOn(Dispatchers.Default)
             .launchIn(scope)
         columns = 10 // todo why?
     }.bind(CC().grow().spanX())

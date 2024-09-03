@@ -42,7 +42,11 @@ import kotlin.io.path.Path
 import kotlin.io.path.createDirectories
 import kotlin.io.path.isWritable
 
-fun Downloader(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
+@Suppress("ktlint:standard:function-naming")
+fun Downloader(
+    vm: LauncherViewModel,
+    scope: CoroutineScope,
+) = jpanel(
     MigLayout(
         LC().alignX("center").alignY("center"),
     ),
@@ -52,43 +56,46 @@ fun Downloader(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
         actions()
             .onEach {
                 vm.downloadAsCbz.value = isSelected
-            }
-            .flowOn(Dispatchers.Default)
+            }.flowOn(Dispatchers.Default)
             .launchIn(scope)
     }.bind(CC().wrap())
     jTextArea("Downloads path") {
         isEditable = false
     }.bind()
-    val downloadsPathField = jTextField(vm.downloadsPath.value) {
-        // todo toolTipText = ""
-        focusListener()
-            .filterIsInstance<FocusListenerEvent.Lost>()
-            .combine(
-                keyListener()
-                    .filterIsInstance<KeyListenerEvent.Released>()
-                    .filter { it.event?.keyCode == KeyEvent.VK_ENTER },
-            ) { _, _ -> }
-            .map {
-                text?.trim()
-            }
-            .onEach {
-                if (it.isNullOrBlank() || runCatching { Path(it).createDirectories().isWritable() }.getOrElse { false }) {
-                    vm.downloadsPath.value = it.orEmpty()
-                }
-            }
-            .flowOn(Dispatchers.Default)
-            .launchIn(scope)
-        columns = 10
-    }.bind()
+    val downloadsPathField =
+        jTextField(vm.downloadsPath.value) {
+            // todo toolTipText = ""
+            focusListener()
+                .filterIsInstance<FocusListenerEvent.Lost>()
+                .combine(
+                    keyListener()
+                        .filterIsInstance<KeyListenerEvent.Released>()
+                        .filter { it.event?.keyCode == KeyEvent.VK_ENTER },
+                ) { _, _ -> }
+                .map {
+                    text?.trim()
+                }.onEach {
+                    if (it.isNullOrBlank() ||
+                        runCatching {
+                            Path(it).createDirectories().isWritable()
+                        }.getOrElse { false }
+                    ) {
+                        vm.downloadsPath.value = it.orEmpty()
+                    }
+                }.flowOn(Dispatchers.Default)
+                .launchIn(scope)
+            columns = 10
+        }.bind()
     jbutton(icon = UIManager.getIcon("FileView.directoryIcon")) {
         // todo toolTipText = ""
         actions()
             .onEach {
-                val chooser = JFileChooser().apply {
-                    val details = actionMap.get("viewTypeDetails")
-                    details?.actionPerformed(null)
-                    fileSelectionMode = JFileChooser.DIRECTORIES_ONLY
-                }
+                val chooser =
+                    JFileChooser().apply {
+                        val details = actionMap.get("viewTypeDetails")
+                        details?.actionPerformed(null)
+                        fileSelectionMode = JFileChooser.DIRECTORIES_ONLY
+                    }
                 when (chooser.showOpenDialog(this)) {
                     JFileChooser.APPROVE_OPTION -> {
                         val path = chooser.selectedFile.absolutePath
@@ -96,51 +103,57 @@ fun Downloader(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
                         downloadsPathField.text = path
                     }
                 }
-            }
-            .flowOn(Dispatchers.Default)
+            }.flowOn(Dispatchers.Default)
             .launchIn(scope)
     }.bind(CC().grow().spanX().wrap())
 
     jCheckBox("Download new chapters", selected = vm.autoDownloadNewChapters.value) {
-        toolTipText = "If new chapters that have been found, should Suwayomi download them automatically." // todo improve
+        toolTipText =
+            "If new chapters that have been found, should Suwayomi download them automatically." // todo improve
         actions()
             .onEach {
                 vm.autoDownloadNewChapters.value = isSelected
-            }
-            .flowOn(Dispatchers.Default)
+            }.flowOn(Dispatchers.Default)
             .launchIn(scope)
     }.bind(CC().wrap())
 
     jCheckBox("Exclude unread entries", selected = vm.excludeEntryWithUnreadChapters.value) {
-        toolTipText = "Ignore automatic chapter downloads of entries with unread chapters." // todo improve
+        toolTipText =
+            "Ignore automatic chapter downloads of entries with unread chapters." // todo improve
         actions()
             .onEach {
                 vm.excludeEntryWithUnreadChapters.value = isSelected
-            }
-            .flowOn(Dispatchers.Default)
+            }.flowOn(Dispatchers.Default)
             .launchIn(scope)
     }.bind(CC().wrap())
 
     jCheckBox("Exclude re-uploaded entries", selected = vm.autoDownloadIgnoreReUploads.value) {
-        toolTipText = "Ignore automatic chapter downloads of entries that are already uploaded." // todo improve
+        toolTipText =
+            "Ignore automatic chapter downloads of entries that are already uploaded." // todo improve
         actions()
             .onEach {
                 vm.autoDownloadIgnoreReUploads.value = isSelected
-            }
-            .flowOn(Dispatchers.Default)
+            }.flowOn(Dispatchers.Default)
             .launchIn(scope)
     }.bind(CC().wrap())
 
     jTextArea("Download new chapters limit") {
         isEditable = false
     }.bind()
-    jSpinner(SpinnerNumberModel(vm.autoDownloadNewChaptersLimit.value.coerceAtLeast(0), 0, Int.MAX_VALUE, 1)) {
-        toolTipText = "0 to disable it - How many unread downloaded chapters should be available - If the limit is reached, new chapters won't be downloaded automatically"
+    jSpinner(
+        SpinnerNumberModel(
+            vm.autoDownloadNewChaptersLimit.value.coerceAtLeast(0),
+            0,
+            Int.MAX_VALUE,
+            1,
+        ),
+    ) {
+        toolTipText =
+            "0 to disable it - How many unread downloaded chapters should be available - If the limit is reached, new chapters won't be downloaded automatically"
         changes()
             .onEach {
                 vm.autoDownloadNewChaptersLimit.value = (value as Int)
-            }
-            .flowOn(Dispatchers.Default)
+            }.flowOn(Dispatchers.Default)
             .launchIn(scope)
     }.bind(CC().grow().spanX().wrap())
 }

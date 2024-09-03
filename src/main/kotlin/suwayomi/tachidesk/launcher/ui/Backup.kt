@@ -41,7 +41,11 @@ import kotlin.io.path.Path
 import kotlin.io.path.createDirectories
 import kotlin.io.path.isWritable
 
-fun Backup(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
+@Suppress("ktlint:standard:function-naming")
+fun Backup(
+    vm: LauncherViewModel,
+    scope: CoroutineScope,
+) = jpanel(
     MigLayout(
         LC().alignX("center").alignY("center"),
     ),
@@ -49,36 +53,40 @@ fun Backup(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
     jTextArea("Backups path") {
         isEditable = false
     }.bind()
-    val backupPathField = jTextField(vm.backupPath.value) {
-        // todo toolTipText = ""
-        focusListener()
-            .filterIsInstance<FocusListenerEvent.Lost>()
-            .combine(
-                keyListener()
-                    .filterIsInstance<KeyListenerEvent.Released>()
-                    .filter { it.event?.keyCode == KeyEvent.VK_ENTER },
-            ) { _, _ -> }
-            .map {
-                text?.trim()
-            }
-            .onEach {
-                if (it.isNullOrBlank() || runCatching { Path(it).createDirectories().isWritable() }.getOrElse { false }) {
-                    vm.backupPath.value = it.orEmpty()
-                }
-            }
-            .flowOn(Dispatchers.Default)
-            .launchIn(scope)
-        columns = 10
-    }.bind()
+    val backupPathField =
+        jTextField(vm.backupPath.value) {
+            // todo toolTipText = ""
+            focusListener()
+                .filterIsInstance<FocusListenerEvent.Lost>()
+                .combine(
+                    keyListener()
+                        .filterIsInstance<KeyListenerEvent.Released>()
+                        .filter { it.event?.keyCode == KeyEvent.VK_ENTER },
+                ) { _, _ -> }
+                .map {
+                    text?.trim()
+                }.onEach {
+                    if (it.isNullOrBlank() ||
+                        runCatching {
+                            Path(it).createDirectories().isWritable()
+                        }.getOrElse { false }
+                    ) {
+                        vm.backupPath.value = it.orEmpty()
+                    }
+                }.flowOn(Dispatchers.Default)
+                .launchIn(scope)
+            columns = 10
+        }.bind()
     jbutton(icon = UIManager.getIcon("FileView.directoryIcon")) {
         // todo toolTipText = ""
         actions()
             .onEach {
-                val chooser = JFileChooser().apply {
-                    val details = actionMap.get("viewTypeDetails")
-                    details?.actionPerformed(null)
-                    fileSelectionMode = JFileChooser.DIRECTORIES_ONLY
-                }
+                val chooser =
+                    JFileChooser().apply {
+                        val details = actionMap.get("viewTypeDetails")
+                        details?.actionPerformed(null)
+                        fileSelectionMode = JFileChooser.DIRECTORIES_ONLY
+                    }
                 when (chooser.showOpenDialog(this)) {
                     JFileChooser.APPROVE_OPTION -> {
                         val path = chooser.selectedFile.absolutePath
@@ -86,8 +94,7 @@ fun Backup(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
                         backupPathField.text = path
                     }
                 }
-            }
-            .flowOn(Dispatchers.Default)
+            }.flowOn(Dispatchers.Default)
             .launchIn(scope)
     }.bind(CC().grow().spanX().wrap())
 
@@ -100,17 +107,21 @@ fun Backup(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
         isEditable = false
     }.bind()
     jTextField(vm.backupTime.value) {
-        toolTipText = "range: hour: 0-23, minute: 0-59 - default: \"00:00\" - time of day at which the automated backup should be triggered" // todo improve
+        toolTipText =
+            "range: hour: 0-23, minute: 0-59 - default: \"00:00\" - " +
+            "time of day at which the automated backup should be triggered" // todo improve
         actions()
             .filter {
                 text.count { it == ':' } == 1 &&
-                    text.substringBefore(':').let { it.isNotEmpty() && it.all { it.isDigit() } && it.toInt() in 0..23 } &&
-                    text.substringAfter(':').let { it.isNotEmpty() && it.all { it.isDigit() } && it.toInt() in 0..59 }
-            }
-            .onEach {
+                    text
+                        .substringBefore(':')
+                        .let { it.isNotEmpty() && it.all { it.isDigit() } && it.toInt() in 0..23 } &&
+                    text
+                        .substringAfter(':')
+                        .let { it.isNotEmpty() && it.all { it.isDigit() } && it.toInt() in 0..59 }
+            }.onEach {
                 vm.backupTime.value = text
-            }
-            .flowOn(Dispatchers.Default)
+            }.flowOn(Dispatchers.Default)
             .launchIn(scope)
         columns = 15
     }.bind(CC().grow().spanX().wrap())
@@ -119,12 +130,12 @@ fun Backup(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
         isEditable = false
     }.bind()
     jSpinner(SpinnerNumberModel(vm.backupInterval.value.coerceIn(0, 14), 0, 14, 1)) {
-        toolTipText = "time in days - 0 to disable it - Interval in which the server will automatically create a backup." // todo improve
+        toolTipText =
+            "time in days - 0 to disable it - Interval in which the server will automatically create a backup." // todo improve
         changes()
             .onEach {
                 vm.backupInterval.value = value as Int
-            }
-            .flowOn(Dispatchers.Default)
+            }.flowOn(Dispatchers.Default)
             .launchIn(scope)
     }.bind(CC().grow().spanX())
 
@@ -132,12 +143,12 @@ fun Backup(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
         isEditable = false
     }.bind()
     jSpinner(SpinnerNumberModel(vm.backupTTL.value.coerceIn(0, 30), 0, 30, 1)) {
-        toolTipText = "time in days - 0 to disable it - How long backup files will be kept before they will get deleted." // todo improve
+        toolTipText =
+            "time in days - 0 to disable it - How long backup files will be kept before they will get deleted." // todo improve
         changes()
             .onEach {
                 vm.backupTTL.value = value as Int
-            }
-            .flowOn(Dispatchers.Default)
+            }.flowOn(Dispatchers.Default)
             .launchIn(scope)
     }.bind(CC().grow().spanX())
 }

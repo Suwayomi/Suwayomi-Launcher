@@ -23,10 +23,7 @@ open class LauncherPreference<T>(
     private val settings: ObservableSettings,
     private val adapter: Adapter<T>,
 ) {
-
-    fun get(): T {
-        return adapter[settings, key, default]
-    }
+    fun get(): T = adapter[settings, key, default]
 
     fun set(value: T) {
         adapter[settings, key] = value
@@ -34,15 +31,17 @@ open class LauncherPreference<T>(
 
     fun asStateFlow(scope: CoroutineScope): MutableStateFlow<T> {
         val flow = MutableStateFlow(get())
-        val listener = adapter.addListener(settings, key, get()) {
-            if (it != flow.value) {
-                flow.value = it
+        val listener =
+            adapter.addListener(settings, key, get()) {
+                if (it != flow.value) {
+                    flow.value = it
+                }
             }
-        }
         scope.coroutineContext.job.invokeOnCompletion {
             listener.deactivate()
         }
-        flow.drop(1)
+        flow
+            .drop(1)
             .onEach { set(it) }
             .launchIn(scope)
         return flow
@@ -51,9 +50,9 @@ open class LauncherPreference<T>(
     open fun getProperty() = get().takeIf { it != default }?.let { propertyPrefix + adapter.asPropertyValue(it) }
 
     private val propertyPrefix
-        get() = "$argPrefix$launcherKey="
+        get() = "$ARG_PREFIX$launcherKey="
 
     companion object {
-        const val argPrefix = "-Dsuwayomi.tachidesk.config.server."
+        const val ARG_PREFIX = "-Dsuwayomi.tachidesk.config.server."
     }
 }

@@ -28,7 +28,11 @@ import suwayomi.tachidesk.launcher.jTextField
 import suwayomi.tachidesk.launcher.jpanel
 import suwayomi.tachidesk.launcher.keyListener
 
-fun BasicAuth(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
+@Suppress("ktlint:standard:function-naming")
+fun BasicAuth(
+    vm: LauncherViewModel,
+    scope: CoroutineScope,
+) = jpanel(
     MigLayout(
         LC().alignX("center").alignY("center"),
     ),
@@ -38,8 +42,7 @@ fun BasicAuth(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
         actions()
             .onEach {
                 vm.basicAuthEnabled.value = isSelected
-            }
-            .flowOn(Dispatchers.Default)
+            }.flowOn(Dispatchers.Default)
             .launchIn(scope)
     }.bind(CC().spanX())
 
@@ -51,15 +54,13 @@ fun BasicAuth(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
         vm.basicAuthEnabled
             .onEach {
                 isEnabled = it
-            }
-            .launchIn(scope)
+            }.launchIn(scope)
         // todo toolTipText = ""
         keyListener()
             .filterIsInstance<KeyListenerEvent.Released>()
             .onEach {
                 vm.basicAuthUsername.value = text?.trim().orEmpty()
-            }
-            .flowOn(Dispatchers.Default)
+            }.flowOn(Dispatchers.Default)
             .launchIn(scope)
         columns = 10 // todo why?
     }.bind(CC().grow().spanX().wrap())
@@ -72,15 +73,13 @@ fun BasicAuth(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
         vm.basicAuthEnabled
             .onEach {
                 isEnabled = it
-            }
-            .launchIn(scope)
+            }.launchIn(scope)
         // todo toolTipText = ""
         keyListener()
             .filterIsInstance<KeyListenerEvent.Released>()
             .onEach {
                 vm.basicAuthPassword.value = password?.concatToString()?.trim().orEmpty()
-            }
-            .flowOn(Dispatchers.Default)
+            }.flowOn(Dispatchers.Default)
             .launchIn(scope)
         columns = 10 // todo why?
     }.bind(CC().grow().spanX())

@@ -24,16 +24,21 @@ suspend fun checkIfPortInUse(
     try {
         withContext(Dispatchers.IO) {
             val client =
-                OkHttpClient.Builder()
+                OkHttpClient
+                    .Builder()
                     .connectTimeout(200, TimeUnit.MILLISECONDS)
                     .build()
 
-            client.newCall(
-                Request.Builder()
-                    .get()
-                    .url("http://$appIP:$port/api/v1/settings/about/")
-                    .build(),
-            ).execute().body.string()
+            client
+                .newCall(
+                    Request
+                        .Builder()
+                        .get()
+                        .url("http://$appIP:$port/api/v1/settings/about/")
+                        .build(),
+                ).execute()
+                .body
+                .string()
         }
         return true
     } catch (e: IOException) {

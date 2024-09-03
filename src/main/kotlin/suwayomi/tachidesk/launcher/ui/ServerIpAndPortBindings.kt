@@ -27,7 +27,11 @@ import suwayomi.tachidesk.launcher.jpanel
 import suwayomi.tachidesk.launcher.keyListener
 import javax.swing.SpinnerNumberModel
 
-fun ServerIpAndPortBindings(vm: LauncherViewModel, scope: CoroutineScope) = jpanel(
+@Suppress("ktlint:standard:function-naming")
+fun ServerIpAndPortBindings(
+    vm: LauncherViewModel,
+    scope: CoroutineScope,
+) = jpanel(
     MigLayout(
         LC().alignX("center").alignY("center"),
     ),
@@ -41,7 +45,8 @@ fun ServerIpAndPortBindings(vm: LauncherViewModel, scope: CoroutineScope) = jpan
         isEditable = false
     }.bind()
     jTextField(vm.ip.value) {
-        toolTipText = "Where to expose the server, 0.0.0.0 is the default and suggested value" // todo improve
+        toolTipText =
+            "Where to expose the server, 0.0.0.0 is the default and suggested value" // todo improve
         keyListener()
             .filter {
                 text.count { it == '.' } == 3 &&
@@ -49,11 +54,9 @@ fun ServerIpAndPortBindings(vm: LauncherViewModel, scope: CoroutineScope) = jpan
                         val int = it.toIntOrNull()
                         int != null && int in 0..255
                     }
-            }
-            .onEach {
+            }.onEach {
                 vm.ip.value = text
-            }
-            .flowOn(Dispatchers.Default)
+            }.flowOn(Dispatchers.Default)
             .launchIn(scope)
         columns = 15
     }.bind(CC().grow().spanX().wrap())
@@ -66,8 +69,7 @@ fun ServerIpAndPortBindings(vm: LauncherViewModel, scope: CoroutineScope) = jpan
         changes()
             .onEach {
                 vm.port.value = value as Int
-            }
-            .flowOn(Dispatchers.Default)
+            }.flowOn(Dispatchers.Default)
             .launchIn(scope)
     }.bind(CC().grow().spanX())
 }
