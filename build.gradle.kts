@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 import org.jmailen.gradle.kotlinter.tasks.LintTask
@@ -71,9 +72,9 @@ tasks {
 
     withType<KotlinJvmCompile> {
         dependsOn("formatKotlin")
-        kotlinOptions {
-            jvmTarget = JavaVersion.VERSION_1_8.toString()
-            freeCompilerArgs = listOf("-Xcontext-receivers")
+        compilerOptions {
+            jvmTarget = JvmTarget.JVM_1_8
+            freeCompilerArgs.add("-Xcontext-receivers")
         }
     }
 
