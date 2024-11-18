@@ -41,16 +41,6 @@ fun Misc(
             .launchIn(scope)
     }.bind(CC().wrap())
 
-    jCheckBox("GraphQL Debug logging", selected = vm.gqlDebug.value) {
-        toolTipText =
-            "Use this to toggle extra logging to the console window to help debug graphql issues." // todo improve
-        actions()
-            .onEach {
-                vm.gqlDebug.value = isSelected
-            }.flowOn(Dispatchers.Default)
-            .launchIn(scope)
-    }.bind(CC().wrap())
-
     jCheckBox("System Tray", selected = vm.systemTray.value) {
         toolTipText = "Use this to toggle Suwayomi showing in the system tray." // todo improve
         actions()
