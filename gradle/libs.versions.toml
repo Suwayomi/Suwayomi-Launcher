@@ -44,7 +44,7 @@ mockk = "io.mockk:mockk:1.13.13"
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin"}
 
 # Linter
-kotlinter = { id = "org.jmailen.kotlinter", version = "4.5.0"}
+kotlinter = { id = "org.jmailen.kotlinter", version = "5.0.1"}
 
 # ShadowJar
 shadowjar = { id = "com.github.johnrengelman.shadow", version = "8.1.1"}
