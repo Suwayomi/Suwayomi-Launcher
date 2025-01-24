@@ -244,7 +244,11 @@ class LauncherViewModel {
 
     companion object {
         private val homeDir: Path by lazy {
-            Paths.get(this::class.java.protectionDomain.codeSource.location.toURI()).parent
+            Paths
+                .get(
+                    this::class.java.protectionDomain.codeSource.location
+                        .toURI(),
+                ).parent
         }
         private val tachideskServer by lazy {
             homeDir / "bin" / "Suwayomi-Server.jar"

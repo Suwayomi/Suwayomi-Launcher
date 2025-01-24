@@ -24,7 +24,7 @@ jobs:
       uses: gradle/actions/setup-gradle@v4
 
     - name: Build with Gradle
-      run: ./gradlew shadowJar
+      run: ./gradlew lintKotlin shadowJar
 
     - name: Get Commit Count
       if: ${{ github.event_name == 'push' }}
