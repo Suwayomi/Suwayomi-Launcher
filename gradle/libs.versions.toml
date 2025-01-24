@@ -17,7 +17,7 @@ coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", ve
 # Logging
 slf4japi = "org.slf4j:slf4j-api:2.0.16"
 logback = "ch.qos.logback:logback-classic:1.3.14" #Logback 1.4.0+ requires Java 9+
-kotlinlogging = "io.github.oshai:kotlin-logging:7.0.0"
+kotlinlogging = "io.github.oshai:kotlin-logging:7.0.3"
 
 # Disk & File
 appdirs = "ca.gosyer:kotlin-multiplatform-appdirs:1.2.0"
