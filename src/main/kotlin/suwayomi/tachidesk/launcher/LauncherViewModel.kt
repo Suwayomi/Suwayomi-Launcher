@@ -153,7 +153,7 @@ class LauncherViewModel {
             val os = System.getProperty("os.name").lowercase()
             val javaPath =
                 if (os.startsWith("mac os x")) {
-                    homeDir / "jre/Contents/Home/bin/java"
+                    homeDir / "jre/bin/java"
                 } else if (os.startsWith("windows")) {
                     if (debug.value) {
                         homeDir / "jre/bin/java.exe"
