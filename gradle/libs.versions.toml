@@ -37,7 +37,7 @@ darklaf = "com.github.weisj:darklaf-core:3.0.2"
 miglayout = "com.miglayout:miglayout-swing:5.3"
 
 # Testing
-mockk = "io.mockk:mockk:1.14.0"
+mockk = "io.mockk:mockk:1.14.2"
 
 [plugins]
 # Kotlin
