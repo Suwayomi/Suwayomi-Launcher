@@ -34,6 +34,11 @@ class LauncherSettings {
         Bundled,
     }
 
+    enum class SortOrder {
+        ASC,
+        DESC,
+    }
+
     // Directories
     fun rootDir(): LauncherPreference<String?> =
         LauncherPreference(

@@ -120,6 +120,14 @@ class LauncherViewModel {
     val flareSolverrSessionTtl = config.asStateFlow { it.flareSolverrSessionTtl }
     val flareSolverrAsResponseFallback = config.asStateFlow { it.flareSolverrAsResponseFallback }
 
+    // opds settings
+    val opdsItemsPerPage: MutableStateFlow<Int> = config.asStateFlow { it.opdsItemsPerPage }
+    val opdsEnablePageReadProgress: MutableStateFlow<Boolean> = config.asStateFlow { it.opdsEnablePageReadProgress }
+    val opdsMarkAsReadOnDownload: MutableStateFlow<Boolean> = config.asStateFlow { it.opdsMarkAsReadOnDownload }
+    val opdsShowOnlyUnreadChapters: MutableStateFlow<Boolean> = config.asStateFlow { it.opdsShowOnlyUnreadChapters }
+    val opdsShowOnlyDownloadedChapters: MutableStateFlow<Boolean> = config.asStateFlow { it.opdsShowOnlyDownloadedChapters }
+    val opdsChapterSortOrder: MutableStateFlow<String> = config.asStateFlow { it.opdsChapterSortOrder }
+
     val theme = settings.theme().asStateFlow(scope)
 
     fun launch(forceElectron: Boolean = false) {
@@ -261,7 +269,7 @@ class LauncherViewModel {
 
             try {
                 ConfigManager.resetConfig(tachideskServer, getRootDir(settings.rootDir().get()))
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 val rootDir = settings.rootDir().get()
                 if (rootDir != null) {
                     settings.rootDir().set(null)

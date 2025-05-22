@@ -30,6 +30,7 @@ import suwayomi.tachidesk.launcher.ui.Downloader
 import suwayomi.tachidesk.launcher.ui.Extension
 import suwayomi.tachidesk.launcher.ui.LocalSource
 import suwayomi.tachidesk.launcher.ui.Misc
+import suwayomi.tachidesk.launcher.ui.Opds
 import suwayomi.tachidesk.launcher.ui.Requests
 import suwayomi.tachidesk.launcher.ui.RootDir
 import suwayomi.tachidesk.launcher.ui.ServerIpAndPortBindings
@@ -86,7 +87,7 @@ suspend fun main(args: Array<String>) {
         setupTheme(vm)
 
         jframe("Suwayomi-Server Launcher") {
-            size = Dimension(380, 480)
+            size = Dimension(392, 480)
             setLocationRelativeTo(null)
             defaultCloseOperation = JFrame.EXIT_ON_CLOSE
             contentPane =
@@ -119,6 +120,7 @@ suspend fun main(args: Array<String>) {
                         addTab("Local Source", LocalSource(vm, scope))
                         addTab("Requests", Requests(vm, scope))
                         addTab("Cloudflare", Cloudflare(vm, scope))
+                        addTab("Opds", Opds(vm, scope))
                         addTab("Root Directory", RootDir(vm, scope))
                     }.bind(CC().grow())
                     jpanel {
