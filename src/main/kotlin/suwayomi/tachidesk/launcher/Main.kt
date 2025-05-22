@@ -87,7 +87,6 @@ suspend fun main(args: Array<String>) {
 
         jframe("Suwayomi-Server Launcher") {
             size = Dimension(380, 480)
-            isResizable = false
             setLocationRelativeTo(null)
             defaultCloseOperation = JFrame.EXIT_ON_CLOSE
             contentPane =
