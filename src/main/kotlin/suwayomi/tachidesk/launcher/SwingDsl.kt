@@ -35,6 +35,7 @@ import javax.swing.JCheckBox
 import javax.swing.JComboBox
 import javax.swing.JFormattedTextField
 import javax.swing.JFrame
+import javax.swing.JList
 import javax.swing.JPanel
 import javax.swing.JPasswordField
 import javax.swing.JSpinner
@@ -46,6 +47,8 @@ import javax.swing.SpinnerModel
 import javax.swing.SpinnerNumberModel
 import javax.swing.event.ChangeEvent
 import javax.swing.event.ChangeListener
+import javax.swing.event.ListSelectionEvent
+import javax.swing.event.ListSelectionListener
 import javax.swing.text.Document
 
 @DslMarker
@@ -318,4 +321,16 @@ fun JSpinner.changes(): Flow<ChangeEvent> =
             }
         addChangeListener(actionListener)
         awaitClose { removeChangeListener(actionListener) }
+    }.flowOn(Dispatchers.Swing)
+
+/** Default [ListSelectionEvent] for [JList] */
+@SwingDsl
+fun <E> JList<E>.selection(): Flow<ListSelectionEvent> =
+    callbackFlow {
+        val actionListener =
+            ListSelectionListener {
+                trySend(it)
+            }
+        addListSelectionListener(actionListener)
+        awaitClose { removeListSelectionListener(actionListener) }
     }.flowOn(Dispatchers.Swing)

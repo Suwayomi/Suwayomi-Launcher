@@ -28,6 +28,7 @@ import suwayomi.tachidesk.launcher.jTextField
 import suwayomi.tachidesk.launcher.jbutton
 import suwayomi.tachidesk.launcher.jpanel
 import suwayomi.tachidesk.launcher.keyListener
+import suwayomi.tachidesk.launcher.selection
 import javax.swing.JList
 import javax.swing.JScrollPane
 
@@ -84,13 +85,18 @@ fun Extension(
             .launchIn(scope)
     }.bind()
     jbutton("Remove") {
-        extensionRepos.addListSelectionListener {
-            isEnabled = extensionRepos.selectedValuesList.isNotEmpty()
-        }
         actions()
             .onEach {
                 val changed = vm.extensionRepos.value - extensionRepos.selectedValuesList.toSet()
                 vm.extensionRepos.value = changed.distinct()
+            }.flowOn(Dispatchers.Default)
+            .launchIn(scope)
+        isEnabled = !extensionRepos.isSelectionEmpty
+        extensionRepos
+            .selection()
+            .onEach {
+                isEnabled = !extensionRepos.isSelectionEmpty
+                println(extensionRepos.isSelectionEmpty)
             }.flowOn(Dispatchers.Default)
             .launchIn(scope)
     }.bind(CC().wrap())
