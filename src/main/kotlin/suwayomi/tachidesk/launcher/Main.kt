@@ -143,32 +143,38 @@ suspend fun main(args: Array<String>) {
 }
 
 fun setupTheme(vm: LauncherViewModel) {
-    vm.theme.value?.let {
-        try {
-            val theme =
-                Base64.getDecoder().decode(it).inputStream().use {
-                    ObjectInputStream(it).use {
-                        it.readObject() as Theme
+    try {
+        vm.theme.value?.let {
+            try {
+                val theme =
+                    Base64.getDecoder().decode(it).inputStream().use {
+                        ObjectInputStream(it).use {
+                            it.readObject() as Theme
+                        }
                     }
-                }
-            LafManager.setTheme(theme)
-        } catch (e: Exception) {
-            LafManager.setTheme(LafManager.getPreferredThemeStyle())
-        }
-    } ?: LafManager.setTheme(LafManager.getPreferredThemeStyle())
-    LafManager.install()
-    LafManager.addThemeChangeListener(
-        object : ThemeChangeListener {
-            override fun themeChanged(e: ThemeChangeEvent) {}
-
-            override fun themeInstalled(e: ThemeChangeEvent) {
-                ByteArrayOutputStream().use { it ->
-                    ObjectOutputStream(it).use {
-                        it.writeObject(e.newTheme)
-                    }
-                    vm.theme.value = Base64.getEncoder().encodeToString(it.toByteArray())
-                }
+                LafManager.setTheme(theme)
+            } catch (e: Exception) {
+                LafManager.setTheme(LafManager.getPreferredThemeStyle())
             }
-        },
-    )
+        } ?: LafManager.setTheme(LafManager.getPreferredThemeStyle())
+        LafManager.install()
+        LafManager.addThemeChangeListener(
+            object : ThemeChangeListener {
+                override fun themeChanged(e: ThemeChangeEvent) {}
+
+                override fun themeInstalled(e: ThemeChangeEvent) {
+                    ByteArrayOutputStream().use { it ->
+                        ObjectOutputStream(it).use {
+                            it.writeObject(e.newTheme)
+                        }
+                        vm.theme.value = Base64.getEncoder().encodeToString(it.toByteArray())
+                    }
+                }
+            },
+        )
+    } catch (e: Exception) {
+        e.printStackTrace()
+        val error = StringSelection(e.message + ":\n" + e.stackTraceToString())
+        Toolkit.getDefaultToolkit().systemClipboard.setContents(error, error)
+    }
 }
