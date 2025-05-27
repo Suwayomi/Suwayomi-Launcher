@@ -37,11 +37,19 @@ fun Opds(
         LC().alignX("center").alignY("center"),
     ),
 ) {
+    jCheckBox("Use binary file sizes", selected = vm.opdsUseBinaryFileSizes.value) {
+        // todo toolTipText = ""
+        actions()
+            .onEach {
+                vm.opdsUseBinaryFileSizes.value = isSelected
+            }.flowOn(Dispatchers.Default)
+            .launchIn(scope)
+    }.bind(CC().spanX())
     jTextArea("Items per page") {
         isEditable = false
     }.bind()
     jSpinner(SpinnerNumberModel(vm.opdsItemsPerPage.value.coerceAtLeast(0), 0, 5000, 1)) {
-        toolTipText = "Which port to use the server, 4567 is the default" // todo improve
+        // todo toolTipText = ""
         changes()
             .onEach {
                 vm.opdsItemsPerPage.value = value as Int

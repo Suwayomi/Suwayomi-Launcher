@@ -121,6 +121,7 @@ class LauncherViewModel {
     val flareSolverrAsResponseFallback = config.asStateFlow { it.flareSolverrAsResponseFallback }
 
     // opds settings
+    val opdsUseBinaryFileSizes: MutableStateFlow<Boolean> = config.asStateFlow { it.opdsUseBinaryFileSizes }
     val opdsItemsPerPage: MutableStateFlow<Int> = config.asStateFlow { it.opdsItemsPerPage }
     val opdsEnablePageReadProgress: MutableStateFlow<Boolean> = config.asStateFlow { it.opdsEnablePageReadProgress }
     val opdsMarkAsReadOnDownload: MutableStateFlow<Boolean> = config.asStateFlow { it.opdsMarkAsReadOnDownload }
