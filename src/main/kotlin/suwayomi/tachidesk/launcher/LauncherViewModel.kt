@@ -233,7 +233,7 @@ class LauncherViewModel {
     private fun getServerConfig(rootDir: String?): ServerConfig {
         val resolvedRootDir =
             rootDir
-                ?: AppDirs("Tachidesk").getUserDataDir()
+                ?: AppDirs { appName = "Tachidesk" }.getUserDataDir()
 
         val configManager = ConfigManager(tachideskServer, resolvedRootDir)
 
