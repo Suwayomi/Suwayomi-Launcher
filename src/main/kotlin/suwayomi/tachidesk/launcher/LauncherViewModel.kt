@@ -263,7 +263,7 @@ class LauncherViewModel {
             homeDir / "bin" / "Suwayomi-Server.jar"
         }
 
-        private fun getRootDir(rootDir: String?): String = rootDir ?: AppDirs("Tachidesk").getUserDataDir()
+        private fun getRootDir(rootDir: String?): String = rootDir ?: AppDirs { appName = "Tachidesk" }.getUserDataDir()
 
         fun reset() {
             val settings = LauncherSettings()
