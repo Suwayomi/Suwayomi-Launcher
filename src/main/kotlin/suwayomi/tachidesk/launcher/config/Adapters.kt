@@ -36,3 +36,9 @@ object StringListConfigAdapter : ConfigAdapter<List<String>> {
         return configValue.unwrapped() as List<String>
     }
 }
+
+class EnumConfigAdapter<T : Enum<T>>(
+    private val enumClass: Class<T>,
+) : ConfigAdapter<T> {
+    override fun toType(configValue: ConfigValue): T = java.lang.Enum.valueOf(enumClass, (configValue.unwrapped() as String).uppercase())
+}

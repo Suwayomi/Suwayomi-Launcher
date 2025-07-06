@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import suwayomi.tachidesk.launcher.settings.LauncherSettings.AuthMode
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
@@ -90,9 +91,11 @@ class ServerConfig(
     val updateMangas: MutableStateFlow<Boolean> by OverrideConfigValue(BooleanConfigAdapter)
 
     // Authentication
-    val basicAuthEnabled: MutableStateFlow<Boolean> by OverrideConfigValue(BooleanConfigAdapter)
-    val basicAuthUsername: MutableStateFlow<String> by OverrideConfigValue(StringConfigAdapter)
-    val basicAuthPassword: MutableStateFlow<String> by OverrideConfigValue(StringConfigAdapter)
+    val authMode: MutableStateFlow<AuthMode> by OverrideConfigValue(
+        EnumConfigAdapter(AuthMode::class.java),
+    )
+    val authUsername: MutableStateFlow<String> by OverrideConfigValue(StringConfigAdapter)
+    val authPassword: MutableStateFlow<String> by OverrideConfigValue(StringConfigAdapter)
 
     // misc
     val debugLogsEnabled: MutableStateFlow<Boolean> by OverrideConfigValue(BooleanConfigAdapter)

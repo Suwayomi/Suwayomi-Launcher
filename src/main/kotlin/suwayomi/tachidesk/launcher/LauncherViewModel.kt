@@ -95,9 +95,9 @@ class LauncherViewModel {
     val updateMangas = config.asStateFlow { it.updateMangas }
 
     // Authentication
-    val basicAuthEnabled = config.asStateFlow { it.basicAuthEnabled }
-    val basicAuthUsername = config.asStateFlow { it.basicAuthUsername }
-    val basicAuthPassword = config.asStateFlow { it.basicAuthPassword }
+    val authMode = config.asStateFlow { it.authMode }
+    val authUsername = config.asStateFlow { it.authUsername }
+    val authPassword = config.asStateFlow { it.authPassword }
 
     // Misc
     val debug = config.asStateFlow { it.debugLogsEnabled }

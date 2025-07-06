@@ -23,8 +23,8 @@ import kotlinx.coroutines.withContext
 import net.miginfocom.layout.CC
 import net.miginfocom.layout.LC
 import net.miginfocom.swing.MigLayout
+import suwayomi.tachidesk.launcher.ui.Auth
 import suwayomi.tachidesk.launcher.ui.Backup
-import suwayomi.tachidesk.launcher.ui.BasicAuth
 import suwayomi.tachidesk.launcher.ui.Cloudflare
 import suwayomi.tachidesk.launcher.ui.Downloader
 import suwayomi.tachidesk.launcher.ui.Extension
@@ -111,7 +111,7 @@ suspend fun main(args: Array<String>) {
                         addTab("Extension", Extension(vm, scope))
                         addTab("Server bindings", ServerIpAndPortBindings(vm, scope))
                         addTab("SOCKS Proxy", Socks5(vm, scope))
-                        addTab("Authentication", BasicAuth(vm, scope))
+                        addTab("Authentication", Auth(vm, scope))
                         addTab("WebUI", WebUI(vm, scope))
                         addTab("Updater", Updater(vm, scope))
                         addTab("Downloader", Downloader(vm, scope))

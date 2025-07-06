@@ -9,13 +9,16 @@ package suwayomi.tachidesk.launcher.config
  */
 
 import com.typesafe.config.Config
+import com.typesafe.config.ConfigException
 import com.typesafe.config.ConfigFactory
 import com.typesafe.config.ConfigValue
 import com.typesafe.config.ConfigValueFactory
 import com.typesafe.config.parser.ConfigDocument
 import com.typesafe.config.parser.ConfigDocumentFactory
+import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import suwayomi.tachidesk.launcher.settings.LauncherSettings.AuthMode
 import java.nio.file.FileSystems
 import java.nio.file.Path
 import kotlin.io.path.Path
@@ -30,6 +33,7 @@ class ConfigManager(
     rootDir: String,
 ) {
     private val userConfigFile = getServerConf(rootDir)
+    val logger = KotlinLogging.logger {}
 
     init {
         updateUserConfig()
@@ -42,6 +46,67 @@ class ConfigManager(
 
     var config: Config = getUserConfig()
         private set
+
+    fun <T : Any> migrateConfig(
+        configDocument: ConfigDocument,
+        config: Config,
+        configKey: String,
+        toConfigKey: String,
+        toType: (ConfigValue) -> T?,
+    ): ConfigDocument {
+        try {
+            val configValue = config.getValue(configKey)
+            val typedValue = toType(configValue)
+            if (typedValue != null) {
+                return configDocument.withValue(
+                    toConfigKey,
+                    ConfigValueFactory.fromAnyRef(typedValue),
+                )
+            }
+        } catch (_: ConfigException) {
+            // ignore, likely already migrated
+        }
+
+        return configDocument
+    }
+
+    fun migrate(
+        configDocument: ConfigDocument,
+        config: Config,
+    ): ConfigDocument {
+        var updatedConfig = configDocument
+        updatedConfig =
+            migrateConfig(
+                updatedConfig,
+                config,
+                "server.basicAuthEnabled",
+                "server.authMode",
+                toType = {
+                    if (it.unwrapped() as? Boolean == true) {
+                        AuthMode.BASIC_AUTH.name
+                    } else {
+                        null
+                    }
+                },
+            )
+        updatedConfig =
+            migrateConfig(
+                updatedConfig,
+                config,
+                "server.basicAuthUsername",
+                "server.authUsername",
+                toType = { it.unwrapped() as? String },
+            )
+        updatedConfig =
+            migrateConfig(
+                updatedConfig,
+                config,
+                "server.basicAuthPassword",
+                "server.authPassword",
+                toType = { it.unwrapped() as? String },
+            )
+        return updatedConfig
+    }
 
     /**
      * Makes sure the "UserConfig" is up-to-date.
@@ -65,18 +130,27 @@ class ConfigManager(
             return
         }
 
-        // logger.debug { "user config is out of date, updating... (missingSettings= $hasMissingSettings, outdatedSettings= $hasOutdatedSettings" }
+        logger.debug {
+            "user config is out of date, updating... (missingSettings= $hasMissingSettings, outdatedSettings= $hasOutdatedSettings"
+        }
 
         val serverConfigDoc = ConfigDocumentFactory.parseString(serverConfigFileContent)
         userConfigFile.writeText(serverConfigDoc.render())
 
         var newUserConfigDoc: ConfigDocument = serverConfigDoc
-        userConfig.entrySet().filter { serverConfig.hasPath(it.key) }.forEach {
-            newUserConfigDoc =
-                newUserConfigDoc.withValue(it.key, it.value)
-        }
+        userConfig
+            .entrySet()
+            .filter {
+                serverConfig.hasPath(
+                    it.key,
+                )
+            }.forEach { newUserConfigDoc = newUserConfigDoc.withValue(it.key, it.value) }
+
+        newUserConfigDoc =
+            migrate(newUserConfigDoc, userConfig)
 
         userConfigFile.writeText(newUserConfigDoc.render())
+        config = getUserConfig()
     }
 
     private fun updateUserConfigFile(

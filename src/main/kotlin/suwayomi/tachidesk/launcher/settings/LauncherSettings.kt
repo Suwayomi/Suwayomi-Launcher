@@ -39,7 +39,12 @@ class LauncherSettings {
         DESC,
     }
 
-    // Directories
+    enum class AuthMode {
+        NONE,
+        BASIC_AUTH,
+        SIMPLE_LOGIN,
+    }
+
     fun rootDir(): LauncherPreference<String?> =
         LauncherPreference(
             "rootDir",

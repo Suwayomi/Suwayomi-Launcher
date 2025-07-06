@@ -21,15 +21,16 @@ import suwayomi.tachidesk.launcher.KeyListenerEvent
 import suwayomi.tachidesk.launcher.LauncherViewModel
 import suwayomi.tachidesk.launcher.actions
 import suwayomi.tachidesk.launcher.bind
-import suwayomi.tachidesk.launcher.jCheckBox
+import suwayomi.tachidesk.launcher.jComboBox
 import suwayomi.tachidesk.launcher.jPasswordField
 import suwayomi.tachidesk.launcher.jTextArea
 import suwayomi.tachidesk.launcher.jTextField
 import suwayomi.tachidesk.launcher.jpanel
 import suwayomi.tachidesk.launcher.keyListener
+import suwayomi.tachidesk.launcher.settings.LauncherSettings.AuthMode
 
 @Suppress("ktlint:standard:function-naming")
-fun BasicAuth(
+fun Auth(
     vm: LauncherViewModel,
     scope: CoroutineScope,
 ) = jpanel(
@@ -37,29 +38,33 @@ fun BasicAuth(
         LC().alignX("center").alignY("center"),
     ),
 ) {
-    jCheckBox("Basic Authentication", selected = vm.basicAuthEnabled.value) {
+    jTextArea("Auth mode") {
+        isEditable = false
+    }.bind()
+    jComboBox(AuthMode.entries.toTypedArray()) {
+        selectedItem = vm.authMode.value
         // todo toolTipText = ""
         actions()
             .onEach {
-                vm.basicAuthEnabled.value = isSelected
+                vm.authMode.value = (selectedItem as AuthMode)
             }.flowOn(Dispatchers.Default)
             .launchIn(scope)
-    }.bind(CC().spanX())
+    }.bind(CC().grow().spanX().wrap())
 
     jTextArea("Username") {
         isEditable = false
     }.bind()
-    jTextField(vm.basicAuthUsername.value) {
-        isEnabled = vm.basicAuthEnabled.value
-        vm.basicAuthEnabled
+    jTextField(vm.authUsername.value) {
+        isEnabled = vm.authMode.value != AuthMode.NONE
+        vm.authMode
             .onEach {
-                isEnabled = it
+                isEnabled = it != AuthMode.NONE
             }.launchIn(scope)
         // todo toolTipText = ""
         keyListener()
             .filterIsInstance<KeyListenerEvent.Released>()
             .onEach {
-                vm.basicAuthUsername.value = text?.trim().orEmpty()
+                vm.authUsername.value = text?.trim().orEmpty()
             }.flowOn(Dispatchers.Default)
             .launchIn(scope)
         columns = 10 // todo why?
@@ -68,17 +73,17 @@ fun BasicAuth(
     jTextArea("Password") {
         isEditable = false
     }.bind()
-    jPasswordField(vm.basicAuthPassword.value) {
-        isEnabled = vm.basicAuthEnabled.value
-        vm.basicAuthEnabled
+    jPasswordField(vm.authPassword.value) {
+        isEnabled = vm.authMode.value != AuthMode.NONE
+        vm.authMode
             .onEach {
-                isEnabled = it
+                isEnabled = it != AuthMode.NONE
             }.launchIn(scope)
         // todo toolTipText = ""
         keyListener()
             .filterIsInstance<KeyListenerEvent.Released>()
             .onEach {
-                vm.basicAuthPassword.value = password?.concatToString()?.trim().orEmpty()
+                vm.authPassword.value = password?.concatToString()?.trim().orEmpty()
             }.flowOn(Dispatchers.Default)
             .launchIn(scope)
         columns = 10 // todo why?
