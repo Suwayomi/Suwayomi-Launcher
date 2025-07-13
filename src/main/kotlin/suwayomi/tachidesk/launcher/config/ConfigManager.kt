@@ -11,10 +11,11 @@ package suwayomi.tachidesk.launcher.config
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigException
 import com.typesafe.config.ConfigFactory
+import com.typesafe.config.ConfigObject
 import com.typesafe.config.ConfigValue
-import com.typesafe.config.ConfigValueFactory
 import com.typesafe.config.parser.ConfigDocument
 import com.typesafe.config.parser.ConfigDocumentFactory
+import io.github.config4k.toConfig
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -60,7 +61,7 @@ class ConfigManager(
             if (typedValue != null) {
                 return configDocument.withValue(
                     toConfigKey,
-                    ConfigValueFactory.fromAnyRef(typedValue),
+                    typedValue.toConfig("internal").getValue("internal"),
                 )
             }
         } catch (_: ConfigException) {
@@ -122,9 +123,13 @@ class ConfigManager(
 
         val serverConfig = ConfigFactory.parseString(serverConfigFileContent)
         val userConfig = getUserConfig()
-
-        val hasMissingSettings = serverConfig.entrySet().any { !userConfig.hasPath(it.key) }
-        val hasOutdatedSettings = userConfig.entrySet().any { !serverConfig.hasPath(it.key) }
+        // NOTE: if more than 1 dot is included, that's a nested setting, which we need to filter out here
+        val refKeys =
+            serverConfig.root().entries.flatMap {
+                (it.value as? ConfigObject)?.entries?.map { e -> "${it.key}.${e.key}" }.orEmpty()
+            }
+        val hasMissingSettings = refKeys.any { !userConfig.hasPath(it) }
+        val hasOutdatedSettings = userConfig.entrySet().any { !refKeys.contains(it.key) && it.key.count { c -> c == '.' } <= 1 }
         val isUserConfigOutdated = hasMissingSettings || hasOutdatedSettings
         if (!isUserConfigOutdated) {
             return
@@ -143,7 +148,8 @@ class ConfigManager(
             .filter {
                 serverConfig.hasPath(
                     it.key,
-                )
+                ) ||
+                    it.key.count { c -> c == '.' } > 1
             }.forEach { newUserConfigDoc = newUserConfigDoc.withValue(it.key, it.value) }
 
         newUserConfigDoc =
@@ -170,7 +176,7 @@ class ConfigManager(
         value: Any,
     ) {
         configMutex.withLock {
-            val configValue = ConfigValueFactory.fromAnyRef(value)
+            val configValue = value.toConfig("internal").getValue("internal")
 
             updateUserConfigFile(path, configValue)
 

@@ -50,6 +50,7 @@ import kotlin.system.exitProcess
 
 suspend fun main(args: Array<String>) {
     Thread.setDefaultUncaughtExceptionHandler { _, e ->
+        e.printStackTrace()
         val option =
             JOptionPane.showOptionDialog(
                 null,
@@ -87,7 +88,7 @@ suspend fun main(args: Array<String>) {
         setupTheme(vm)
 
         jframe("Suwayomi-Server Launcher") {
-            size = Dimension(392, 480)
+            size = Dimension(410, 600)
             setLocationRelativeTo(null)
             defaultCloseOperation = JFrame.EXIT_ON_CLOSE
             contentPane =
@@ -109,7 +110,7 @@ suspend fun main(args: Array<String>) {
 
                     jTabbedPane {
                         addTab("Extension", Extension(vm, scope))
-                        addTab("Server bindings", ServerIpAndPortBindings(vm, scope))
+                        addTab("Server Bindings", ServerIpAndPortBindings(vm, scope))
                         addTab("SOCKS Proxy", Socks5(vm, scope))
                         addTab("Authentication", Auth(vm, scope))
                         addTab("WebUI", WebUI(vm, scope))

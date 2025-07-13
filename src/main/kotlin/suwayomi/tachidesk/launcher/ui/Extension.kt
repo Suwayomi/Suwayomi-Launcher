@@ -96,7 +96,6 @@ fun Extension(
             .selection()
             .onEach {
                 isEnabled = !extensionRepos.isSelectionEmpty
-                println(extensionRepos.isSelectionEmpty)
             }.flowOn(Dispatchers.Default)
             .launchIn(scope)
     }.bind(CC().wrap())

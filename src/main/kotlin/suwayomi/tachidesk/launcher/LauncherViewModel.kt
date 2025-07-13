@@ -9,6 +9,7 @@ package suwayomi.tachidesk.launcher
  */
 
 import ca.gosyer.appdirs.AppDirs
+import io.github.config4k.registerCustomType
 import io.github.oshai.kotlinlogging.KotlinLogging
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
@@ -21,6 +22,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import suwayomi.tachidesk.launcher.config.ConfigManager
+import suwayomi.tachidesk.launcher.config.MutableStateFlowType
 import suwayomi.tachidesk.launcher.config.ServerConfig
 import suwayomi.tachidesk.launcher.settings.LauncherPreference
 import suwayomi.tachidesk.launcher.settings.LauncherSettings
@@ -42,6 +44,7 @@ class LauncherViewModel {
         require(tachideskServer.exists()) {
             "Could not find Suwayomi-Server.jar at '${tachideskServer.absolutePathString()}'"
         }
+        registerCustomType(MutableStateFlowType())
     }
 
     private val settings = LauncherSettings()
@@ -80,6 +83,7 @@ class LauncherViewModel {
     val excludeEntryWithUnreadChapters = config.asStateFlow { it.excludeEntryWithUnreadChapters }
     val autoDownloadNewChaptersLimit = config.asStateFlow { it.autoDownloadNewChaptersLimit }
     val autoDownloadIgnoreReUploads = config.asStateFlow { it.autoDownloadIgnoreReUploads }
+    val downloadConversions = config.asStateFlow { it.downloadConversions }
 
     // Extension
     val extensionRepos = config.asStateFlow { it.extensionRepos }
