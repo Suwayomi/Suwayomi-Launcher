@@ -26,6 +26,8 @@ import suwayomi.tachidesk.launcher.config.MutableStateFlowType
 import suwayomi.tachidesk.launcher.config.ServerConfig
 import suwayomi.tachidesk.launcher.settings.LauncherPreference
 import suwayomi.tachidesk.launcher.settings.LauncherSettings
+import suwayomi.tachidesk.launcher.settings.LauncherSettings.KoreaderSyncChecksumMethod
+import suwayomi.tachidesk.launcher.settings.LauncherSettings.KoreaderSyncStrategy
 import suwayomi.tachidesk.launcher.util.checkIfPortInUse
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -132,6 +134,15 @@ class LauncherViewModel {
     val opdsShowOnlyUnreadChapters: MutableStateFlow<Boolean> = config.asStateFlow { it.opdsShowOnlyUnreadChapters }
     val opdsShowOnlyDownloadedChapters: MutableStateFlow<Boolean> = config.asStateFlow { it.opdsShowOnlyDownloadedChapters }
     val opdsChapterSortOrder: MutableStateFlow<String> = config.asStateFlow { it.opdsChapterSortOrder }
+
+    // koreader sync
+    val koreaderSyncServerUrl: MutableStateFlow<String> = config.asStateFlow { it.koreaderSyncServerUrl }
+    val koreaderSyncUsername: MutableStateFlow<String> = config.asStateFlow { it.koreaderSyncUsername }
+    val koreaderSyncUserkey: MutableStateFlow<String> = config.asStateFlow { it.koreaderSyncUserkey }
+    val koreaderSyncDeviceId: MutableStateFlow<String> = config.asStateFlow { it.koreaderSyncDeviceId }
+    val koreaderSyncChecksumMethod: MutableStateFlow<KoreaderSyncChecksumMethod> = config.asStateFlow { it.koreaderSyncChecksumMethod }
+    val koreaderSyncStrategy: MutableStateFlow<KoreaderSyncStrategy> = config.asStateFlow { it.koreaderSyncStrategy }
+    val koreaderSyncPercentageTolerance: MutableStateFlow<Double> = config.asStateFlow { it.koreaderSyncPercentageTolerance }
 
     val theme = settings.theme().asStateFlow(scope)
 

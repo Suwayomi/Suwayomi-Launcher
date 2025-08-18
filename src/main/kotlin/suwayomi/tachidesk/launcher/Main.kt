@@ -28,6 +28,7 @@ import suwayomi.tachidesk.launcher.ui.Backup
 import suwayomi.tachidesk.launcher.ui.Cloudflare
 import suwayomi.tachidesk.launcher.ui.Downloader
 import suwayomi.tachidesk.launcher.ui.Extension
+import suwayomi.tachidesk.launcher.ui.KoReaderSync
 import suwayomi.tachidesk.launcher.ui.LocalSource
 import suwayomi.tachidesk.launcher.ui.Misc
 import suwayomi.tachidesk.launcher.ui.Opds
@@ -122,6 +123,7 @@ suspend fun main(args: Array<String>) {
                         addTab("Requests", Requests(vm, scope))
                         addTab("Cloudflare", Cloudflare(vm, scope))
                         addTab("Opds", Opds(vm, scope))
+                        addTab("KOReader", KoReaderSync(vm, scope))
                         addTab("Root Directory", RootDir(vm, scope))
                     }.bind(CC().grow())
                     jpanel {

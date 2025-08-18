@@ -16,6 +16,8 @@ import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import suwayomi.tachidesk.launcher.settings.LauncherSettings.AuthMode
+import suwayomi.tachidesk.launcher.settings.LauncherSettings.KoreaderSyncChecksumMethod
+import suwayomi.tachidesk.launcher.settings.LauncherSettings.KoreaderSyncStrategy
 import kotlin.reflect.KProperty
 
 class ServerConfig(
@@ -131,4 +133,13 @@ class ServerConfig(
     val opdsShowOnlyUnreadChapters: MutableStateFlow<Boolean> by OverrideConfigValue()
     val opdsShowOnlyDownloadedChapters: MutableStateFlow<Boolean> by OverrideConfigValue()
     val opdsChapterSortOrder: MutableStateFlow<String> by OverrideConfigValue()
+
+    // koreader sync
+    val koreaderSyncServerUrl: MutableStateFlow<String> by OverrideConfigValue()
+    val koreaderSyncUsername: MutableStateFlow<String> by OverrideConfigValue()
+    val koreaderSyncUserkey: MutableStateFlow<String> by OverrideConfigValue()
+    val koreaderSyncDeviceId: MutableStateFlow<String> by OverrideConfigValue()
+    val koreaderSyncChecksumMethod: MutableStateFlow<KoreaderSyncChecksumMethod> by OverrideConfigValue()
+    val koreaderSyncStrategy: MutableStateFlow<KoreaderSyncStrategy> by OverrideConfigValue()
+    val koreaderSyncPercentageTolerance: MutableStateFlow<Double> by OverrideConfigValue()
 }

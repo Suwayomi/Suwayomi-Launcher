@@ -45,6 +45,19 @@ class LauncherSettings {
         SIMPLE_LOGIN,
     }
 
+    enum class KoreaderSyncChecksumMethod {
+        BINARY,
+        FILENAME,
+    }
+
+    enum class KoreaderSyncStrategy {
+        PROMPT,
+        SILENT,
+        SEND,
+        RECEIVE,
+        DISABLED,
+    }
+
     fun rootDir(): LauncherPreference<String?> =
         LauncherPreference(
             "rootDir",
