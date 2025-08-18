@@ -25,7 +25,7 @@ import suwayomi.tachidesk.launcher.jComboBox
 import suwayomi.tachidesk.launcher.jSpinner
 import suwayomi.tachidesk.launcher.jTextArea
 import suwayomi.tachidesk.launcher.jpanel
-import suwayomi.tachidesk.launcher.settings.LauncherSettings
+import suwayomi.tachidesk.launcher.settings.LauncherSettings.SortOrder
 import javax.swing.SpinnerNumberModel
 
 @Suppress("ktlint:standard:function-naming")
@@ -91,9 +91,9 @@ fun Opds(
     jTextArea("Chapter sort order") {
         isEditable = false
     }.bind()
-    jComboBox(LauncherSettings.SortOrder.entries.toTypedArray()) {
+    jComboBox(SortOrder.entries.toTypedArray()) {
         selectedItem =
-            LauncherSettings.SortOrder.entries.find { it.name.equals(vm.opdsChapterSortOrder.value, true) }
+            SortOrder.entries.find { it == vm.opdsChapterSortOrder.value }
         vm.webUIEnabled
             .onEach {
                 isEnabled = it
@@ -101,7 +101,7 @@ fun Opds(
         // todo toolTipText = ""
         actions()
             .onEach {
-                vm.opdsChapterSortOrder.value = (selectedItem as LauncherSettings.SortOrder).name
+                vm.opdsChapterSortOrder.value = (selectedItem as SortOrder)
             }.flowOn(Dispatchers.Default)
             .launchIn(scope)
     }.bind(CC().grow().spanX().wrap())

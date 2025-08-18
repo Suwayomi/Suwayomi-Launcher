@@ -57,7 +57,7 @@ fun WebUI(
     }.bind()
     jComboBox(LauncherSettings.WebUIFlavor.entries.toTypedArray()) {
         selectedItem =
-            LauncherSettings.WebUIFlavor.entries.find { it.name.equals(vm.webUIFlavor.value, true) }
+            LauncherSettings.WebUIFlavor.entries.find { it == vm.webUIFlavor.value }
         vm.webUIEnabled
             .onEach {
                 isEnabled = it
@@ -65,7 +65,7 @@ fun WebUI(
         // todo toolTipText = ""
         actions()
             .onEach {
-                vm.webUIFlavor.value = (selectedItem as LauncherSettings.WebUIFlavor).name
+                vm.webUIFlavor.value = (selectedItem as LauncherSettings.WebUIFlavor)
             }.flowOn(Dispatchers.Default)
             .launchIn(scope)
     }.bind(CC().grow().spanX().wrap())
@@ -88,10 +88,7 @@ fun WebUI(
     jComboBox(LauncherSettings.WebUIInterface.entries.toTypedArray()) {
         selectedItem =
             LauncherSettings.WebUIInterface.entries.find {
-                it.name.equals(
-                    vm.webUIInterface.value,
-                    true,
-                )
+                it == vm.webUIInterface.value
             }
         vm.webUIEnabled
             .onEach {
@@ -101,7 +98,7 @@ fun WebUI(
         actions()
             .onEach {
                 vm.webUIInterface.value =
-                    (selectedItem as LauncherSettings.WebUIInterface).name.lowercase()
+                    (selectedItem as LauncherSettings.WebUIInterface)
             }.flowOn(Dispatchers.Default)
             .launchIn(scope)
     }.bind(CC().grow().spanX().wrap())
@@ -151,10 +148,7 @@ fun WebUI(
     jComboBox(LauncherSettings.WebUIChannel.entries.toTypedArray()) {
         selectedItem =
             LauncherSettings.WebUIChannel.entries.find {
-                it.name.equals(
-                    vm.webUIChannel.value,
-                    true,
-                )
+                it == vm.webUIChannel.value
             }
         vm.webUIEnabled
             .onEach {
@@ -165,7 +159,7 @@ fun WebUI(
         actions()
             .onEach {
                 vm.webUIChannel.value =
-                    (selectedItem as LauncherSettings.WebUIChannel).name.lowercase()
+                    (selectedItem as LauncherSettings.WebUIChannel)
             }.flowOn(Dispatchers.Default)
             .launchIn(scope)
     }.bind(CC().grow().spanX().wrap())

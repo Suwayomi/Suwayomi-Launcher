@@ -18,6 +18,10 @@ import kotlinx.coroutines.flow.onEach
 import suwayomi.tachidesk.launcher.settings.LauncherSettings.AuthMode
 import suwayomi.tachidesk.launcher.settings.LauncherSettings.KoreaderSyncChecksumMethod
 import suwayomi.tachidesk.launcher.settings.LauncherSettings.KoreaderSyncStrategy
+import suwayomi.tachidesk.launcher.settings.LauncherSettings.SortOrder
+import suwayomi.tachidesk.launcher.settings.LauncherSettings.WebUIChannel
+import suwayomi.tachidesk.launcher.settings.LauncherSettings.WebUIFlavor
+import suwayomi.tachidesk.launcher.settings.LauncherSettings.WebUIInterface
 import kotlin.reflect.KProperty
 
 class ServerConfig(
@@ -65,11 +69,11 @@ class ServerConfig(
 
     // webUI
     val webUIEnabled: MutableStateFlow<Boolean> by OverrideConfigValue()
-    val webUIFlavor: MutableStateFlow<String> by OverrideConfigValue()
+    val webUIFlavor: MutableStateFlow<WebUIFlavor> by OverrideConfigValue()
     val initialOpenInBrowserEnabled: MutableStateFlow<Boolean> by OverrideConfigValue()
-    val webUIInterface: MutableStateFlow<String> by OverrideConfigValue()
+    val webUIInterface: MutableStateFlow<WebUIInterface> by OverrideConfigValue()
     val electronPath: MutableStateFlow<String> by OverrideConfigValue()
-    val webUIChannel: MutableStateFlow<String> by OverrideConfigValue()
+    val webUIChannel: MutableStateFlow<WebUIChannel> by OverrideConfigValue()
     val webUIUpdateCheckInterval: MutableStateFlow<Double> by OverrideConfigValue()
 
     // downloader
@@ -83,10 +87,10 @@ class ServerConfig(
 
     data class DownloadConversion(
         val target: String,
-        val compressionLevel: Float? = null,
+        val compressionLevel: Double? = null,
     )
 
-    // extension
+    // extensions
     val extensionRepos: MutableStateFlow<List<String>> by OverrideConfigValue()
 
     // requests
@@ -107,6 +111,9 @@ class ServerConfig(
     // misc
     val debugLogsEnabled: MutableStateFlow<Boolean> by OverrideConfigValue()
     val systemTrayEnabled: MutableStateFlow<Boolean> by OverrideConfigValue()
+    val maxLogFiles: MutableStateFlow<Int> by OverrideConfigValue()
+    val maxLogFileSize: MutableStateFlow<String> by OverrideConfigValue()
+    val maxLogFolderSize: MutableStateFlow<String> by OverrideConfigValue()
 
     // backup
     val backupPath: MutableStateFlow<String> by OverrideConfigValue()
@@ -132,7 +139,7 @@ class ServerConfig(
     val opdsMarkAsReadOnDownload: MutableStateFlow<Boolean> by OverrideConfigValue()
     val opdsShowOnlyUnreadChapters: MutableStateFlow<Boolean> by OverrideConfigValue()
     val opdsShowOnlyDownloadedChapters: MutableStateFlow<Boolean> by OverrideConfigValue()
-    val opdsChapterSortOrder: MutableStateFlow<String> by OverrideConfigValue()
+    val opdsChapterSortOrder: MutableStateFlow<SortOrder> by OverrideConfigValue()
 
     // koreader sync
     val koreaderSyncServerUrl: MutableStateFlow<String> by OverrideConfigValue()

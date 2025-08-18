@@ -297,7 +297,7 @@ fun Downloader(
                                         it.plus(
                                             mime to
                                                 currentValue.copy(
-                                                    compressionLevel = (value as Float).takeIf { it > 0.01f },
+                                                    compressionLevel = (value as Float).toDouble().takeIf { it > 0.01 },
                                                 ),
                                         )
                                     } else {

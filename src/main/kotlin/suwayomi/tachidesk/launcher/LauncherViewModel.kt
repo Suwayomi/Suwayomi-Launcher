@@ -28,6 +28,7 @@ import suwayomi.tachidesk.launcher.settings.LauncherPreference
 import suwayomi.tachidesk.launcher.settings.LauncherSettings
 import suwayomi.tachidesk.launcher.settings.LauncherSettings.KoreaderSyncChecksumMethod
 import suwayomi.tachidesk.launcher.settings.LauncherSettings.KoreaderSyncStrategy
+import suwayomi.tachidesk.launcher.settings.LauncherSettings.SortOrder
 import suwayomi.tachidesk.launcher.util.checkIfPortInUse
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -108,6 +109,9 @@ class LauncherViewModel {
     // Misc
     val debug = config.asStateFlow { it.debugLogsEnabled }
     val systemTray = config.asStateFlow { it.systemTrayEnabled }
+    val maxLogFiles = config.asStateFlow { it.maxLogFiles }
+    val maxLogFileSize = config.asStateFlow { it.maxLogFileSize }
+    val maxLogFolderSize = config.asStateFlow { it.maxLogFolderSize }
 
     // Backup
     val backupPath = config.asStateFlow { it.backupPath }
@@ -133,7 +137,7 @@ class LauncherViewModel {
     val opdsMarkAsReadOnDownload: MutableStateFlow<Boolean> = config.asStateFlow { it.opdsMarkAsReadOnDownload }
     val opdsShowOnlyUnreadChapters: MutableStateFlow<Boolean> = config.asStateFlow { it.opdsShowOnlyUnreadChapters }
     val opdsShowOnlyDownloadedChapters: MutableStateFlow<Boolean> = config.asStateFlow { it.opdsShowOnlyDownloadedChapters }
-    val opdsChapterSortOrder: MutableStateFlow<String> = config.asStateFlow { it.opdsChapterSortOrder }
+    val opdsChapterSortOrder: MutableStateFlow<SortOrder> = config.asStateFlow { it.opdsChapterSortOrder }
 
     // koreader sync
     val koreaderSyncServerUrl: MutableStateFlow<String> = config.asStateFlow { it.koreaderSyncServerUrl }
@@ -206,7 +210,7 @@ class LauncherViewModel {
             val jarFile = tachideskServer.absolutePathString()
             val properties = settings.getProperties().toMutableList()
             if (
-                (forceElectron || webUIInterface.value.equals("electron", true)) &&
+                (forceElectron || webUIInterface.value == LauncherSettings.WebUIInterface.Electron) &&
                 (electronPath.value.isBlank() || Path(electronPath.value).notExists())
             ) {
                 val electronPath =
@@ -229,8 +233,7 @@ class LauncherViewModel {
                 } else {
                     logger.info { "Electron executable was not found! Disabling Electron" }
                     this@LauncherViewModel.webUIInterface.value =
-                        LauncherSettings.WebUIInterface.Browser.name
-                            .lowercase()
+                        LauncherSettings.WebUIInterface.Browser
                 }
             }
 
