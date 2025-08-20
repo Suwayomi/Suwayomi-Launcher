@@ -23,6 +23,7 @@ import suwayomi.tachidesk.launcher.settings.LauncherSettings.WebUIChannel
 import suwayomi.tachidesk.launcher.settings.LauncherSettings.WebUIFlavor
 import suwayomi.tachidesk.launcher.settings.LauncherSettings.WebUIInterface
 import kotlin.reflect.KProperty
+import kotlin.time.Duration
 
 class ServerConfig(
     val scope: CoroutineScope,
@@ -107,6 +108,9 @@ class ServerConfig(
     val authMode: MutableStateFlow<AuthMode> by OverrideConfigValue()
     val authUsername: MutableStateFlow<String> by OverrideConfigValue()
     val authPassword: MutableStateFlow<String> by OverrideConfigValue()
+    val jwtAudience: MutableStateFlow<String> by OverrideConfigValue()
+    val jwtTokenExpiry: MutableStateFlow<Duration> by OverrideConfigValue()
+    val jwtRefreshExpiry: MutableStateFlow<Duration> by OverrideConfigValue()
 
     // misc
     val debugLogsEnabled: MutableStateFlow<Boolean> by OverrideConfigValue()

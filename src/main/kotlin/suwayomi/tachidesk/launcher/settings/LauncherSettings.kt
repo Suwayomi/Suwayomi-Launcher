@@ -43,6 +43,7 @@ class LauncherSettings {
         NONE,
         BASIC_AUTH,
         SIMPLE_LOGIN,
+        UI_LOGIN,
     }
 
     enum class KoreaderSyncChecksumMethod {

@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import suwayomi.tachidesk.launcher.config.ConfigManager
+import suwayomi.tachidesk.launcher.config.DurationType
 import suwayomi.tachidesk.launcher.config.MutableStateFlowType
 import suwayomi.tachidesk.launcher.config.ServerConfig
 import suwayomi.tachidesk.launcher.settings.LauncherPreference
@@ -48,6 +49,7 @@ class LauncherViewModel {
             "Could not find Suwayomi-Server.jar at '${tachideskServer.absolutePathString()}'"
         }
         registerCustomType(MutableStateFlowType())
+        registerCustomType(DurationType())
     }
 
     private val settings = LauncherSettings()
@@ -105,6 +107,9 @@ class LauncherViewModel {
     val authMode = config.asStateFlow { it.authMode }
     val authUsername = config.asStateFlow { it.authUsername }
     val authPassword = config.asStateFlow { it.authPassword }
+    val jwtAudience = config.asStateFlow { it.jwtAudience }
+    val jwtTokenExpiry = config.asStateFlow { it.jwtTokenExpiry }
+    val jwtRefreshExpiry = config.asStateFlow { it.jwtRefreshExpiry }
 
     // Misc
     val debug = config.asStateFlow { it.debugLogsEnabled }

@@ -13,6 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import net.miginfocom.layout.CC
 import net.miginfocom.layout.LC
@@ -28,6 +29,7 @@ import suwayomi.tachidesk.launcher.jTextField
 import suwayomi.tachidesk.launcher.jpanel
 import suwayomi.tachidesk.launcher.keyListener
 import suwayomi.tachidesk.launcher.settings.LauncherSettings.AuthMode
+import kotlin.time.Duration
 
 @Suppress("ktlint:standard:function-naming")
 fun Auth(
@@ -88,4 +90,69 @@ fun Auth(
             .launchIn(scope)
         columns = 10 // todo why?
     }.bind(CC().grow().spanX())
+
+    jTextArea("JWT Audience") {
+        isEditable = false
+    }.bind()
+    jTextField(vm.jwtAudience.value) {
+        isEnabled = vm.authMode.value == AuthMode.UI_LOGIN
+        vm.authMode
+            .onEach {
+                isEnabled = it == AuthMode.UI_LOGIN
+            }.launchIn(scope)
+        // todo toolTipText = ""
+        keyListener()
+            .filterIsInstance<KeyListenerEvent.Released>()
+            .onEach {
+                vm.authUsername.value = text?.trim().orEmpty()
+            }.flowOn(Dispatchers.Default)
+            .launchIn(scope)
+        columns = 10 // todo why?
+    }.bind(CC().grow().spanX().wrap())
+
+    jTextArea("JWT Token Expiry") {
+        isEditable = false
+    }.bind()
+    jTextField(vm.jwtTokenExpiry.value.toString()) {
+        // todo toolTipText = ""
+        isEnabled = vm.authMode.value == AuthMode.UI_LOGIN
+        vm.authMode
+            .onEach {
+                isEnabled = it == AuthMode.UI_LOGIN
+            }.launchIn(scope)
+        keyListener()
+            .filterIsInstance<KeyListenerEvent.Released>()
+            .map {
+                text?.trim()
+            }.onEach {
+                if (!it.isNullOrBlank() && runCatching { Duration.parse(it) }.isSuccess) {
+                    vm.jwtTokenExpiry.value = Duration.parse(it)
+                }
+            }.flowOn(Dispatchers.Default)
+            .launchIn(scope)
+        columns = 10
+    }.bind(CC().grow().spanX().wrap())
+
+    jTextArea("JWT Refresh Expiry") {
+        isEditable = false
+    }.bind()
+    jTextField(vm.jwtRefreshExpiry.value.toString()) {
+        // todo toolTipText = ""
+        isEnabled = vm.authMode.value == AuthMode.UI_LOGIN
+        vm.authMode
+            .onEach {
+                isEnabled = it == AuthMode.UI_LOGIN
+            }.launchIn(scope)
+        keyListener()
+            .filterIsInstance<KeyListenerEvent.Released>()
+            .map {
+                text?.trim()
+            }.onEach {
+                if (!it.isNullOrBlank() && runCatching { Duration.parse(it) }.isSuccess) {
+                    vm.jwtRefreshExpiry.value = Duration.parse(it)
+                }
+            }.flowOn(Dispatchers.Default)
+            .launchIn(scope)
+        columns = 10
+    }.bind(CC().grow().spanX().wrap())
 }
