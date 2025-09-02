@@ -52,7 +52,7 @@ fun LocalSource(
     }.bind()
     val localSourcePathField =
         jTextField(vm.localSourcePath.value) {
-            // todo toolTipText = ""
+            toolTipText = "default: \"\""
             focusListener()
                 .filterIsInstance<FocusListenerEvent.Lost>()
                 .combine(
@@ -75,7 +75,7 @@ fun LocalSource(
             columns = 10
         }.bind()
     jbutton(icon = UIManager.getIcon("FileView.directoryIcon")) {
-        // todo toolTipText = ""
+        toolTipText = "default: \"\""
         actions()
             .onEach {
                 val chooser =

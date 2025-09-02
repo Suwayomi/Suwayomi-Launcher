@@ -36,7 +36,7 @@ fun Updater(
     ),
 ) {
     jCheckBox("Exclude unread chapters", selected = vm.excludeUnreadChapters.value) {
-        // todo toolTipText = ""
+        toolTipText = "default: true"
         actions()
             .onEach {
                 vm.excludeUnreadChapters.value = isSelected
@@ -45,7 +45,7 @@ fun Updater(
     }.bind(CC().spanX())
 
     jCheckBox("Exclude not started", selected = vm.excludeNotStarted.value) {
-        // todo toolTipText = ""
+        toolTipText = "default: true"
         actions()
             .onEach {
                 vm.excludeNotStarted.value = isSelected
@@ -54,7 +54,7 @@ fun Updater(
     }.bind(CC().spanX())
 
     jCheckBox("Exclude completed", selected = vm.excludeCompleted.value) {
-        // todo toolTipText = ""
+        toolTipText = "default: true"
         actions()
             .onEach {
                 vm.excludeCompleted.value = isSelected
@@ -72,7 +72,7 @@ fun Updater(
             ),
         ) {
             toolTipText =
-                "Time in hours, the interval in which the global update will be automatically triggered" // todo improve
+                "default: 12.0 ; range: [6.0, +∞] ; 0.0 == disabled ; Time in hours" // todo improve
             changes()
                 .onEach {
                     vm.globalUpdateInterval.value = value as Double
@@ -85,7 +85,7 @@ fun Updater(
         }
 
     jCheckBox("Global Update", selected = vm.globalUpdateInterval.value != 0.0) {
-        // todo toolTipText = ""
+        toolTipText = "default: 12.0 ; range: [6.0, +∞] ; 0.0 == disabled ; Time in hours"
         actions()
             .onEach {
                 vm.globalUpdateInterval.value =
@@ -105,7 +105,7 @@ fun Updater(
     spinner.bind(CC().grow().spanX())
 
     jCheckBox("Update manga info", selected = vm.updateMangas.value) {
-        // todo toolTipText = ""
+        toolTipText = "default: false ; Update manga metadata and thumbnail along with the chapter list update during the library update."
         actions()
             .onEach {
                 vm.updateMangas.value = isSelected

@@ -45,7 +45,7 @@ fun Auth(
     }.bind()
     jComboBox(AuthMode.entries.toTypedArray()) {
         selectedItem = vm.authMode.value
-        // todo toolTipText = ""
+        toolTipText = "default: NONE"
         actions()
             .onEach {
                 vm.authMode.value = (selectedItem as AuthMode)
@@ -62,7 +62,7 @@ fun Auth(
             .onEach {
                 isEnabled = it != AuthMode.NONE
             }.launchIn(scope)
-        // todo toolTipText = ""
+        toolTipText = "default: \"\""
         keyListener()
             .filterIsInstance<KeyListenerEvent.Released>()
             .onEach {
@@ -81,7 +81,7 @@ fun Auth(
             .onEach {
                 isEnabled = it != AuthMode.NONE
             }.launchIn(scope)
-        // todo toolTipText = ""
+        toolTipText = "default: \"\""
         keyListener()
             .filterIsInstance<KeyListenerEvent.Released>()
             .onEach {
@@ -100,7 +100,7 @@ fun Auth(
             .onEach {
                 isEnabled = it == AuthMode.UI_LOGIN
             }.launchIn(scope)
-        // todo toolTipText = ""
+        toolTipText = "default: \"suwayomi-server-api\""
         keyListener()
             .filterIsInstance<KeyListenerEvent.Released>()
             .onEach {
@@ -114,7 +114,7 @@ fun Auth(
         isEditable = false
     }.bind()
     jTextField(vm.jwtTokenExpiry.value.toString()) {
-        // todo toolTipText = ""
+        toolTipText = "default: 5m ; range: [0s, +∞]"
         isEnabled = vm.authMode.value == AuthMode.UI_LOGIN
         vm.authMode
             .onEach {
@@ -137,7 +137,7 @@ fun Auth(
         isEditable = false
     }.bind()
     jTextField(vm.jwtRefreshExpiry.value.toString()) {
-        // todo toolTipText = ""
+        toolTipText = "default: 60d ; range: [0s, +∞]"
         isEnabled = vm.authMode.value == AuthMode.UI_LOGIN
         vm.authMode
             .onEach {

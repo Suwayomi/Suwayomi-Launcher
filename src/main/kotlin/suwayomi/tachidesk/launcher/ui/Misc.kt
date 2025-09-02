@@ -42,7 +42,7 @@ fun Misc(
 ) {
     jCheckBox("Debug logging", selected = vm.debug.value) {
         toolTipText =
-            "Use this to toggle extra logging to the console window to help debug issues." // todo improve
+            "default: false ; Use this to enable extra logging to the console window to help debug issues." // todo improve
         actions()
             .onEach {
                 vm.debug.value = isSelected
@@ -51,7 +51,7 @@ fun Misc(
     }.bind(CC().wrap())
 
     jCheckBox("System Tray", selected = vm.systemTray.value) {
-        toolTipText = "Use this to toggle Suwayomi showing in the system tray." // todo improve
+        toolTipText = "default: true ; Use this to toggle Suwayomi showing in the system tray." // todo improve
         actions()
             .onEach {
                 vm.systemTray.value = isSelected
@@ -70,7 +70,7 @@ fun Misc(
             1,
         ),
     ) {
-        toolTipText = "The max number of days to keep files before they get deleted"
+        toolTipText = "default: 31 ; range: [0, +∞] ; The max number of days to keep files before they get deleted"
         changes()
             .onEach {
                 vm.maxLogFiles.value = (value as Int)
@@ -84,7 +84,7 @@ fun Misc(
         isEditable = false
     }.bind()
     jTextField(vm.maxLogFileSize.value) {
-        toolTipText = "The max size of a log file - possible values: 1 (bytes), 1KB (kilobytes), 1MB (megabytes), 1GB (gigabytes)"
+        toolTipText = "default: \"10mb\" ; Maximum log file size - values: 1 (bytes), 1KB (kilobytes), 1MB (megabytes), 1GB (gigabytes)"
         keyListener()
             .filterIsInstance<KeyListenerEvent.Released>()
             .map {
@@ -101,7 +101,7 @@ fun Misc(
         isEditable = false
     }.bind()
     jTextField(vm.maxLogFolderSize.value) {
-        toolTipText = "The max size of all saved log files - possible values: 1 (bytes), 1KB (kilobytes), 1MB (megabytes), 1GB (gigabytes)"
+        toolTipText = "default: \"100mb\" ; Maximum log folder size - values: 1 (bytes), 1KB (kilobytes), 1MB (megabytes), 1GB (gigabytes)"
         keyListener()
             .filterIsInstance<KeyListenerEvent.Released>()
             .map {

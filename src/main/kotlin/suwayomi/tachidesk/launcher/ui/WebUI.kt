@@ -45,7 +45,7 @@ fun WebUI(
     ),
 ) {
     jCheckBox("WebUI", selected = vm.webUIEnabled.value) {
-        // todo toolTipText = ""
+        toolTipText = "default: true"
         actions()
             .onEach {
                 vm.webUIEnabled.value = isSelected
@@ -62,7 +62,7 @@ fun WebUI(
             .onEach {
                 isEnabled = it
             }.launchIn(scope)
-        // todo toolTipText = ""
+        toolTipText = "default: WEBUI"
         actions()
             .onEach {
                 vm.webUIFlavor.value = (selectedItem as LauncherSettings.WebUIFlavor)
@@ -70,7 +70,7 @@ fun WebUI(
             .launchIn(scope)
     }.bind(CC().grow().spanX().wrap())
     jCheckBox("Open in browser", selected = vm.initialOpenInBrowserEnabled.value) {
-        // todo toolTipText = ""
+        toolTipText = "default: true ; Open client on startup"
         vm.webUIEnabled
             .onEach {
                 isEnabled = it
@@ -94,7 +94,7 @@ fun WebUI(
             .onEach {
                 isEnabled = it
             }.launchIn(scope)
-        // todo toolTipText = ""
+        toolTipText = "default: BROWSER"
         actions()
             .onEach {
                 vm.webUIInterface.value =
@@ -113,7 +113,7 @@ fun WebUI(
                 .onEach {
                     isEnabled = it
                 }.launchIn(scope)
-            // todo toolTipText = ""
+            toolTipText = "default: \"\""
             keyListener()
                 .filterIsInstance<KeyListenerEvent.Released>()
                 .onEach {
@@ -123,7 +123,7 @@ fun WebUI(
             columns = 10
         }.bind()
     jbutton(icon = UIManager.getIcon("FileView.directoryIcon")) {
-        // todo toolTipText = ""
+        toolTipText = "default: \"\""
         actions()
             .onEach {
                 val chooser =
@@ -155,7 +155,7 @@ fun WebUI(
                 isEnabled = it
             }.launchIn(scope)
         toolTipText =
-            "\"bundled\" (the version bundled with the server release), \"stable\" or \"preview\" - the WebUI version that should be used"
+            "default: STABLE ; \"BUNDLED\" (the version bundled with the server release), \"STABLE\" or \"PREVIEW\" - the WebUI version that should be used"
         actions()
             .onEach {
                 vm.webUIChannel.value =
@@ -174,7 +174,7 @@ fun WebUI(
             ),
         ) {
             toolTipText =
-                "Time in hours, how often the server should check for WebUI updates" // todo improve
+                "default: 23.0 ; range: [0.0, 23.0] ; 0.0 == disabled ; Time in hours, how often the server should check for WebUI updates"
             changes()
                 .onEach {
                     vm.webUIUpdateCheckInterval.value = value as Double
@@ -187,7 +187,7 @@ fun WebUI(
         }
 
     jCheckBox("WebUI Updates", selected = vm.webUIUpdateCheckInterval.value != 0.0) {
-        // todo toolTipText = ""
+        toolTipText = "default: 23.0 ; range: [0.0, 23.0] ; 0.0 == disabled ; Time in hours"
         actions()
             .onEach {
                 vm.webUIUpdateCheckInterval.value =

@@ -46,7 +46,7 @@ fun ServerIpAndPortBindings(
     }.bind()
     jTextField(vm.ip.value) {
         toolTipText =
-            "Where to expose the server, 0.0.0.0 is the default and suggested value" // todo improve
+            "default: \"0.0.0.0\" ; Where to expose the server"
         keyListener()
             .filter {
                 text.count { it == '.' } == 3 &&
@@ -64,8 +64,8 @@ fun ServerIpAndPortBindings(
     jTextArea("Port") {
         isEditable = false
     }.bind()
-    jSpinner(SpinnerNumberModel(vm.port.value.coerceAtLeast(0), 0, Int.MAX_VALUE, 1)) {
-        toolTipText = "Which port to use the server, 4567 is the default" // todo improve
+    jSpinner(SpinnerNumberModel(vm.port.value.coerceAtLeast(0), 1, 65535, 1)) {
+        toolTipText = "default: 4567 ; range: [1, 65535]" // todo improve
         changes()
             .onEach {
                 vm.port.value = value as Int

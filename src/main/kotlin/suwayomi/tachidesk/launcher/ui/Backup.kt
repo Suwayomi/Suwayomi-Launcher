@@ -55,7 +55,7 @@ fun Backup(
     }.bind()
     val backupPathField =
         jTextField(vm.backupPath.value) {
-            // todo toolTipText = ""
+            toolTipText = "default: \"\""
             focusListener()
                 .filterIsInstance<FocusListenerEvent.Lost>()
                 .combine(
@@ -78,7 +78,7 @@ fun Backup(
             columns = 10
         }.bind()
     jbutton(icon = UIManager.getIcon("FileView.directoryIcon")) {
-        // todo toolTipText = ""
+        toolTipText = "default: \"\""
         actions()
             .onEach {
                 val chooser =
@@ -108,8 +108,7 @@ fun Backup(
     }.bind()
     jTextField(vm.backupTime.value) {
         toolTipText =
-            "range: hour: 0-23, minute: 0-59 - default: \"00:00\" - " +
-            "time of day at which the automated backup should be triggered" // todo improve
+            "default: \"00:00\" ; Daily backup time (HH:MM) ; range: [00:00, 23:59]"
         actions()
             .filter {
                 text.count { it == ':' } == 1 &&
@@ -131,7 +130,7 @@ fun Backup(
     }.bind()
     jSpinner(SpinnerNumberModel(vm.backupInterval.value.coerceIn(0, 14), 0, 14, 1)) {
         toolTipText =
-            "time in days - 0 to disable it - Interval in which the server will automatically create a backup." // todo improve
+            "default: 1 ; range: [0, +∞] ; 0 == disabled ; Time in days"
         changes()
             .onEach {
                 vm.backupInterval.value = value as Int
@@ -144,7 +143,7 @@ fun Backup(
     }.bind()
     jSpinner(SpinnerNumberModel(vm.backupTTL.value.coerceIn(0, 30), 0, 30, 1)) {
         toolTipText =
-            "time in days - 0 to disable it - How long backup files will be kept before they will get deleted." // todo improve
+            "default: 14 ; range: [0, +∞] ; 0 == disabled ; Backup retention in days"
         changes()
             .onEach {
                 vm.backupTTL.value = value as Int

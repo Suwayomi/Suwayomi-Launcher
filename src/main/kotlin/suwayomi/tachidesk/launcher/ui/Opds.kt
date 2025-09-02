@@ -38,7 +38,7 @@ fun Opds(
     ),
 ) {
     jCheckBox("Use binary file sizes", selected = vm.opdsUseBinaryFileSizes.value) {
-        // todo toolTipText = ""
+        toolTipText = "default: false ; Display file size in binary (KiB, MiB, GiB) instead of decimal (KB, MB, GB)"
         actions()
             .onEach {
                 vm.opdsUseBinaryFileSizes.value = isSelected
@@ -49,7 +49,7 @@ fun Opds(
         isEditable = false
     }.bind()
     jSpinner(SpinnerNumberModel(vm.opdsItemsPerPage.value.coerceAtLeast(0), 0, 5000, 1)) {
-        // todo toolTipText = ""
+        toolTipText = "default: 100 ; range: [10, 5000]"
         changes()
             .onEach {
                 vm.opdsItemsPerPage.value = value as Int
@@ -57,7 +57,7 @@ fun Opds(
             .launchIn(scope)
     }.bind(CC().grow().spanX())
     jCheckBox("Page read progress", selected = vm.opdsEnablePageReadProgress.value) {
-        // todo toolTipText = ""
+        toolTipText = "default: true"
         actions()
             .onEach {
                 vm.opdsEnablePageReadProgress.value = isSelected
@@ -65,7 +65,7 @@ fun Opds(
             .launchIn(scope)
     }.bind(CC().spanX())
     jCheckBox("Mark downloads as read", selected = vm.opdsMarkAsReadOnDownload.value) {
-        // todo toolTipText = ""
+        toolTipText = "default: false"
         actions()
             .onEach {
                 vm.opdsMarkAsReadOnDownload.value = isSelected
@@ -73,7 +73,7 @@ fun Opds(
             .launchIn(scope)
     }.bind(CC().spanX())
     jCheckBox("Show only unread", selected = vm.opdsShowOnlyUnreadChapters.value) {
-        // todo toolTipText = ""
+        toolTipText = "default: false"
         actions()
             .onEach {
                 vm.opdsShowOnlyUnreadChapters.value = isSelected
@@ -81,7 +81,7 @@ fun Opds(
             .launchIn(scope)
     }.bind(CC().spanX())
     jCheckBox("Show only downloaded", selected = vm.opdsShowOnlyDownloadedChapters.value) {
-        // todo toolTipText = ""
+        toolTipText = "default: false"
         actions()
             .onEach {
                 vm.opdsShowOnlyDownloadedChapters.value = isSelected
@@ -98,7 +98,7 @@ fun Opds(
             .onEach {
                 isEnabled = it
             }.launchIn(scope)
-        // todo toolTipText = ""
+        toolTipText = "default: DESC"
         actions()
             .onEach {
                 vm.opdsChapterSortOrder.value = (selectedItem as SortOrder)

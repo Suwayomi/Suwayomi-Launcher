@@ -61,7 +61,7 @@ fun Downloader(
     ),
 ) {
     jCheckBox("Download as CBZ", selected = vm.downloadAsCbz.value) {
-        toolTipText = "Download chapters as CBZ files." // todo improve
+        toolTipText = "default: false ; Download chapters as CBZ files." // todo improve
         actions()
             .onEach {
                 vm.downloadAsCbz.value = isSelected
@@ -73,7 +73,7 @@ fun Downloader(
     }.bind()
     val downloadsPathField =
         jTextField(vm.downloadsPath.value) {
-            // todo toolTipText = ""
+            toolTipText = "default: \"\""
             focusListener()
                 .filterIsInstance<FocusListenerEvent.Lost>()
                 .combine(
@@ -96,7 +96,7 @@ fun Downloader(
             columns = 10
         }.bind()
     jbutton(icon = UIManager.getIcon("FileView.directoryIcon")) {
-        // todo toolTipText = ""
+        toolTipText = "default: \"\""
         actions()
             .onEach {
                 val chooser =
@@ -118,7 +118,7 @@ fun Downloader(
 
     jCheckBox("Download new chapters", selected = vm.autoDownloadNewChapters.value) {
         toolTipText =
-            "If new chapters that have been found, should Suwayomi download them automatically." // todo improve
+            "default: false ; If new chapters that have been found, should Suwayomi download them automatically." // todo improve
         actions()
             .onEach {
                 vm.autoDownloadNewChapters.value = isSelected
@@ -128,7 +128,7 @@ fun Downloader(
 
     jCheckBox("Exclude unread entries", selected = vm.excludeEntryWithUnreadChapters.value) {
         toolTipText =
-            "Ignore automatic chapter downloads of entries with unread chapters." // todo improve
+            "default: true ; Exclude entries with unread chapters from auto-download" // todo improve
         actions()
             .onEach {
                 vm.excludeEntryWithUnreadChapters.value = isSelected
@@ -138,7 +138,7 @@ fun Downloader(
 
     jCheckBox("Exclude re-uploaded entries", selected = vm.autoDownloadIgnoreReUploads.value) {
         toolTipText =
-            "Ignore automatic chapter downloads of entries that are already uploaded." // todo improve
+            "default: false ; Ignore re-uploaded chapters from auto-download" // todo improve
         actions()
             .onEach {
                 vm.autoDownloadIgnoreReUploads.value = isSelected
@@ -158,7 +158,7 @@ fun Downloader(
         ),
     ) {
         toolTipText =
-            "0 to disable it - How many unread downloaded chapters should be available - If the limit is reached, new chapters won't be downloaded automatically"
+            "default: 0 ; range: [0, +∞] ; 0 == disabled ; Maximum number of new chapters to auto-download"
         changes()
             .onEach {
                 vm.autoDownloadNewChaptersLimit.value = (value as Int)

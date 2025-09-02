@@ -38,9 +38,9 @@ fun Requests(
     }.bind()
     jSpinner(SpinnerNumberModel(vm.maxSourcesInParallel.value.coerceIn(6, 20), 6, 20, 1)) {
         toolTipText =
-            "Sets how many sources can do requests (updates, downloads) in parallel. " +
-            "Updates/Downloads are grouped by source and all mangas of a source are " +
-            "updated/downloaded synchronously" // todo improve
+            "default: 6 ; range: [1, 20] ; How many different sources can do requests " +
+            "(library update, downloads) in parallel. Library update/downloads are " +
+            "grouped by source and all manga of a source are updated/downloaded synchronously"
         changes()
             .onEach {
                 vm.maxSourcesInParallel.value = value as Int

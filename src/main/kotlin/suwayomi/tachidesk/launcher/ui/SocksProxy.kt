@@ -41,7 +41,7 @@ fun Socks5(
     ),
 ) {
     jCheckBox("Socks Proxy", selected = vm.socksProxyEnabled.value) {
-        // todo toolTipText = ""
+        toolTipText = "default: false"
         actions()
             .onEach {
                 vm.socksProxyEnabled.value = isSelected
@@ -49,7 +49,11 @@ fun Socks5(
             .launchIn(scope)
     }.bind(CC().spanX())
 
+    jTextArea("Socks Version") {
+        isEditable = false
+    }.bind()
     jSpinner(SpinnerNumberModel(vm.socksProxyVersion.value.coerceAtLeast(4), 4, 5, 1)) {
+        toolTipText = "default: 5 ; range: [4, 5]"
         changes()
             .onEach {
                 vm.socksProxyVersion.value = (value as Int)
@@ -70,7 +74,7 @@ fun Socks5(
             .onEach {
                 isEnabled = it
             }.launchIn(scope)
-        // todo toolTipText = ""
+        toolTipText = "default: \"\""
         actions()
             .onEach {
                 vm.socksProxyHost.value = text
@@ -92,7 +96,7 @@ fun Socks5(
             1,
         ),
     ) {
-        // todo toolTipText = ""
+        toolTipText = "default: \"\""
         isEnabled = vm.socksProxyEnabled.value
         vm.socksProxyEnabled
             .onEach {
@@ -115,7 +119,7 @@ fun Socks5(
             .onEach {
                 isEnabled = it
             }.launchIn(scope)
-        // todo toolTipText = ""
+        toolTipText = "default: \"\""
         keyListener()
             .filterIsInstance<KeyListenerEvent.Released>()
             .onEach {
@@ -134,7 +138,7 @@ fun Socks5(
             .onEach {
                 isEnabled = it
             }.launchIn(scope)
-        // todo toolTipText = ""
+        toolTipText = "default: \"\""
         keyListener()
             .filterIsInstance<KeyListenerEvent.Released>()
             .onEach {

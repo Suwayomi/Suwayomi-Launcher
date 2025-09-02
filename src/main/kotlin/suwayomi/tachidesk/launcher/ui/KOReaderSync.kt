@@ -44,7 +44,7 @@ fun KoReaderSync(
         isEditable = false
     }.bind()
     jTextField(vm.koreaderSyncServerUrl.value) {
-        // todo toolTipText = ""
+        toolTipText = "default: \"http://localhost:17200\""
         keyListener()
             .filterIsInstance<KeyListenerEvent.Released>()
             .map {
@@ -62,7 +62,7 @@ fun KoReaderSync(
         isEditable = false
     }.bind()
     jTextField(vm.koreaderSyncUsername.value) {
-        // todo toolTipText = ""
+        toolTipText = "default: \"\""
         keyListener()
             .filterIsInstance<KeyListenerEvent.Released>()
             .onEach {
@@ -75,7 +75,7 @@ fun KoReaderSync(
         isEditable = false
     }.bind()
     jTextField(vm.koreaderSyncUserkey.value) {
-        // todo toolTipText = ""
+        toolTipText = "default: \"\""
         keyListener()
             .filterIsInstance<KeyListenerEvent.Released>()
             .onEach {
@@ -88,7 +88,7 @@ fun KoReaderSync(
         isEditable = false
     }.bind()
     jTextField(vm.koreaderSyncDeviceId.value) {
-        // todo toolTipText = ""
+        toolTipText = "default: \"\""
         keyListener()
             .filterIsInstance<KeyListenerEvent.Released>()
             .onEach {
@@ -103,7 +103,7 @@ fun KoReaderSync(
     }.bind()
     jComboBox(KoreaderSyncChecksumMethod.entries.toTypedArray()) {
         selectedItem = vm.koreaderSyncChecksumMethod.value
-        // todo toolTipText = ""
+        toolTipText = "default: BINARY"
         actions()
             .onEach {
                 vm.koreaderSyncChecksumMethod.value = (selectedItem as KoreaderSyncChecksumMethod)
@@ -115,7 +115,7 @@ fun KoReaderSync(
     }.bind()
     jComboBox(KoreaderSyncStrategy.entries.toTypedArray()) {
         selectedItem = vm.koreaderSyncStrategy.value
-        // todo toolTipText = ""
+        toolTipText = "default: DISABLED"
         actions()
             .onEach {
                 vm.koreaderSyncStrategy.value = (selectedItem as KoreaderSyncStrategy)
@@ -142,6 +142,7 @@ fun KoReaderSync(
     }
     JSlider(1, 15, tolerance)
         .apply {
+            toolTipText = "1.0E-15 # default: 1.0E-15 ; range: [1.0E-15, 1.0] ; Absolute tolerance for progress comparison"
             setMajorTickSpacing(1)
             setPaintTicks(true)
             setPaintLabels(true)

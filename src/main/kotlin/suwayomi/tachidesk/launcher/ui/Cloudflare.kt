@@ -42,7 +42,7 @@ fun Cloudflare(
     ),
 ) {
     jCheckBox("Use FlareSolverr", selected = vm.flareSolverrEnabled.value) {
-        toolTipText = "Use FlareSolverr instance to bypass Cloudflare." // todo improve
+        toolTipText = "default: false ; Use FlareSolverr instance to bypass Cloudflare."
         actions()
             .onEach {
                 vm.flareSolverrEnabled.value = isSelected
@@ -53,7 +53,7 @@ fun Cloudflare(
         isEditable = false
     }.bind()
     jTextField(vm.flareSolverrUrl.value) {
-        // todo toolTipText = ""
+        toolTipText = "default: \"http://localhost:8191\""
         keyListener()
             .filterIsInstance<KeyListenerEvent.Released>()
             .map {
@@ -78,7 +78,7 @@ fun Cloudflare(
             1,
         ),
     ) {
-        toolTipText = "Time limit in seconds for FlareSolverr to run, will fail if it goes over"
+        toolTipText = "default: 60 ; range: [0, +∞] ; Time in seconds for FlareSolverr to run, will fail if it goes over"
         changes()
             .onEach {
                 vm.flareSolverrTimeout.value = (value as Int)
@@ -90,7 +90,7 @@ fun Cloudflare(
         isEditable = false
     }.bind()
     jTextField(vm.flareSolverrSessionName.value) {
-        toolTipText = "FlareSolver session name"
+        toolTipText = "default: \"suwayomi\" ; FlareSolver session name"
         keyListener()
             .filterIsInstance<KeyListenerEvent.Released>()
             .map {
@@ -115,7 +115,7 @@ fun Cloudflare(
             1,
         ),
     ) {
-        toolTipText = "FlareSolverr session time to live in minutes"
+        toolTipText = "default: 15 ; range: [0, +∞] ; Time in minutes for FlareSolverr session time to live"
         changes()
             .onEach {
                 vm.flareSolverrSessionTtl.value = (value as Int)
@@ -123,7 +123,7 @@ fun Cloudflare(
             .launchIn(scope)
     }.bind(CC().grow().spanX().wrap())
     jCheckBox("FlareSolverr as fallback", selected = vm.flareSolverrAsResponseFallback.value) {
-        toolTipText = "Use FlareSolverr response as fallback." // todo improve
+        toolTipText = "default: false ; Use FlareSolverr response as fallback."
         actions()
             .onEach {
                 vm.flareSolverrAsResponseFallback.value = isSelected
