@@ -153,6 +153,11 @@ class LauncherViewModel {
     val koreaderSyncStrategy: MutableStateFlow<KoreaderSyncStrategy> = config.asStateFlow { it.koreaderSyncStrategy }
     val koreaderSyncPercentageTolerance: MutableStateFlow<Double> = config.asStateFlow { it.koreaderSyncPercentageTolerance }
 
+    val databaseType: MutableStateFlow<DatabaseType> = config.asStateFlow { it.databaseType }
+    val databaseUrl: MutableStateFlow<String> = config.asStateFlow { it.databaseUrl }
+    val databaseUsername: MutableStateFlow<String> = config.asStateFlow { it.databaseUsername }
+    val databasePassword: MutableStateFlow<String> = config.asStateFlow { it.databasePassword }
+
     val theme = settings.theme().asStateFlow(scope)
 
     fun launch(forceElectron: Boolean = false) {

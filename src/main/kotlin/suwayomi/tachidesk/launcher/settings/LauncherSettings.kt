@@ -59,6 +59,11 @@ class LauncherSettings {
         DISABLED,
     }
 
+    enum class DatabaseType {
+        H2,
+        POSTGRESQL,
+    }
+
     fun rootDir(): LauncherPreference<String?> =
         LauncherPreference(
             "rootDir",

@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import suwayomi.tachidesk.launcher.settings.LauncherSettings.AuthMode
+import suwayomi.tachidesk.launcher.settings.LauncherSettings.DatabaseType
 import suwayomi.tachidesk.launcher.settings.LauncherSettings.KoreaderSyncChecksumMethod
 import suwayomi.tachidesk.launcher.settings.LauncherSettings.KoreaderSyncStrategy
 import suwayomi.tachidesk.launcher.settings.LauncherSettings.SortOrder
@@ -153,4 +154,10 @@ class ServerConfig(
     val koreaderSyncChecksumMethod: MutableStateFlow<KoreaderSyncChecksumMethod> by OverrideConfigValue()
     val koreaderSyncStrategy: MutableStateFlow<KoreaderSyncStrategy> by OverrideConfigValue()
     val koreaderSyncPercentageTolerance: MutableStateFlow<Double> by OverrideConfigValue()
+
+    // database
+    val databaseType: MutableStateFlow<DatabaseType> by OverrideConfigValue()
+    val databaseUrl: MutableStateFlow<String> by OverrideConfigValue()
+    val databaseUsername: MutableStateFlow<String> by OverrideConfigValue()
+    val databasePassword: MutableStateFlow<String> by OverrideConfigValue()
 }

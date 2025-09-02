@@ -26,6 +26,7 @@ import net.miginfocom.swing.MigLayout
 import suwayomi.tachidesk.launcher.ui.Auth
 import suwayomi.tachidesk.launcher.ui.Backup
 import suwayomi.tachidesk.launcher.ui.Cloudflare
+import suwayomi.tachidesk.launcher.ui.Database
 import suwayomi.tachidesk.launcher.ui.Downloader
 import suwayomi.tachidesk.launcher.ui.Extension
 import suwayomi.tachidesk.launcher.ui.KoReaderSync
@@ -124,6 +125,7 @@ suspend fun main(args: Array<String>) {
                         addTab("Cloudflare", Cloudflare(vm, scope))
                         addTab("Opds", Opds(vm, scope))
                         addTab("KOReader", KoReaderSync(vm, scope))
+                        addTab("Database", Database(vm, scope))
                         addTab("Root Directory", RootDir(vm, scope))
                     }.bind(CC().grow())
                     jpanel {
