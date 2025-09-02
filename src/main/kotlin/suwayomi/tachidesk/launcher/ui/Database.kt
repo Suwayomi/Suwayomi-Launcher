@@ -59,7 +59,7 @@ fun Database(
             .map {
                 text?.trim()
             }.onEach {
-                if (!it.isNullOrBlank()/* && runCatching { URL(it).toURI() }.isSuccess*/) {
+                if (!it.isNullOrBlank()) {
                     vm.databaseUrl.value = it
                 }
             }.flowOn(Dispatchers.Default)
