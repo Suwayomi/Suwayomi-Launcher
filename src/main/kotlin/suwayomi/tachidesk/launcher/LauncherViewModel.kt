@@ -29,7 +29,7 @@ import suwayomi.tachidesk.launcher.settings.LauncherPreference
 import suwayomi.tachidesk.launcher.settings.LauncherSettings
 import suwayomi.tachidesk.launcher.settings.LauncherSettings.DatabaseType
 import suwayomi.tachidesk.launcher.settings.LauncherSettings.KoreaderSyncChecksumMethod
-import suwayomi.tachidesk.launcher.settings.LauncherSettings.KoreaderSyncStrategy
+import suwayomi.tachidesk.launcher.settings.LauncherSettings.KoreaderSyncConflictStrategy
 import suwayomi.tachidesk.launcher.settings.LauncherSettings.SortOrder
 import suwayomi.tachidesk.launcher.util.checkIfPortInUse
 import java.nio.file.Path
@@ -151,8 +151,10 @@ class LauncherViewModel {
     val koreaderSyncUserkey: MutableStateFlow<String> = config.asStateFlow { it.koreaderSyncUserkey }
     val koreaderSyncDeviceId: MutableStateFlow<String> = config.asStateFlow { it.koreaderSyncDeviceId }
     val koreaderSyncChecksumMethod: MutableStateFlow<KoreaderSyncChecksumMethod> = config.asStateFlow { it.koreaderSyncChecksumMethod }
-    val koreaderSyncStrategy: MutableStateFlow<KoreaderSyncStrategy> = config.asStateFlow { it.koreaderSyncStrategy }
     val koreaderSyncPercentageTolerance: MutableStateFlow<Double> = config.asStateFlow { it.koreaderSyncPercentageTolerance }
+    val koreaderSyncStrategyForward: MutableStateFlow<KoreaderSyncConflictStrategy> = config.asStateFlow { it.koreaderSyncStrategyForward }
+    val koreaderSyncStrategyBackward: MutableStateFlow<KoreaderSyncConflictStrategy> =
+        config.asStateFlow { it.koreaderSyncStrategyBackward }
 
     val databaseType: MutableStateFlow<DatabaseType> = config.asStateFlow { it.databaseType }
     val databaseUrl: MutableStateFlow<String> = config.asStateFlow { it.databaseUrl }

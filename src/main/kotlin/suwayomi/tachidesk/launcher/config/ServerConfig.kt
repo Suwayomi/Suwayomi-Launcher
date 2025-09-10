@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.onEach
 import suwayomi.tachidesk.launcher.settings.LauncherSettings.AuthMode
 import suwayomi.tachidesk.launcher.settings.LauncherSettings.DatabaseType
 import suwayomi.tachidesk.launcher.settings.LauncherSettings.KoreaderSyncChecksumMethod
-import suwayomi.tachidesk.launcher.settings.LauncherSettings.KoreaderSyncStrategy
+import suwayomi.tachidesk.launcher.settings.LauncherSettings.KoreaderSyncConflictStrategy
 import suwayomi.tachidesk.launcher.settings.LauncherSettings.SortOrder
 import suwayomi.tachidesk.launcher.settings.LauncherSettings.WebUIChannel
 import suwayomi.tachidesk.launcher.settings.LauncherSettings.WebUIFlavor
@@ -152,8 +152,9 @@ class ServerConfig(
     val koreaderSyncUserkey: MutableStateFlow<String> by OverrideConfigValue()
     val koreaderSyncDeviceId: MutableStateFlow<String> by OverrideConfigValue()
     val koreaderSyncChecksumMethod: MutableStateFlow<KoreaderSyncChecksumMethod> by OverrideConfigValue()
-    val koreaderSyncStrategy: MutableStateFlow<KoreaderSyncStrategy> by OverrideConfigValue()
     val koreaderSyncPercentageTolerance: MutableStateFlow<Double> by OverrideConfigValue()
+    val koreaderSyncStrategyForward: MutableStateFlow<KoreaderSyncConflictStrategy> by OverrideConfigValue()
+    val koreaderSyncStrategyBackward: MutableStateFlow<KoreaderSyncConflictStrategy> by OverrideConfigValue()
 
     // database
     val databaseType: MutableStateFlow<DatabaseType> by OverrideConfigValue()

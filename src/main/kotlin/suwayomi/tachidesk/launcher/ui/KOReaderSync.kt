@@ -20,7 +20,7 @@ import suwayomi.tachidesk.launcher.jTextField
 import suwayomi.tachidesk.launcher.jpanel
 import suwayomi.tachidesk.launcher.keyListener
 import suwayomi.tachidesk.launcher.settings.LauncherSettings.KoreaderSyncChecksumMethod
-import suwayomi.tachidesk.launcher.settings.LauncherSettings.KoreaderSyncStrategy
+import suwayomi.tachidesk.launcher.settings.LauncherSettings.KoreaderSyncConflictStrategy
 import java.net.URL
 import java.text.DecimalFormat
 import javax.swing.JLabel
@@ -110,15 +110,27 @@ fun KoReaderSync(
             }.flowOn(Dispatchers.Default)
             .launchIn(scope)
     }.bind(CC().grow().spanX().wrap())
-    jTextArea("Sync Strategy") {
+    jTextArea("Sync Strategy Forward") {
         isEditable = false
     }.bind()
-    jComboBox(KoreaderSyncStrategy.entries.toTypedArray()) {
-        selectedItem = vm.koreaderSyncStrategy.value
+    jComboBox(KoreaderSyncConflictStrategy.entries.toTypedArray()) {
+        selectedItem = vm.koreaderSyncStrategyForward.value
+        toolTipText = "default: PROMPT"
+        actions()
+            .onEach {
+                vm.koreaderSyncStrategyForward.value = (selectedItem as KoreaderSyncConflictStrategy)
+            }.flowOn(Dispatchers.Default)
+            .launchIn(scope)
+    }.bind(CC().grow().spanX().wrap())
+    jTextArea("Sync Strategy Backward") {
+        isEditable = false
+    }.bind()
+    jComboBox(KoreaderSyncConflictStrategy.entries.toTypedArray()) {
+        selectedItem = vm.koreaderSyncStrategyBackward.value
         toolTipText = "default: DISABLED"
         actions()
             .onEach {
-                vm.koreaderSyncStrategy.value = (selectedItem as KoreaderSyncStrategy)
+                vm.koreaderSyncStrategyBackward.value = (selectedItem as KoreaderSyncConflictStrategy)
             }.flowOn(Dispatchers.Default)
             .launchIn(scope)
     }.bind(CC().grow().spanX().wrap())

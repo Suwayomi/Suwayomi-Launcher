@@ -59,6 +59,13 @@ class LauncherSettings {
         DISABLED,
     }
 
+    enum class KoreaderSyncConflictStrategy {
+        PROMPT,
+        KEEP_LOCAL,
+        KEEP_REMOTE,
+        DISABLED,
+    }
+
     enum class DatabaseType {
         H2,
         POSTGRESQL,
