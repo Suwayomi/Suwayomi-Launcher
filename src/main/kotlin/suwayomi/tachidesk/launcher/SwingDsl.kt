@@ -206,8 +206,8 @@ fun Component.addTo(
 }
 
 /** Adds [Component] to parent [Container] */
-context(Container)
 @SwingDsl
+context(Container)
 fun <T : Component> T.bind(constraints: Any? = null): T {
     add(this@bind, constraints)
     return this@bind
