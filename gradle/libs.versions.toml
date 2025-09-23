@@ -26,7 +26,7 @@ appdirs = "ca.gosyer:kotlin-multiplatform-appdirs:2.0.0"
 settings-core = { module = "com.russhwolf:multiplatform-settings-jvm", version.ref = "settings" }
 
 # Config
-config = "com.typesafe:config:1.4.4"
+config = "com.typesafe:config:1.4.5"
 config4k = "io.github.config4k:config4k:0.7.0"
 
 # Http
