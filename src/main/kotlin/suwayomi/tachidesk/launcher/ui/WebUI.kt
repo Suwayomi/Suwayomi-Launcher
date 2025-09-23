@@ -205,4 +205,22 @@ fun WebUI(
         isEditable = false
     }.bind()
     spinner.bind(CC().grow().spanX())
+
+    jTextArea("WebUI SubPath") {
+        isEditable = false
+    }.bind()
+    jTextField(vm.webUISubpath.value) {
+        val regex = "^(/[a-zA-Z0-9._-]+)*$".toRegex()
+        toolTipText =
+            "default: \"\" ; Serve WebUI under a subpath (e.g., /manga). Leave empty for root path. Must start with / if specified."
+        keyListener()
+            .filterIsInstance<KeyListenerEvent.Released>()
+            .onEach {
+                if (text?.matches(regex) == true) {
+                    vm.webUISubpath.value = text?.trim().orEmpty()
+                }
+            }.flowOn(Dispatchers.Default)
+            .launchIn(scope)
+        columns = 10 // todo why?
+    }.bind(CC().grow().spanX().wrap())
 }

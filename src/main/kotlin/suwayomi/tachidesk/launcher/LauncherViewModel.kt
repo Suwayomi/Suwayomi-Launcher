@@ -81,6 +81,7 @@ class LauncherViewModel {
     val electronPath = config.asStateFlow { it.electronPath }
     val webUIChannel = config.asStateFlow { it.webUIChannel }
     val webUIUpdateCheckInterval = config.asStateFlow { it.webUIUpdateCheckInterval }
+    val webUISubpath = config.asStateFlow { it.webUISubpath }
 
     // Downloader
     val downloadAsCbz = config.asStateFlow { it.downloadAsCbz }

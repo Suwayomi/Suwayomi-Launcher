@@ -77,6 +77,7 @@ class ServerConfig(
     val electronPath: MutableStateFlow<String> by OverrideConfigValue()
     val webUIChannel: MutableStateFlow<WebUIChannel> by OverrideConfigValue()
     val webUIUpdateCheckInterval: MutableStateFlow<Double> by OverrideConfigValue()
+    val webUISubpath: MutableStateFlow<String> by OverrideConfigValue()
 
     // downloader
     val downloadAsCbz: MutableStateFlow<Boolean> by OverrideConfigValue()
