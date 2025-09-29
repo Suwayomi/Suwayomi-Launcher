@@ -257,7 +257,7 @@ class LauncherViewModel {
 
             logger.debug { "Properties:\n" + properties.joinToString(separator = "\n") }
             delay(100)
-            ProcessBuilder(java, *properties.toTypedArray(), "-jar", jarFile).start()
+            ProcessBuilder(java, *properties.toTypedArray(), "--add-exports=java.desktop/sun.awt=ALL-UNNAMED", "-jar", jarFile).start()
             exitProcess(0)
         }
     }
