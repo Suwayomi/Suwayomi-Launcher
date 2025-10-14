@@ -125,6 +125,13 @@ class LauncherViewModel {
     val backupTime = config.asStateFlow { it.backupTime }
     val backupInterval = config.asStateFlow { it.backupInterval }
     val backupTTL = config.asStateFlow { it.backupTTL }
+    val autoBackupIncludeManga = config.asStateFlow { it.autoBackupIncludeManga }
+    val autoBackupIncludeCategories = config.asStateFlow { it.autoBackupIncludeCategories }
+    val autoBackupIncludeChapters = config.asStateFlow { it.autoBackupIncludeChapters }
+    val autoBackupIncludeTracking = config.asStateFlow { it.autoBackupIncludeTracking }
+    val autoBackupIncludeHistory = config.asStateFlow { it.autoBackupIncludeHistory }
+    val autoBackupIncludeClientData = config.asStateFlow { it.autoBackupIncludeClientData }
+    val autoBackupIncludeServerSettings = config.asStateFlow { it.autoBackupIncludeServerSettings }
 
     // Local Source
     val localSourcePath = config.asStateFlow { it.localSourcePath }

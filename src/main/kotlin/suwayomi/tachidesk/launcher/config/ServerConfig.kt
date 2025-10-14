@@ -126,6 +126,13 @@ class ServerConfig(
     val backupTime: MutableStateFlow<String> by OverrideConfigValue()
     val backupInterval: MutableStateFlow<Int> by OverrideConfigValue()
     val backupTTL: MutableStateFlow<Int> by OverrideConfigValue()
+    val autoBackupIncludeManga: MutableStateFlow<Boolean> by OverrideConfigValue()
+    val autoBackupIncludeCategories: MutableStateFlow<Boolean> by OverrideConfigValue()
+    val autoBackupIncludeChapters: MutableStateFlow<Boolean> by OverrideConfigValue()
+    val autoBackupIncludeTracking: MutableStateFlow<Boolean> by OverrideConfigValue()
+    val autoBackupIncludeHistory: MutableStateFlow<Boolean> by OverrideConfigValue()
+    val autoBackupIncludeClientData: MutableStateFlow<Boolean> by OverrideConfigValue()
+    val autoBackupIncludeServerSettings: MutableStateFlow<Boolean> by OverrideConfigValue()
 
     // local source
     val localSourcePath: MutableStateFlow<String> by OverrideConfigValue()

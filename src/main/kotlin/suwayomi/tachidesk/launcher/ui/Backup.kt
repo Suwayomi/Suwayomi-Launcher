@@ -27,6 +27,7 @@ import suwayomi.tachidesk.launcher.actions
 import suwayomi.tachidesk.launcher.bind
 import suwayomi.tachidesk.launcher.changes
 import suwayomi.tachidesk.launcher.focusListener
+import suwayomi.tachidesk.launcher.jCheckBox
 import suwayomi.tachidesk.launcher.jSpinner
 import suwayomi.tachidesk.launcher.jTextArea
 import suwayomi.tachidesk.launcher.jTextField
@@ -150,4 +151,61 @@ fun Backup(
             }.flowOn(Dispatchers.Default)
             .launchIn(scope)
     }.bind(CC().grow().spanX())
+
+    jCheckBox("Auto-Backup Manga", selected = vm.autoBackupIncludeManga.value) {
+        toolTipText = "default: true"
+        actions()
+            .onEach {
+                vm.autoBackupIncludeManga.value = isSelected
+            }.flowOn(Dispatchers.Default)
+            .launchIn(scope)
+    }.bind(CC().wrap())
+    jCheckBox("Auto-Backup Categories", selected = vm.autoBackupIncludeCategories.value) {
+        toolTipText = "default: true"
+        actions()
+            .onEach {
+                vm.autoBackupIncludeCategories.value = isSelected
+            }.flowOn(Dispatchers.Default)
+            .launchIn(scope)
+    }.bind(CC().wrap())
+    jCheckBox("Auto-Backup Chapters", selected = vm.autoBackupIncludeChapters.value) {
+        toolTipText = "default: true"
+        actions()
+            .onEach {
+                vm.autoBackupIncludeChapters.value = isSelected
+            }.flowOn(Dispatchers.Default)
+            .launchIn(scope)
+    }.bind(CC().wrap())
+    jCheckBox("Auto-Backup Tracking", selected = vm.autoBackupIncludeTracking.value) {
+        toolTipText = "default: true"
+        actions()
+            .onEach {
+                vm.autoBackupIncludeTracking.value = isSelected
+            }.flowOn(Dispatchers.Default)
+            .launchIn(scope)
+    }.bind(CC().wrap())
+    jCheckBox("Auto-Backup History", selected = vm.autoBackupIncludeHistory.value) {
+        toolTipText = "default: true"
+        actions()
+            .onEach {
+                vm.autoBackupIncludeHistory.value = isSelected
+            }.flowOn(Dispatchers.Default)
+            .launchIn(scope)
+    }.bind(CC().wrap())
+    jCheckBox("Auto-Backup Manga", selected = vm.autoBackupIncludeClientData.value) {
+        toolTipText = "default: true"
+        actions()
+            .onEach {
+                vm.autoBackupIncludeClientData.value = isSelected
+            }.flowOn(Dispatchers.Default)
+            .launchIn(scope)
+    }.bind(CC().wrap())
+    jCheckBox("Auto-Backup Manga", selected = vm.autoBackupIncludeServerSettings.value) {
+        toolTipText = "default: true"
+        actions()
+            .onEach {
+                vm.autoBackupIncludeServerSettings.value = isSelected
+            }.flowOn(Dispatchers.Default)
+            .launchIn(scope)
+    }.bind(CC().wrap())
 }
