@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import suwayomi.tachidesk.launcher.settings.LauncherSettings.AuthMode
+import suwayomi.tachidesk.launcher.settings.LauncherSettings.CbzMediaType
 import suwayomi.tachidesk.launcher.settings.LauncherSettings.DatabaseType
 import suwayomi.tachidesk.launcher.settings.LauncherSettings.KoreaderSyncChecksumMethod
 import suwayomi.tachidesk.launcher.settings.LauncherSettings.KoreaderSyncConflictStrategy
@@ -153,6 +154,7 @@ class ServerConfig(
     val opdsShowOnlyUnreadChapters: MutableStateFlow<Boolean> by OverrideConfigValue()
     val opdsShowOnlyDownloadedChapters: MutableStateFlow<Boolean> by OverrideConfigValue()
     val opdsChapterSortOrder: MutableStateFlow<SortOrder> by OverrideConfigValue()
+    val opdsCbzMimetype: MutableStateFlow<CbzMediaType> by OverrideConfigValue()
 
     // koreader sync
     val koreaderSyncServerUrl: MutableStateFlow<String> by OverrideConfigValue()

@@ -27,6 +27,7 @@ import suwayomi.tachidesk.launcher.config.MutableStateFlowType
 import suwayomi.tachidesk.launcher.config.ServerConfig
 import suwayomi.tachidesk.launcher.settings.LauncherPreference
 import suwayomi.tachidesk.launcher.settings.LauncherSettings
+import suwayomi.tachidesk.launcher.settings.LauncherSettings.CbzMediaType
 import suwayomi.tachidesk.launcher.settings.LauncherSettings.DatabaseType
 import suwayomi.tachidesk.launcher.settings.LauncherSettings.KoreaderSyncChecksumMethod
 import suwayomi.tachidesk.launcher.settings.LauncherSettings.KoreaderSyncConflictStrategy
@@ -152,6 +153,7 @@ class LauncherViewModel {
     val opdsShowOnlyUnreadChapters: MutableStateFlow<Boolean> = config.asStateFlow { it.opdsShowOnlyUnreadChapters }
     val opdsShowOnlyDownloadedChapters: MutableStateFlow<Boolean> = config.asStateFlow { it.opdsShowOnlyDownloadedChapters }
     val opdsChapterSortOrder: MutableStateFlow<SortOrder> = config.asStateFlow { it.opdsChapterSortOrder }
+    val opdsCbzMimetype: MutableStateFlow<CbzMediaType> = config.asStateFlow { it.opdsCbzMimetype }
 
     // koreader sync
     val koreaderSyncServerUrl: MutableStateFlow<String> = config.asStateFlow { it.koreaderSyncServerUrl }

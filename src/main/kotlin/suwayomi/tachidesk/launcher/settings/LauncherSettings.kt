@@ -71,6 +71,14 @@ class LauncherSettings {
         POSTGRESQL,
     }
 
+    enum class CbzMediaType(
+        val mediaType: String,
+    ) {
+        MODERN("application/vnd.comicbook+zip"),
+        LEGACY("application/x-cbz"),
+        COMPATIBLE("application/x-cbr"),
+    }
+
     fun rootDir(): LauncherPreference<String?> =
         LauncherPreference(
             "rootDir",

@@ -25,6 +25,8 @@ import suwayomi.tachidesk.launcher.jComboBox
 import suwayomi.tachidesk.launcher.jSpinner
 import suwayomi.tachidesk.launcher.jTextArea
 import suwayomi.tachidesk.launcher.jpanel
+import suwayomi.tachidesk.launcher.settings.LauncherSettings
+import suwayomi.tachidesk.launcher.settings.LauncherSettings.CbzMediaType
 import suwayomi.tachidesk.launcher.settings.LauncherSettings.SortOrder
 import javax.swing.SpinnerNumberModel
 
@@ -94,14 +96,25 @@ fun Opds(
     jComboBox(SortOrder.entries.toTypedArray()) {
         selectedItem =
             SortOrder.entries.find { it == vm.opdsChapterSortOrder.value }
-        vm.webUIEnabled
-            .onEach {
-                isEnabled = it
-            }.launchIn(scope)
         toolTipText = "default: DESC"
         actions()
             .onEach {
                 vm.opdsChapterSortOrder.value = (selectedItem as SortOrder)
+            }.flowOn(Dispatchers.Default)
+            .launchIn(scope)
+    }.bind(CC().grow().spanX().wrap())
+
+    jTextArea("Cbz mime type") {
+        isEditable = false
+    }.bind()
+    jComboBox(CbzMediaType.entries.toTypedArray()) {
+        selectedItem =
+            CbzMediaType.entries.find { it == vm.opdsCbzMimetype.value }
+        toolTipText =
+            "default: MODERN; Controls the MimeType that Suwayomi sends in OPDS entries for CBZ archives. Also affects global CBZ download. Modern follows recent IANA standard (2017), while LEGACY (deprecated mimetype for .cbz) and COMPATIBLE (deprecated mimetype for all comic archives) might be more compatible with older clients."
+        actions()
+            .onEach {
+                vm.opdsCbzMimetype.value = (selectedItem as CbzMediaType)
             }.flowOn(Dispatchers.Default)
             .launchIn(scope)
     }.bind(CC().grow().spanX().wrap())
