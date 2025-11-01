@@ -157,9 +157,6 @@ class LauncherViewModel {
 
     // koreader sync
     val koreaderSyncServerUrl: MutableStateFlow<String> = config.asStateFlow { it.koreaderSyncServerUrl }
-    val koreaderSyncUsername: MutableStateFlow<String> = config.asStateFlow { it.koreaderSyncUsername }
-    val koreaderSyncUserkey: MutableStateFlow<String> = config.asStateFlow { it.koreaderSyncUserkey }
-    val koreaderSyncDeviceId: MutableStateFlow<String> = config.asStateFlow { it.koreaderSyncDeviceId }
     val koreaderSyncChecksumMethod: MutableStateFlow<KoreaderSyncChecksumMethod> = config.asStateFlow { it.koreaderSyncChecksumMethod }
     val koreaderSyncPercentageTolerance: MutableStateFlow<Double> = config.asStateFlow { it.koreaderSyncPercentageTolerance }
     val koreaderSyncStrategyForward: MutableStateFlow<KoreaderSyncConflictStrategy> = config.asStateFlow { it.koreaderSyncStrategyForward }

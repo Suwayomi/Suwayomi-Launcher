@@ -58,46 +58,6 @@ fun KoReaderSync(
         columns = 10
     }.bind(CC().grow().spanX().wrap())
 
-    jTextArea("Username") {
-        isEditable = false
-    }.bind()
-    jTextField(vm.koreaderSyncUsername.value) {
-        toolTipText = "default: \"\""
-        keyListener()
-            .filterIsInstance<KeyListenerEvent.Released>()
-            .onEach {
-                vm.koreaderSyncUsername.value = text?.trim().orEmpty()
-            }.flowOn(Dispatchers.Default)
-            .launchIn(scope)
-        columns = 10 // todo why?
-    }.bind(CC().grow().spanX().wrap())
-    jTextArea("Userkey") {
-        isEditable = false
-    }.bind()
-    jTextField(vm.koreaderSyncUserkey.value) {
-        toolTipText = "default: \"\""
-        keyListener()
-            .filterIsInstance<KeyListenerEvent.Released>()
-            .onEach {
-                vm.koreaderSyncUserkey.value = text?.trim().orEmpty()
-            }.flowOn(Dispatchers.Default)
-            .launchIn(scope)
-        columns = 10 // todo why?
-    }.bind(CC().grow().spanX().wrap())
-    jTextArea("Device Id") {
-        isEditable = false
-    }.bind()
-    jTextField(vm.koreaderSyncDeviceId.value) {
-        toolTipText = "default: \"\""
-        keyListener()
-            .filterIsInstance<KeyListenerEvent.Released>()
-            .onEach {
-                vm.koreaderSyncDeviceId.value = text?.trim().orEmpty()
-            }.flowOn(Dispatchers.Default)
-            .launchIn(scope)
-        columns = 10 // todo why?
-    }.bind(CC().grow().spanX().wrap())
-
     jTextArea("Checksum Method") {
         isEditable = false
     }.bind()
