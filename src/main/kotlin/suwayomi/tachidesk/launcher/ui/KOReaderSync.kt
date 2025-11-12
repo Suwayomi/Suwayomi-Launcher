@@ -21,7 +21,7 @@ import suwayomi.tachidesk.launcher.jpanel
 import suwayomi.tachidesk.launcher.keyListener
 import suwayomi.tachidesk.launcher.settings.LauncherSettings.KoreaderSyncChecksumMethod
 import suwayomi.tachidesk.launcher.settings.LauncherSettings.KoreaderSyncConflictStrategy
-import java.net.URL
+import java.net.URI
 import java.text.DecimalFormat
 import javax.swing.JLabel
 import javax.swing.JSlider
@@ -50,7 +50,7 @@ fun KoReaderSync(
             .map {
                 text?.trim()
             }.onEach {
-                if (!it.isNullOrBlank() && runCatching { URL(it).toURI() }.isSuccess) {
+                if (!it.isNullOrBlank() && runCatching { URI(it).toURL() }.isSuccess) {
                     vm.koreaderSyncServerUrl.value = it
                 }
             }.flowOn(Dispatchers.Default)

@@ -26,6 +26,7 @@ import net.miginfocom.swing.MigLayout
 import suwayomi.tachidesk.launcher.ui.Auth
 import suwayomi.tachidesk.launcher.ui.Backup
 import suwayomi.tachidesk.launcher.ui.Cloudflare
+import suwayomi.tachidesk.launcher.ui.Conversions
 import suwayomi.tachidesk.launcher.ui.Database
 import suwayomi.tachidesk.launcher.ui.Downloader
 import suwayomi.tachidesk.launcher.ui.Extension
@@ -118,6 +119,7 @@ suspend fun main(args: Array<String>) {
                         addTab("WebUI", WebUI(vm, scope))
                         addTab("Updater", Updater(vm, scope))
                         addTab("Downloader", Downloader(vm, scope))
+                        addTab("Conversions", Conversions(vm, scope))
                         addTab("Misc", Misc(vm, scope))
                         addTab("Backup", Backup(vm, scope))
                         addTab("Local Source", LocalSource(vm, scope))

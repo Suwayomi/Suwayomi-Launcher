@@ -88,10 +88,14 @@ class ServerConfig(
     val autoDownloadNewChaptersLimit: MutableStateFlow<Int> by OverrideConfigValue()
     val autoDownloadIgnoreReUploads: MutableStateFlow<Boolean> by OverrideConfigValue()
     val downloadConversions: MutableStateFlow<Map<String, DownloadConversion>> by OverrideConfigValue()
+    val serveConversions: MutableStateFlow<Map<String, DownloadConversion>> by OverrideConfigValue()
 
     data class DownloadConversion(
         val target: String,
         val compressionLevel: Double? = null,
+        val callTimeout: Duration? = null,
+        val connectTimeout: Duration? = null,
+        val headers: Map<String, String>? = null,
     )
 
     // extensions

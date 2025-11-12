@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import suwayomi.tachidesk.launcher.config.ConfigManager
+import suwayomi.tachidesk.launcher.config.DownloadConversionType
 import suwayomi.tachidesk.launcher.config.DurationType
 import suwayomi.tachidesk.launcher.config.MutableStateFlowType
 import suwayomi.tachidesk.launcher.config.ServerConfig
@@ -52,6 +53,7 @@ class LauncherViewModel {
         }
         registerCustomType(MutableStateFlowType())
         registerCustomType(DurationType())
+        registerCustomType(DownloadConversionType())
     }
 
     private val settings = LauncherSettings()

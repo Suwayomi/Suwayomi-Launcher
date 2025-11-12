@@ -29,7 +29,7 @@ import suwayomi.tachidesk.launcher.jTextArea
 import suwayomi.tachidesk.launcher.jTextField
 import suwayomi.tachidesk.launcher.jpanel
 import suwayomi.tachidesk.launcher.keyListener
-import java.net.URL
+import java.net.URI
 import javax.swing.SpinnerNumberModel
 
 @Suppress("ktlint:standard:function-naming")
@@ -59,7 +59,7 @@ fun Cloudflare(
             .map {
                 text?.trim()
             }.onEach {
-                if (!it.isNullOrBlank() && runCatching { URL(it).toURI() }.isSuccess) {
+                if (!it.isNullOrBlank() && runCatching { URI(it).toURL() }.isSuccess) {
                     vm.flareSolverrUrl.value = it
                 }
             }.flowOn(Dispatchers.Default)
