@@ -94,6 +94,7 @@ class LauncherViewModel {
     val autoDownloadNewChaptersLimit = config.asStateFlow { it.autoDownloadNewChaptersLimit }
     val autoDownloadIgnoreReUploads = config.asStateFlow { it.autoDownloadIgnoreReUploads }
     val downloadConversions = config.asStateFlow { it.downloadConversions }
+    val serveConversions = config.asStateFlow { it.serveConversions }
 
     // Extension
     val extensionRepos = config.asStateFlow { it.extensionRepos }
