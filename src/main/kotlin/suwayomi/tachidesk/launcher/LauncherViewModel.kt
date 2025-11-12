@@ -169,6 +169,7 @@ class LauncherViewModel {
     val databaseUrl: MutableStateFlow<String> = config.asStateFlow { it.databaseUrl }
     val databaseUsername: MutableStateFlow<String> = config.asStateFlow { it.databaseUsername }
     val databasePassword: MutableStateFlow<String> = config.asStateFlow { it.databasePassword }
+    val useHikariConnectionPool: MutableStateFlow<Boolean> = config.asStateFlow { it.useHikariConnectionPool }
 
     val theme = settings.theme().asStateFlow(scope)
 

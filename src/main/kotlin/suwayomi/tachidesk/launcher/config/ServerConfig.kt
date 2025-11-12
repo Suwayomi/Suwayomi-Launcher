@@ -172,4 +172,5 @@ class ServerConfig(
     val databaseUrl: MutableStateFlow<String> by OverrideConfigValue()
     val databaseUsername: MutableStateFlow<String> by OverrideConfigValue()
     val databasePassword: MutableStateFlow<String> by OverrideConfigValue()
+    val useHikariConnectionPool: MutableStateFlow<Boolean> by OverrideConfigValue()
 }

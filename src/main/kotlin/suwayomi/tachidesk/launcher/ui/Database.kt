@@ -14,6 +14,7 @@ import suwayomi.tachidesk.launcher.KeyListenerEvent
 import suwayomi.tachidesk.launcher.LauncherViewModel
 import suwayomi.tachidesk.launcher.actions
 import suwayomi.tachidesk.launcher.bind
+import suwayomi.tachidesk.launcher.jCheckBox
 import suwayomi.tachidesk.launcher.jComboBox
 import suwayomi.tachidesk.launcher.jPasswordField
 import suwayomi.tachidesk.launcher.jTextArea
@@ -103,4 +104,12 @@ fun Database(
             .launchIn(scope)
         columns = 15 // todo why?
     }.bind(CC().grow().spanX())
+    jCheckBox("Use Hikari Connection Pool", selected = vm.useHikariConnectionPool.value) {
+        toolTipText = "default: true ; Use Hikari Connection Pool to connect to the database."
+        actions()
+            .onEach {
+                vm.useHikariConnectionPool.value = isSelected
+            }.flowOn(Dispatchers.Default)
+            .launchIn(scope)
+    }.bind(CC().wrap())
 }
