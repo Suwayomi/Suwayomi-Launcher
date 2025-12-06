@@ -197,7 +197,10 @@ class LauncherViewModel {
                     0 -> {
                         return@launchMain
                     }
-                    1 -> Unit
+
+                    1 -> {
+                        Unit
+                    }
                 }
             }
 
