@@ -159,7 +159,6 @@ class LauncherViewModel {
     val opdsCbzMimetype: MutableStateFlow<CbzMediaType> = config.asStateFlow { it.opdsCbzMimetype }
 
     // koreader sync
-    val koreaderSyncServerUrl: MutableStateFlow<String> = config.asStateFlow { it.koreaderSyncServerUrl }
     val koreaderSyncChecksumMethod: MutableStateFlow<KoreaderSyncChecksumMethod> = config.asStateFlow { it.koreaderSyncChecksumMethod }
     val koreaderSyncPercentageTolerance: MutableStateFlow<Double> = config.asStateFlow { it.koreaderSyncPercentageTolerance }
     val koreaderSyncStrategyForward: MutableStateFlow<KoreaderSyncConflictStrategy> = config.asStateFlow { it.koreaderSyncStrategyForward }

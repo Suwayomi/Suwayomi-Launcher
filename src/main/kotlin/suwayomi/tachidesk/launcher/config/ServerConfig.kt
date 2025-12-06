@@ -161,7 +161,6 @@ class ServerConfig(
     val opdsCbzMimetype: MutableStateFlow<CbzMediaType> by OverrideConfigValue()
 
     // koreader sync
-    val koreaderSyncServerUrl: MutableStateFlow<String> by OverrideConfigValue()
     val koreaderSyncChecksumMethod: MutableStateFlow<KoreaderSyncChecksumMethod> by OverrideConfigValue()
     val koreaderSyncPercentageTolerance: MutableStateFlow<Double> by OverrideConfigValue()
     val koreaderSyncStrategyForward: MutableStateFlow<KoreaderSyncConflictStrategy> by OverrideConfigValue()

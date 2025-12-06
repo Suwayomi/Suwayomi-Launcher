@@ -2,26 +2,20 @@ package suwayomi.tachidesk.launcher.ui
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import net.miginfocom.layout.CC
 import net.miginfocom.layout.LC
 import net.miginfocom.swing.MigLayout
-import suwayomi.tachidesk.launcher.KeyListenerEvent
 import suwayomi.tachidesk.launcher.LauncherViewModel
 import suwayomi.tachidesk.launcher.actions
 import suwayomi.tachidesk.launcher.bind
 import suwayomi.tachidesk.launcher.jComboBox
 import suwayomi.tachidesk.launcher.jTextArea
-import suwayomi.tachidesk.launcher.jTextField
 import suwayomi.tachidesk.launcher.jpanel
-import suwayomi.tachidesk.launcher.keyListener
 import suwayomi.tachidesk.launcher.settings.LauncherSettings.KoreaderSyncChecksumMethod
 import suwayomi.tachidesk.launcher.settings.LauncherSettings.KoreaderSyncConflictStrategy
-import java.net.URI
 import java.text.DecimalFormat
 import javax.swing.JLabel
 import javax.swing.JSlider
@@ -40,24 +34,6 @@ fun KoReaderSync(
         LC().alignX("center").alignY("center"),
     ),
 ) {
-    jTextArea("Sync Server URL") {
-        isEditable = false
-    }.bind()
-    jTextField(vm.koreaderSyncServerUrl.value) {
-        toolTipText = "default: \"http://localhost:17200\""
-        keyListener()
-            .filterIsInstance<KeyListenerEvent.Released>()
-            .map {
-                text?.trim()
-            }.onEach {
-                if (!it.isNullOrBlank() && runCatching { URI(it).toURL() }.isSuccess) {
-                    vm.koreaderSyncServerUrl.value = it
-                }
-            }.flowOn(Dispatchers.Default)
-            .launchIn(scope)
-        columns = 10
-    }.bind(CC().grow().spanX().wrap())
-
     jTextArea("Checksum Method") {
         isEditable = false
     }.bind()
