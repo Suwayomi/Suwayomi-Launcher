@@ -74,7 +74,10 @@ suspend fun main(args: Array<String>) {
                 val error = StringSelection(e.message + ":\n" + e.stackTraceToString())
                 Toolkit.getDefaultToolkit().systemClipboard.setContents(error, error)
             }
-            1 -> LauncherViewModel.reset()
+
+            1 -> {
+                LauncherViewModel.reset()
+            }
         }
         exitProcess(100)
     }
