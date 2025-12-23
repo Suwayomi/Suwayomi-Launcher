@@ -206,7 +206,7 @@ private fun conversionsLayout(
                                         conversions.plus(
                                             mime to
                                                 currentValue.copy(
-                                                    compressionLevel = (value as Float).toDouble().takeIf { it > 0.01 },
+                                                    compressionLevel = (value as Float).toString().toDouble().takeIf { it > 0.01 },
                                                 ),
                                         )
                                     } else {
@@ -399,7 +399,7 @@ private fun conversionsLayout(
                                     val conversion = it[value]
                                     if (conversion != null) {
                                         targetMime.text = conversion.target
-                                        spinner.value = conversion.compressionLevel ?: 0.0f
+                                        spinner.value = conversion.compressionLevel?.toString()?.toFloat() ?: 0.0f
                                         callTimeout.text = conversion.callTimeout?.toString() ?: ""
                                         connectTimeout.text = conversion.connectTimeout?.toString() ?: ""
                                         headersState.value = conversion.headers?.toList().orEmpty()
