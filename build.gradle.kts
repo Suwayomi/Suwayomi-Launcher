@@ -74,7 +74,7 @@ tasks {
         dependsOn("formatKotlin")
         compilerOptions {
             jvmTarget = JvmTarget.JVM_1_8
-            freeCompilerArgs.add("-Xcontext-receivers")
+            freeCompilerArgs.add("-Xcontext-parameters")
         }
     }
 
