@@ -40,6 +40,7 @@ import suwayomi.tachidesk.launcher.ui.ServerIpAndPortBindings
 import suwayomi.tachidesk.launcher.ui.Socks5
 import suwayomi.tachidesk.launcher.ui.Updater
 import suwayomi.tachidesk.launcher.ui.WebUI
+import suwayomi.tachidesk.launcher.ui.Webview
 import java.awt.Dimension
 import java.awt.Toolkit
 import java.awt.datatransfer.StringSelection
@@ -131,6 +132,7 @@ suspend fun main(args: Array<String>) {
                         addTab("Opds", Opds(vm, scope))
                         addTab("KOReader", KoReaderSync(vm, scope))
                         addTab("Database", Database(vm, scope))
+                        addTab("Webview", Webview(vm, scope))
                         addTab("Root Directory", RootDir(vm, scope))
                     }.bind(CC().grow())
                     jpanel {

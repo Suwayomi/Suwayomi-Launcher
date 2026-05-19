@@ -171,6 +171,8 @@ class LauncherViewModel {
     val databasePassword: MutableStateFlow<String> = config.asStateFlow { it.databasePassword }
     val useHikariConnectionPool: MutableStateFlow<Boolean> = config.asStateFlow { it.useHikariConnectionPool }
 
+    val kcefEnabled: MutableStateFlow<Boolean> = config.asStateFlow { it.kcefEnabled }
+
     val theme = settings.theme().asStateFlow(scope)
 
     fun launch(forceElectron: Boolean = false) {

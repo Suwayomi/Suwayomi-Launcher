@@ -25,7 +25,6 @@ import suwayomi.tachidesk.launcher.jComboBox
 import suwayomi.tachidesk.launcher.jSpinner
 import suwayomi.tachidesk.launcher.jTextArea
 import suwayomi.tachidesk.launcher.jpanel
-import suwayomi.tachidesk.launcher.settings.LauncherSettings
 import suwayomi.tachidesk.launcher.settings.LauncherSettings.CbzMediaType
 import suwayomi.tachidesk.launcher.settings.LauncherSettings.SortOrder
 import javax.swing.SpinnerNumberModel
