@@ -30,6 +30,7 @@ import suwayomi.tachidesk.launcher.jTextField
 import suwayomi.tachidesk.launcher.jpanel
 import suwayomi.tachidesk.launcher.keyListener
 import suwayomi.tachidesk.launcher.settings.LauncherSettings.AuthMode
+import java.net.URI
 import kotlin.time.Duration
 
 @Suppress("ktlint:standard:function-naming")
@@ -62,8 +63,12 @@ fun Sync(
         toolTipText = "default: \"\""
         keyListener()
             .filterIsInstance<KeyListenerEvent.Released>()
-            .onEach {
-                vm.syncYomiHost.value = text?.trim().orEmpty()
+            .map {
+                text?.trim()
+            }.onEach {
+                if (!it.isNullOrBlank() && runCatching { URI(it).toURL() }.isSuccess) {
+                    vm.syncYomiHost.value = it
+                }
             }.flowOn(Dispatchers.Default)
             .launchIn(scope)
         columns = 10 // todo why?
