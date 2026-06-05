@@ -43,6 +43,7 @@ import kotlin.io.path.div
 import kotlin.io.path.exists
 import kotlin.io.path.notExists
 import kotlin.system.exitProcess
+import kotlin.time.Duration
 
 class LauncherViewModel {
     private val scope = MainScope()
@@ -172,6 +173,16 @@ class LauncherViewModel {
     val useHikariConnectionPool: MutableStateFlow<Boolean> = config.asStateFlow { it.useHikariConnectionPool }
 
     val kcefEnabled: MutableStateFlow<Boolean> = config.asStateFlow { it.kcefEnabled }
+
+    val syncYomiEnabled: MutableStateFlow<Boolean> = config.asStateFlow { it.syncYomiEnabled }
+    val syncYomiHost: MutableStateFlow<String> = config.asStateFlow { it.syncYomiHost }
+    val syncYomiApiKey: MutableStateFlow<String> = config.asStateFlow { it.syncYomiApiKey }
+    val syncDataManga: MutableStateFlow<Boolean> = config.asStateFlow { it.syncDataManga }
+    val syncDataChapters: MutableStateFlow<Boolean> = config.asStateFlow { it.syncDataChapters }
+    val syncDataTracking: MutableStateFlow<Boolean> = config.asStateFlow { it.syncDataTracking }
+    val syncDataHistory: MutableStateFlow<Boolean> = config.asStateFlow { it.syncDataHistory }
+    val syncDataCategories: MutableStateFlow<Boolean> = config.asStateFlow { it.syncDataCategories }
+    val syncInterval: MutableStateFlow<Duration> = config.asStateFlow { it.syncInterval }
 
     val theme = settings.theme().asStateFlow(scope)
 

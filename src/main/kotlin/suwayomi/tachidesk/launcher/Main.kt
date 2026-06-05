@@ -133,6 +133,7 @@ suspend fun main(args: Array<String>) {
                         addTab("KOReader", KoReaderSync(vm, scope))
                         addTab("Database", Database(vm, scope))
                         addTab("Webview", Webview(vm, scope))
+                        addTab("Sync", Sync(vm, scope))
                         addTab("Root Directory", RootDir(vm, scope))
                     }.bind(CC().grow())
                     jpanel {

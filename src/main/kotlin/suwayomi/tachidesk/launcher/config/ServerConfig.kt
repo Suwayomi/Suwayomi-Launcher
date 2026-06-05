@@ -175,4 +175,15 @@ class ServerConfig(
 
     // webview
     val kcefEnabled: MutableStateFlow<Boolean> by OverrideConfigValue()
+
+    // syncyomi
+    val syncYomiEnabled: MutableStateFlow<Boolean> by OverrideConfigValue()
+    val syncYomiHost: MutableStateFlow<String> by OverrideConfigValue()
+    val syncYomiApiKey: MutableStateFlow<String> by OverrideConfigValue()
+    val syncDataManga: MutableStateFlow<Boolean> by OverrideConfigValue()
+    val syncDataChapters: MutableStateFlow<Boolean> by OverrideConfigValue()
+    val syncDataTracking: MutableStateFlow<Boolean> by OverrideConfigValue()
+    val syncDataHistory: MutableStateFlow<Boolean> by OverrideConfigValue()
+    val syncDataCategories: MutableStateFlow<Boolean> by OverrideConfigValue()
+    val syncInterval: MutableStateFlow<Duration> by OverrideConfigValue()
 }
