@@ -38,6 +38,7 @@ import suwayomi.tachidesk.launcher.ui.Requests
 import suwayomi.tachidesk.launcher.ui.RootDir
 import suwayomi.tachidesk.launcher.ui.ServerIpAndPortBindings
 import suwayomi.tachidesk.launcher.ui.Socks5
+import suwayomi.tachidesk.launcher.ui.Sync
 import suwayomi.tachidesk.launcher.ui.Updater
 import suwayomi.tachidesk.launcher.ui.WebUI
 import suwayomi.tachidesk.launcher.ui.Webview
