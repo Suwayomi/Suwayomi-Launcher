@@ -158,6 +158,7 @@ class LauncherViewModel {
     val opdsShowOnlyDownloadedChapters: MutableStateFlow<Boolean> = config.asStateFlow { it.opdsShowOnlyDownloadedChapters }
     val opdsChapterSortOrder: MutableStateFlow<SortOrder> = config.asStateFlow { it.opdsChapterSortOrder }
     val opdsCbzMimetype: MutableStateFlow<CbzMediaType> = config.asStateFlow { it.opdsCbzMimetype }
+    val opdsSkipChapterMetadataFeed: MutableStateFlow<Boolean> = config.asStateFlow { it.opdsSkipChapterMetadataFeed }
 
     // koreader sync
     val koreaderSyncChecksumMethod: MutableStateFlow<KoreaderSyncChecksumMethod> = config.asStateFlow { it.koreaderSyncChecksumMethod }

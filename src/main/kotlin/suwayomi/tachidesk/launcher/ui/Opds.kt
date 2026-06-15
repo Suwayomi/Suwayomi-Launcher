@@ -117,4 +117,12 @@ fun Opds(
             }.flowOn(Dispatchers.Default)
             .launchIn(scope)
     }.bind(CC().grow().spanX().wrap())
+    jCheckBox("Skip Chapter Metadata Feed", selected = vm.opdsSkipChapterMetadataFeed.value) {
+        toolTipText = "default: false"
+        actions()
+            .onEach {
+                vm.opdsSkipChapterMetadataFeed.value = isSelected
+            }.flowOn(Dispatchers.Default)
+            .launchIn(scope)
+    }.bind(CC().spanX())
 }

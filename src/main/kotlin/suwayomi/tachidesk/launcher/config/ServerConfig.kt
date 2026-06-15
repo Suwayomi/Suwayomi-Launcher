@@ -159,6 +159,7 @@ class ServerConfig(
     val opdsShowOnlyDownloadedChapters: MutableStateFlow<Boolean> by OverrideConfigValue()
     val opdsChapterSortOrder: MutableStateFlow<SortOrder> by OverrideConfigValue()
     val opdsCbzMimetype: MutableStateFlow<CbzMediaType> by OverrideConfigValue()
+    val opdsSkipChapterMetadataFeed: MutableStateFlow<Boolean> by OverrideConfigValue()
 
     // koreader sync
     val koreaderSyncChecksumMethod: MutableStateFlow<KoreaderSyncChecksumMethod> by OverrideConfigValue()
