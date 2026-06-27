@@ -36,6 +36,13 @@ class ConfigManager(
     private val userConfigFile = getServerConf(rootDir)
     val logger = KotlinLogging.logger {}
 
+    private val repoMatchRegex =
+    (
+        "https:\\/\\/(?>www\\.|raw\\.)?(github|githubusercontent)\\.com" +
+            "\\/([^\\/]+)\\/([^\\/]+)(?>(?>\\/tree|\\/blob)?\\/([^\\/\\n]*))?(?>\\/([^\\/\\n]*\\.json)?)?"
+        ).toRegex()
+
+
     init {
         updateUserConfig()
     }
@@ -130,6 +137,31 @@ class ConfigManager(
         } catch (_: ConfigException.Missing) {
             // Key doesn't exist, no migration needed
         }
+
+        updatedConfig = migrateConfig(
+            updatedConfig,
+            config,
+            "server.extensionRepos",
+            toConfigKey = "server.extensionStores",
+            toType = {
+                @Suppress("UNCHECKED_CAST")
+                (it.unwrapped() as? List<String>)
+                    ?.map {
+                        if (it.contains("github.com")) {
+                            it.replace(repoMatchRegex) {
+                                "https://raw.githubusercontent.com/${it.groupValues[2]}/${it.groupValues[3]}/" +
+                                    (it.groupValues.getOrNull(4)?.ifBlank { null } ?: "repo") +
+                                    "/" +
+                                    (it.groupValues.getOrNull(5)?.ifBlank { null } ?: "index.min.json")
+                            }
+                        } else {
+                            it
+                        }
+                    }
+            }
+
+        )
+
         return updatedConfig
     }
 
