@@ -32,12 +32,6 @@ import suwayomi.tachidesk.launcher.selection
 import javax.swing.JList
 import javax.swing.JScrollPane
 
-private val repoMatchRegex =
-    (
-        "https:\\/\\/(?>www\\.|raw\\.)?(github|githubusercontent)\\.com" +
-            "\\/([^\\/]+)\\/([^\\/]+)(?>(?>\\/tree|\\/blob)?\\/([^\\/\\n]*))?(?>\\/([^\\/\\n]*\\.json)?)?"
-    ).toRegex()
-
 @Suppress("ktlint:standard:function-naming")
 fun Extension(
     vm: LauncherViewModel,
@@ -47,21 +41,21 @@ fun Extension(
         LC().alignX("center").alignY("center"),
     ),
 ) {
-    jTextArea("Extension repos") {
+    jTextArea("Extension stores") {
         isEditable = false
     }.bind(CC().wrap())
-    val extensionRepos: JList<String> = JList(vm.extensionRepos.value.toTypedArray())
-    vm.extensionRepos
+    val extensionStores: JList<String> = JList(vm.extensionStores.value.toTypedArray())
+    vm.extensionStores
         .drop(1)
         .onEach {
-            extensionRepos.setListData(it.toTypedArray())
+            extensionStores.setListData(it.toTypedArray())
         }.flowOn(Dispatchers.Main)
         .launchIn(scope)
     val textField = MutableStateFlow("")
     val jTextField =
         jTextField(textField.value) {
             toolTipText =
-                "Add additional repos to Suwayomi, the format of a repo is \"https://github.com/MY_ACCOUNT/MY_REPO\""
+                "Add additional stores to Suwayomi, the format of a store is \"https://github.com/MY_ACCOUNT/MY_EXTENSION_STORE\""
             keyListener()
                 .filterIsInstance<KeyListenerEvent.Released>()
                 .onEach {
@@ -72,33 +66,33 @@ fun Extension(
     jbutton("Add") {
         actions()
             .onEach {
-                val changed = vm.extensionRepos.value + textField.value
-                vm.extensionRepos.value = changed.distinct()
+                val changed = vm.extensionStores.value + textField.value
+                vm.extensionStores.value = changed.distinct()
                 textField.value = ""
                 jTextField.text = ""
             }.flowOn(Dispatchers.Default)
             .launchIn(scope)
         textField
             .onEach {
-                isEnabled = it.matches(repoMatchRegex)
+                isEnabled = it.startsWith("http") && (it.endsWith("json") || it.endsWith("pb") || it.endsWith("pb.gz"))
             }.flowOn(Dispatchers.Main)
             .launchIn(scope)
     }.bind()
     jbutton("Remove") {
         actions()
             .onEach {
-                val changed = vm.extensionRepos.value - extensionRepos.selectedValuesList.toSet()
-                vm.extensionRepos.value = changed.distinct()
+                val changed = vm.extensionStores.value - extensionStores.selectedValuesList.toSet()
+                vm.extensionStores.value = changed.distinct()
             }.flowOn(Dispatchers.Default)
             .launchIn(scope)
-        isEnabled = !extensionRepos.isSelectionEmpty
-        extensionRepos
+        isEnabled = !extensionStores.isSelectionEmpty
+        extensionStores
             .selection()
             .onEach {
-                isEnabled = !extensionRepos.isSelectionEmpty
+                isEnabled = !extensionStores.isSelectionEmpty
             }.flowOn(Dispatchers.Default)
             .launchIn(scope)
     }.bind(CC().wrap())
 
-    JScrollPane(extensionRepos).bind(CC().grow().spanX())
+    JScrollPane(extensionStores).bind(CC().grow().spanX())
 }

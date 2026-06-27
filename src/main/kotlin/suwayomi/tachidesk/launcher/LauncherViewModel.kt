@@ -98,7 +98,7 @@ class LauncherViewModel {
     val serveConversions = config.asStateFlow { it.serveConversions }
 
     // Extension
-    val extensionRepos = config.asStateFlow { it.extensionRepos }
+    val extensionStores = config.asStateFlow { it.extensionStores }
 
     // Requests
     val maxSourcesInParallel = config.asStateFlow { it.maxSourcesInParallel }

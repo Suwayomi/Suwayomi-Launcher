@@ -99,7 +99,7 @@ class ServerConfig(
     )
 
     // extensions
-    val extensionRepos: MutableStateFlow<List<String>> by OverrideConfigValue()
+    val extensionStores: MutableStateFlow<List<String>> by OverrideConfigValue()
 
     // requests
     val maxSourcesInParallel: MutableStateFlow<Int> by OverrideConfigValue()
