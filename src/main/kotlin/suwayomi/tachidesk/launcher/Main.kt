@@ -96,7 +96,7 @@ suspend fun main(args: Array<String>) {
         setupTheme(vm)
 
         jframe("Suwayomi-Server Launcher") {
-            size = Dimension(410, 600)
+            size = Dimension(410, 660)
             setLocationRelativeTo(null)
             defaultCloseOperation = JFrame.EXIT_ON_CLOSE
             contentPane =
