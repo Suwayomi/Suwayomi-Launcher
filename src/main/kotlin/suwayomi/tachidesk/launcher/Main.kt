@@ -30,15 +30,12 @@ import suwayomi.tachidesk.launcher.ui.Conversions
 import suwayomi.tachidesk.launcher.ui.Database
 import suwayomi.tachidesk.launcher.ui.Downloader
 import suwayomi.tachidesk.launcher.ui.Extension
-import suwayomi.tachidesk.launcher.ui.KoReaderSync
 import suwayomi.tachidesk.launcher.ui.LocalSource
 import suwayomi.tachidesk.launcher.ui.Misc
-import suwayomi.tachidesk.launcher.ui.Opds
 import suwayomi.tachidesk.launcher.ui.Requests
 import suwayomi.tachidesk.launcher.ui.RootDir
 import suwayomi.tachidesk.launcher.ui.ServerIpAndPortBindings
 import suwayomi.tachidesk.launcher.ui.Socks5
-import suwayomi.tachidesk.launcher.ui.Sync
 import suwayomi.tachidesk.launcher.ui.Updater
 import suwayomi.tachidesk.launcher.ui.WebUI
 import suwayomi.tachidesk.launcher.ui.Webview
@@ -130,11 +127,8 @@ suspend fun main(args: Array<String>) {
                         addTab("Local Source", LocalSource(vm, scope))
                         addTab("Requests", Requests(vm, scope))
                         addTab("Cloudflare", Cloudflare(vm, scope))
-                        addTab("Opds", Opds(vm, scope))
-                        addTab("KOReader", KoReaderSync(vm, scope))
                         addTab("Database", Database(vm, scope))
                         addTab("Webview", Webview(vm, scope))
-                        addTab("Sync", Sync(vm, scope))
                         addTab("Root Directory", RootDir(vm, scope))
                     }.bind(CC().grow())
                     jpanel {

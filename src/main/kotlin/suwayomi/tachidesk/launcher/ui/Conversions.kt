@@ -58,7 +58,6 @@ fun Conversions(
 
     jTabbedPane {
         addTab("Download", conversionsLayout(scope, vm.downloadConversions))
-        addTab("Serve", conversionsLayout(scope, vm.serveConversions))
     }.bind(CC().grow().spanX().wrap())
 }
 

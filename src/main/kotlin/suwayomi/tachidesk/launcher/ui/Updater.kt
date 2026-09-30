@@ -35,33 +35,6 @@ fun Updater(
         LC().alignX("center").alignY("center"),
     ),
 ) {
-    jCheckBox("Exclude unread chapters", selected = vm.excludeUnreadChapters.value) {
-        toolTipText = "default: true"
-        actions()
-            .onEach {
-                vm.excludeUnreadChapters.value = isSelected
-            }.flowOn(Dispatchers.Default)
-            .launchIn(scope)
-    }.bind(CC().spanX())
-
-    jCheckBox("Exclude not started", selected = vm.excludeNotStarted.value) {
-        toolTipText = "default: true"
-        actions()
-            .onEach {
-                vm.excludeNotStarted.value = isSelected
-            }.flowOn(Dispatchers.Default)
-            .launchIn(scope)
-    }.bind(CC().spanX())
-
-    jCheckBox("Exclude completed", selected = vm.excludeCompleted.value) {
-        toolTipText = "default: true"
-        actions()
-            .onEach {
-                vm.excludeCompleted.value = isSelected
-            }.flowOn(Dispatchers.Default)
-            .launchIn(scope)
-    }.bind(CC().spanX())
-
     val spinner =
         jSpinner(
             SpinnerNumberModel(
@@ -103,13 +76,4 @@ fun Updater(
         isEditable = false
     }.bind()
     spinner.bind(CC().grow().spanX())
-
-    jCheckBox("Update manga info", selected = vm.updateMangas.value) {
-        toolTipText = "default: false ; Update manga metadata and thumbnail along with the chapter list update during the library update."
-        actions()
-            .onEach {
-                vm.updateMangas.value = isSelected
-            }.flowOn(Dispatchers.Default)
-            .launchIn(scope)
-    }.bind(CC().spanX())
 }

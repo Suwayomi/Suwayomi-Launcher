@@ -25,10 +25,8 @@ import suwayomi.tachidesk.launcher.KeyListenerEvent
 import suwayomi.tachidesk.launcher.LauncherViewModel
 import suwayomi.tachidesk.launcher.actions
 import suwayomi.tachidesk.launcher.bind
-import suwayomi.tachidesk.launcher.changes
 import suwayomi.tachidesk.launcher.focusListener
 import suwayomi.tachidesk.launcher.jCheckBox
-import suwayomi.tachidesk.launcher.jSpinner
 import suwayomi.tachidesk.launcher.jTextArea
 import suwayomi.tachidesk.launcher.jTextField
 import suwayomi.tachidesk.launcher.jbutton
@@ -36,7 +34,6 @@ import suwayomi.tachidesk.launcher.jpanel
 import suwayomi.tachidesk.launcher.keyListener
 import java.awt.event.KeyEvent
 import javax.swing.JFileChooser
-import javax.swing.SpinnerNumberModel
 import javax.swing.UIManager
 import kotlin.io.path.Path
 import kotlin.io.path.createDirectories
@@ -103,56 +100,6 @@ fun Downloader(
                         downloadsPathField.text = path
                     }
                 }
-            }.flowOn(Dispatchers.Default)
-            .launchIn(scope)
-    }.bind(CC().grow().spanX().wrap())
-
-    jCheckBox("Download new chapters", selected = vm.autoDownloadNewChapters.value) {
-        toolTipText =
-            "default: false ; If new chapters that have been found, should Suwayomi download them automatically." // todo improve
-        actions()
-            .onEach {
-                vm.autoDownloadNewChapters.value = isSelected
-            }.flowOn(Dispatchers.Default)
-            .launchIn(scope)
-    }.bind(CC().wrap())
-
-    jCheckBox("Exclude unread entries", selected = vm.excludeEntryWithUnreadChapters.value) {
-        toolTipText =
-            "default: true ; Exclude entries with unread chapters from auto-download" // todo improve
-        actions()
-            .onEach {
-                vm.excludeEntryWithUnreadChapters.value = isSelected
-            }.flowOn(Dispatchers.Default)
-            .launchIn(scope)
-    }.bind(CC().wrap())
-
-    jCheckBox("Exclude re-uploaded entries", selected = vm.autoDownloadIgnoreReUploads.value) {
-        toolTipText =
-            "default: false ; Ignore re-uploaded chapters from auto-download" // todo improve
-        actions()
-            .onEach {
-                vm.autoDownloadIgnoreReUploads.value = isSelected
-            }.flowOn(Dispatchers.Default)
-            .launchIn(scope)
-    }.bind(CC().wrap())
-
-    jTextArea("Download new chapters limit") {
-        isEditable = false
-    }.bind()
-    jSpinner(
-        SpinnerNumberModel(
-            vm.autoDownloadNewChaptersLimit.value.coerceAtLeast(0),
-            0,
-            Int.MAX_VALUE,
-            1,
-        ),
-    ) {
-        toolTipText =
-            "default: 0 ; range: [0, +∞] ; 0 == disabled ; Maximum number of new chapters to auto-download"
-        changes()
-            .onEach {
-                vm.autoDownloadNewChaptersLimit.value = (value as Int)
             }.flowOn(Dispatchers.Default)
             .launchIn(scope)
     }.bind(CC().grow().spanX().wrap())
