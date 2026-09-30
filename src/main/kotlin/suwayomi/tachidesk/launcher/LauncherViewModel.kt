@@ -39,7 +39,6 @@ import kotlin.io.path.div
 import kotlin.io.path.exists
 import kotlin.io.path.notExists
 import kotlin.system.exitProcess
-import kotlin.time.Duration
 
 class LauncherViewModel {
     private val scope = MainScope()
