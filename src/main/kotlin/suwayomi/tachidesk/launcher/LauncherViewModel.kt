@@ -139,6 +139,8 @@ class LauncherViewModel {
     val databaseUsername: MutableStateFlow<String> = config.asStateFlow { it.databaseUsername }
     val databasePassword: MutableStateFlow<String> = config.asStateFlow { it.databasePassword }
     val useHikariConnectionPool: MutableStateFlow<Boolean> = config.asStateFlow { it.useHikariConnectionPool }
+    val hikariMaxPoolSize: MutableStateFlow<Int> = config.asStateFlow { it.hikariMaxPoolSize }
+    val databaseSchema: MutableStateFlow<String> = config.asStateFlow { it.databaseSchema }
 
     // WebView
     val kcefEnabled: MutableStateFlow<Boolean> = config.asStateFlow { it.kcefEnabled }
